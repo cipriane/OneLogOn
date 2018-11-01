@@ -19,8 +19,9 @@ It is built with a Django backend using PostgresQL and a React frontend.
  - [pip](https://pip.pypa.io/en/stable/) (>=1.3 install globally)
  - [virtualenv](https://virtualenv.pypa.io/en/latest/installation/) (run `$ [sudo] pip install virtualenv`)
 
- ⋅⋅⋅ You don't have to use this, but you should if you have multiple Django projects. Otherwise, all of your dependencies are installed globally and may conflict on different projects.
+ You don't have to use this, but you should if you have multiple Django projects. Otherwise, all of your dependencies are installed globally and may conflict on different projects.
  - Django (run `pip install Django`)
+ - [Yarn](https://yarnpkg.com/lang/en/docs/install/#windows-stable)
 
 ### Quick Start
 
@@ -31,16 +32,20 @@ You can start by cloning the latest version of DudeTruck on your local machine.
 ```shell
 $ git clone git@github.com:cipriane/OneRegistrationOff.git
 ```
-#### 2. Run `npm install`
+#### 2. Run `yarn install`
 
 This will install both run-time project dependencies and developer tools listed
 in `package.json` file.
 
-#### 3. Run `python manage.py runserver`
+#### 3. Run `pip install -r requirements.txt`
+
+Activate your virtualenv first, if you have one setup. This command will install all dependencies listed in `requirements.txt`.
+
+#### 4. Navigate to `backend` and run `python manage.py runserver`
 
 This command will start the Django server
 
-#### 4. Navigate to [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in your browser
+#### 5. Navigate to [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in your browser
 
 If everything works, you'll see the home landing page.  
 Quit the server with CONTROL-C.

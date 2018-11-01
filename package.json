@@ -1,0 +1,43 @@
+{
+  "name": "OneRegistrationOff",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cipriane/OneRegistrationOff.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cipriane/OneRegistrationOff/issues"
+  },
+  "homepage": "https://github.com/cipriane/OneRegistrationOff#readme",
+  "dependencies": {
+    "react": "^16.6.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.4",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "copyfiles": "^2.1.0",
+    "husky": "^1.1.2",
+    "prop-types": "^15.6.2",
+    "react-dom": "^16.6.0",
+    "webpack": "^4.23.1",
+    "webpack-cli": "^3.1.2"
+  },
+  "scripts": {
+    "clean": "rimraf ./frontend/build/*",
+    "prebuild": "yarn clean",
+    "predev": "yarn clean",
+    "dev": "webpack --mode development ./frontend/src/index.js --output ./frontend/build/main.js",
+    "build": "webpack --mode production ./frontend/src/index.js --output ./frontend/build/main.js",
+    "postdev": "yarn copy",
+    "postbuild": "yarn copy",
+    "copy": "copyfiles -u 2 ./frontend/build/*.js ./backend/server/static"
+  }
+}
