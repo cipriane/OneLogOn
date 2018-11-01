@@ -20,7 +20,10 @@
     }
   },
   "lint-staged": {
-    "./frontend/*.{js,json,css,md}": ["prettier --write", "git add"]
+    "./frontend/*.{js,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "dependencies": {
     "react": "^16.6.0"
@@ -34,6 +37,7 @@
     "copyfiles": "^2.1.0",
     "husky": "^1.1.2",
     "lint-staged": "^8.0.4",
+    "prettier": "^1.14.3",
     "prop-types": "^15.6.2",
     "react-dom": "^16.6.0",
     "webpack": "^4.23.1",
