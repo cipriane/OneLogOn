@@ -13,13 +13,13 @@
 This repository is broken into two major folders - the frontend and the backend.
 
 #### Frontend
-Boilerplate from `create-react-app`.  Creates a SPA JavaScript bundle that is served through a Django template.
+Boilerplate from `create-react-app`.  Creates a SPA JavaScript bundle that is served through a Django template.  
 Main contributors:
  - Aaron Hartigan
  - Sergey Karchmit
  - Victor Uvarov
 #### Backend
-Django
+Django  
 Main contributors:
 - Alexandru Seremet
 - Mitch Manzanares
