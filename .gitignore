@@ -2,6 +2,7 @@
 
 # Dependencies
 node_modules/
+yarn.lock
 
 # Runtime data
 database.sqlite
