@@ -41,7 +41,7 @@ in `package.json` file.
 
 Activate your virtualenv first, if you have one setup. This command will install all dependencies listed in `requirements.txt`.
 
-#### 4. Run `python manage.py runserver`
+#### 4. Run `python manage.py runserver` or use shortcut `yarn start`
 
 This command will start the Django server
 
