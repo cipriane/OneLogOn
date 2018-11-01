@@ -27,7 +27,7 @@ It is built with a Django backend using PostgresQL and a React frontend.
 
 #### 1. Get the latest version
 
-You can start by cloning the latest version of DudeTruck on your local machine.  
+You can start by cloning the latest version on your local machine.  
 (You should set up an SSH key for your machine)
 ```shell
 $ git clone git@github.com:cipriane/OneRegistrationOff.git
@@ -51,13 +51,13 @@ If everything works, you'll see the home landing page.
 Quit the server with CONTROL-C.
 
 #### Frontend
-Boilerplate from `create-react-app`.  Creates a SPA JavaScript bundle that is served through a Django template.  
+ Creates a SPA JavaScript bundle that is served through a Django template.  
 Main contributors:
  - Aaron Hartigan
  - Sergey Karchmit
  - Victor Uvarov
 #### Backend
-Django  
+Built with Django.  
 Main contributors:
 - Alexandru Seremet
 - Mitch Manzanares
