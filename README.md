@@ -40,9 +40,9 @@ in `package.json` file.
 
 Activate your virtualenv first, if you have one setup. This command will install all dependencies listed in `requirements.txt`.
 
-#### 4. Run `python manage.py runserver` or use shortcut `yarn start`
+#### 4. Run `yarn start`
 
-This command will start the Django server
+This command will build the frontend bundle, copy it to Django static files, and start the Django server
 
 #### 5. Navigate to [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in your browser
 
