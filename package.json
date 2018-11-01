@@ -44,7 +44,8 @@
     "webpack-cli": "^3.1.2"
   },
   "scripts": {
-    "start": "python manage.py runserver",
+    "start": "yarn dev && python manage.py runserver",
+    "startprod": "yarn build && yarn start",
     "clean": "rimraf ./frontend/build/*",
     "prebuild": "yarn clean",
     "predev": "yarn clean",
