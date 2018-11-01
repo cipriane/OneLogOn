@@ -1,6 +1,6 @@
 # Visitor and Employee Management System
-##### for Zachary Dowell at the Innovation Center
-<br/>
+#### for Zachary Dowell at the Innovation Center
+
 ### Meet the team - OneBitOff
 - Aaron Hartigan
 - Victor Uvarov
