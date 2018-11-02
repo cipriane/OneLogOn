@@ -8,7 +8,7 @@ For example, if there are three scripts`build`, `prebuild`, and `postbuild`,
 typing `yarn build` will run the script `prebuild` and then run `build` and then `postbuild`.
 
 ### `yarn install`
-This is a built-in script that installs all of the frontend dependencies into a `node_modules` folder.  
+This is a built-in script that installs all of the dependencies listed in `package.json` into a `node_modules` folder.  
 
 ### `yarn start`
 This script will build the javascript bundle in DEVELOPMENT mode, copy the files to the backend, and then start the server.  
