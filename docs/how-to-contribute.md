@@ -6,18 +6,18 @@ Major work should be done via pull requests (PR).
 
 First, make sure your repository is up to date using:
 ```shell
-git fetch upstream
+$ git fetch upstream
 ```
 
 Then, to merge it into your own project, type:
 ```shell
-git merge upstream/master
+$ git merge upstream/master
 ```
 Now you\'ll have an up-to-date version of the upstream code in your current branch.
 
 To create a branch and switch to it use:
 ```shell
- git checkout -b new-branch-name
+$ git checkout -b new-branch-name
 ```
 
 To push your changes to your fork type:
