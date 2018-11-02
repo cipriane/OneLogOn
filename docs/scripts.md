@@ -1,10 +1,11 @@
 ### Scripts
 
-The scripts for this project are run through [Yarn](https://yarnpkg.com/en/).  
-The scripts can be found in [`package.json`](https://github.com/cipriane/OneRegistrationOff/blob/master/package.json)  
-Scripts are run by typing `yarn <script-name>`.
-Scripts that are prepended by `pre` or `post` will be run before or after the script.  
-For example, there is the script `build` and `prebuild`. Typing `yarn build` will run the script `prebuild` first and then run `build`
+The scripts for this project are run through [Yarn](https://yarnpkg.com/en/).
+The scripts can be found in [`package.json`](https://github.com/cipriane/OneRegistrationOff/blob/master/package.json)
+Scripts are run by typing `yarn <script-name>` in the console while located in a directory anywhere under or including the ROOT directory.
+Scripts that are prepended by `pre` or `post` will be run before or after the script.
+For example, if there are three scripts`build`, `prebuild`, and `postbuild`,
+typing `yarn build` will run the script `prebuild` and then run `build` and then `postbuild`.
 
 ### `yarn install`
 This is a built-in script that installs all of the frontend dependencies into a `node_modules` folder.  
