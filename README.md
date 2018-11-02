@@ -15,11 +15,11 @@ It is built with a Django backend using PostgresQL and a React frontend.
 
 # Getting Started
 ### Requirements
- - [Python](https://www.python.org/downloads/) (>=3 recommnded)
+ - [Python](https://www.python.org/downloads/) (>=3 recommended)
  - [pip](https://pip.pypa.io/en/stable/) (>=1.3 install globally)
  - [virtualenv](https://virtualenv.pypa.io/en/latest/installation/) (run `$ [sudo] pip install virtualenv`)
-
  You don't have to use virtualenv, but you should if you have multiple Django projects. Otherwise, all of your dependencies are installed globally and may conflict on different projects.
+ - [Node](https://nodejs.org/en/download/) (Latest LTS recommended)
  - [Yarn](https://yarnpkg.com/lang/en/docs/install/#windows-stable)
 
 ### Quick Start
