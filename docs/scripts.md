@@ -7,17 +7,20 @@ Scripts that are prepended by `pre` or `post` will be run before or after the sc
 For example, if there are three scripts`build`, `prebuild`, and `postbuild`,
 typing `yarn build` will run the script `prebuild` and then run `build` and then `postbuild`.
 
-### `yarn install`
+#### `yarn install`
 This is a built-in script that installs all of the dependencies listed in `package.json` into a `node_modules` folder.  
 
-### `yarn start`
-This script will build the javascript bundle in DEVELOPMENT mode, copy the files to the backend, and then start the server.  
+#### `yarn start`
+This script will run `yarn dev` and the Django server at the same time.  
 
-### `yarn startprod`
-Same as `yarn start` but in PRODUCTION mode.
+#### `yarn start-prod`
+This script will run `yarn build` and then run the Django server.  
 
-### `yarn clean`
+#### `yarn dev`
+This script will build the javascript bundle in DEVELOPMENT mode and rebuild on code changes.  
+
+#### `yarn build`
+This script will build the javascript bundle in PRODUCTION mode.  
+
+#### `yarn clean`
 This script empties the build directory.  
-
-### `yarn copy`
-This script copies the build directory to the static files in the backend project.  
