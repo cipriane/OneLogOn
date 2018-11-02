@@ -4,19 +4,28 @@ Major work should be done via pull requests (PR).
 
 #### 1. Create a topical branch
 
-First, create a branch from the latest commit. Make sure your repository is up to date using
+First, make sure your repository is up to date using:
 ```shell
-$ git pull origin master
+git fetch upstream
 ```
 
-To create a branch, use `git checkout -b <new-branch-name>`.  
-Here's how you would create a new branch and push it to github.  
+Then, to merge it into your own project, type:
 ```shell
-$ git checkout -b new-feature-branch
-$ git push origin new-feature-branch
+git merge upstream/master
+```
+Now you\'ll have an up-to-date version of the upstream code in your current branch.
+
+To create a branch and switch to it use:
+```shell
+ git checkout -b new-branch-name
 ```
 
-#### 2. Create a pull requests
+To push your changes to your fork type:
+```shell
+$ git push origin new-branch-name
+```
+
+#### 2. Create a pull request
 
 To create a PR, you must have changes committed to your new branch.
 Go to the repository page on github and click on "Pull Request" button in the repo header.

@@ -45,7 +45,7 @@
   },
   "scripts": {
     "start": "yarn dev && python manage.py runserver",
-    "startprod": "yarn build && yarn start",
+    "startprod": "yarn build && python manage.py runserver",
     "clean": "rimraf ./frontend/build/*",
     "prebuild": "yarn clean",
     "predev": "yarn clean",

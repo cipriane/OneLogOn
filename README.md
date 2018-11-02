@@ -24,13 +24,19 @@ It is built with a Django backend using PostgresQL and a React frontend.
 
 ### Quick Start
 
-#### 1. Get the latest version
+#### 1. Create a fork
 
-You can start by cloning the latest version on your local machine.  
+Click on the "Fork" button.  After that, clone your repo.
 (You should set up an SSH key for your machine)
 ```shell
-$ git clone git@github.com:cipriane/OneRegistrationOff.git
+$ git clone git@github.com:USERNAME/FORKED-PROJECT.git
 ```
+
+Add the original project as a remote named upstream (used to easily grab changes)
+```shell
+$ git remote add --track master upstream https://github.com/cipriane/OneRegistrationOff
+```
+
 #### 2. Run `yarn install`
 
 This will install both run-time project dependencies and developer tools listed
