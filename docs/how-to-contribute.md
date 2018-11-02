@@ -2,6 +2,8 @@
 
 Major work should be done via pull requests (PR).  
 
+##### This guide assumes you have already created a fork.
+
 #### 1. Create a topical branch
 
 First, make sure your repository is up to date using:
