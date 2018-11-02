@@ -48,11 +48,12 @@ Activate your virtualenv first, if you have one setup. This command will install
 
 #### 4. Run `yarn start`
 
-This command will build the frontend bundle, copy it to Django static files, and start the Django server
+This command will build the frontend bundle in development mode and automatically rebuild on file changes. This command will also start up the Django server at the same time.
 
 #### 5. Navigate to [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in your browser
 
-If everything works, you'll see the home landing page.  
+If everything works, you'll see the home landing page.
+Refresh the page to see any code changes.  
 Quit the server with CONTROL-C.
 
 #### Frontend
