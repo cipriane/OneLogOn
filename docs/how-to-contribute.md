@@ -2,7 +2,7 @@
 
 Major work should be done via pull requests (PR).  
 
-##### This guide assumes you have already created a fork.
+##### This guide assumes you have already created a fork, and that you followed the "Quick Start" from the main README.md at the root of the repository.
 
 #### 1. Create a topical branch
 
