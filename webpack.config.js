@@ -2,7 +2,7 @@ var path = require("path")
 var webpack = require('webpack')
 
 module.exports = {
-  entry: './frontend/src/index.js',
+  entry: './frontend/client.js',
 
   output: {
     path: path.join(__dirname, '/backend/server/static'),
@@ -17,7 +17,20 @@ module.exports = {
         use: {
           loader: 'babel-loader',
         }
-      }
-    ]
+      },
+      {
+        test: /\.css$/,
+        use: [
+          { loader: 'style-loader' },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              localIdentName: '[local]--[hash:base64:5]',
+            },
+          },
+        ],
+      },
+    ],
   },
 };
