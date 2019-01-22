@@ -2,14 +2,20 @@ var path = require("path")
 var webpack = require('webpack')
 
 module.exports = {
-  entry: './frontend/client.js',
+  entry: ['@babel/polyfill', './frontend/client.js'],
 
   output: {
     path: path.join(__dirname, '/backend/server/static'),
     filename: 'main.js',
   },
 
+  resolve: {
+    modules: ['node_modules', 'frontend'],
+  },
+
   module: {
+    strictExportPresence: true,
+
     rules: [
       {
         test: /\.js$/,
