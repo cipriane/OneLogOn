@@ -48,11 +48,12 @@
     "webpack-cli": "^3.1.2"
   },
   "scripts": {
+    "prestart": "python manage.py migrate",
     "start": "parallelshell --kill-others \"yarn dev\" \"python manage.py runserver\"",
     "start-prod": "yarn build && python manage.py runserver",
     "clean": "rimraf ./backend/server/static/*",
     "prebuild": "yarn clean",
-    "predev": "python manage.py migrate && yarn clean",
+    "predev": "yarn clean",
     "dev": "webpack --watch --mode development",
     "build": "webpack --mode production"
   }
