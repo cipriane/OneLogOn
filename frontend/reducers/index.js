@@ -1,4 +1,4 @@
-import * as ActionTypes from '../actions';
+import * as ActionTypes from 'actions';
 import { combineReducers } from 'redux';
 
 // Just an example so you can see what the entire
