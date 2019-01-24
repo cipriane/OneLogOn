@@ -2,12 +2,12 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
-import * as Actions from '../../actions';
+import * as Actions from 'actions';
 import s from './ReduxExample.css';
 
 class ReduxExample extends Component {
   render() {
-    const { value, onIncreaseClick } = this.props
+    const { value, onIncreaseClick } = this.props;
     return (
       <div className={s.root}>
         <h1>Redux Example Route</h1>

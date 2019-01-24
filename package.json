@@ -25,8 +25,8 @@
       "git add"
     ]
   },
-  "dependencies": {},
   "devDependencies": {
+    "@babel/polyfill": "^7.2.5",
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
@@ -48,6 +48,7 @@
     "webpack-cli": "^3.1.2"
   },
   "scripts": {
+    "prestart": "python manage.py migrate",
     "start": "parallelshell --kill-others \"yarn dev\" \"python manage.py runserver\"",
     "start-prod": "yarn build && python manage.py runserver",
     "clean": "rimraf ./backend/server/static/*",
