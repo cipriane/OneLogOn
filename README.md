@@ -44,7 +44,7 @@ in `package.json` file.
 
 #### 3. Run `pip install -r requirements.txt`
 
-Activate your virtualenv first, if you have one setup. This command will install all dependencies listed in `requirements.txt`.
+Activate your virtualenv first if you have one setup (for Windows `PATH_TO_ENV\Scripts\activate` and for POSIX `source PATH_TO_ENV/bin/activate`. Type `$ deactivate` to exit for both systems). This command will install all dependencies listed in `requirements.txt`.
 
 #### 4. Run `yarn start`
 
