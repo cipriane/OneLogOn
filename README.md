@@ -45,7 +45,7 @@ in `package.json` file.
 #### 3. Setup virtualenv
 
 To create a virtual environment, type `$ virtualenv env`.
-If using Linux, type ``$ virtualenv venv -p `which python3``` Activate your virtualenv.
+If using Linux, type ``$ virtualenv venv -p `which python3` `` Activate your virtualenv.
 For Windows `PATH_TO_ENV\Scripts\activate` and for POSIX `source PATH_TO_ENV/bin/activate`.
 Type `$ deactivate` to exit for both systems.
 
