@@ -42,7 +42,7 @@ $ git remote add --track master upstream https://github.com/cipriane/OneRegistra
 This will install both run-time project dependencies and developer tools listed
 in `package.json` file.
 
-#### 3. Run `pip install -r requirements.txt`
+#### 3. Run `pip3 install -r requirements.txt`
 
 Activate your virtualenv first if you have one setup (for Windows `PATH_TO_ENV\Scripts\activate` and for POSIX `source PATH_TO_ENV/bin/activate`. Type `$ deactivate` to exit for both systems). This command will install all dependencies listed in `requirements.txt`.
 
