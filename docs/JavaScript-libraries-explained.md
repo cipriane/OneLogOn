@@ -35,7 +35,7 @@ See `docs/scripts.md` for more information on the scripts that we use yarn to ru
 React is a JS library for building user interfaces. Once a page has been loaded,
 React handles everything on the client side, including routing (notice that
 navigating to a new page does not actually cause a page reload). React interacts
-with the backend API by using calls such as `fetch("/api/path")` (this assumes
+with the backend API by using calls such as `fetch("api/path")` (this assumes
 the api exists on the same server that the React bundle has been served from).
 
 #### Redux
