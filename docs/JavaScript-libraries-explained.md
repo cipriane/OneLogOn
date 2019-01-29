@@ -38,11 +38,16 @@ navigating to a new page does not actually cause a page reload). React interacts
 with the backend API by using calls such as `fetch("api/path")` (this assumes
 the api exists on the same server that the React bundle has been served from).
 
+React breaks everything in Components, encouraging modular design. Each component
+has `state` (aka its fields) and `props` (aka its arguments). Components are
+automatically setup with the Observer pattern, so any changes to `state` or `props`
+will re-render that component.
+
 #### Redux
 
 Redux is a library for managing global state. It should be used sparingly,
-but is useful when state needs to be saved across page navigations or if
+but it is useful when state needs to be saved across page navigations or if
 two separate React components have state that influence each other.
 
 Our Redux is setup to implement the Observer pattern, so any update to global
-state will automatically re-render the views.
+state will automatically re-render the components.
