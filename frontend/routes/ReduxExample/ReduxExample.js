@@ -47,3 +47,6 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(ReduxExample);
+
+// Named export for testing
+export { ReduxExample as ReduxExampleTest };
