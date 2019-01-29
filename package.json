@@ -5,15 +5,15 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cipriane/OneRegistrationOff.git"
+    "url": "git+https://github.com/cipriane/OneLogOn.git"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/cipriane/OneRegistrationOff/issues"
+    "url": "https://github.com/cipriane/OneLogOn/issues"
   },
-  "homepage": "https://github.com/cipriane/OneRegistrationOff#readme",
+  "homepage": "https://github.com/cipriane/OneLogOn#readme",
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
@@ -48,9 +48,9 @@
     "webpack-cli": "^3.1.2"
   },
   "scripts": {
-    "prestart": "python3 manage.py migrate",
-    "start": "parallelshell --kill-others \"yarn dev\" \"python3 manage.py runserver\"",
-    "start-prod": "yarn build && python3 manage.py runserver",
+    "prestart": "python manage.py migrate",
+    "start": "parallelshell --kill-others \"yarn dev\" \"python manage.py runserver\"",
+    "start-prod": "yarn build && python manage.py runserver",
     "clean": "rimraf ./backend/server/static/*",
     "prebuild": "yarn clean",
     "predev": "yarn clean",
