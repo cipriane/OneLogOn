@@ -3,7 +3,7 @@ import { Provider } from 'react-redux'
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Home from 'routes/Home';
 import ReduxExample from 'routes/ReduxExample';
-import NoMatch from './NoMatch';
+import NoMatch from 'routes/NoMatch';
 
 export default class App extends Component {
   render() {

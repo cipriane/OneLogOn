@@ -34,7 +34,7 @@ $ git clone git@github.com:USERNAME/FORKED-PROJECT.git
 
 Add the original project as a remote named upstream (used to easily grab changes)
 ```shell
-$ git remote add --track master upstream https://github.com/cipriane/OneRegistrationOff
+$ git remote add --track master upstream https://github.com/cipriane/OneLogOn
 ```
 
 #### 2. Run `yarn install`
@@ -42,15 +42,22 @@ $ git remote add --track master upstream https://github.com/cipriane/OneRegistra
 This will install both run-time project dependencies and developer tools listed
 in `package.json` file.
 
-#### 3. Run `pip3 install -r requirements.txt`
+#### 3. Setup virtualenv
 
-Activate your virtualenv first if you have one setup (for Windows `PATH_TO_ENV\Scripts\activate` and for POSIX `source PATH_TO_ENV/bin/activate`. Type `$ deactivate` to exit for both systems). This command will install all dependencies listed in `requirements.txt`.
+To create a virtual environment, type `$ virtualenv env`.
+If using Linux, type ``$ virtualenv venv -p `which python3` `` Activate your virtualenv.
+For Windows `PATH_TO_ENV\Scripts\activate` and for POSIX `source PATH_TO_ENV/bin/activate`.
+Type `$ deactivate` to exit for both systems.
 
-#### 4. Run `yarn start`
+#### 4. Run `pip3 install -r requirements.txt`
+
+This command will install all dependencies listed in `requirements.txt`.
+
+#### 5. Run `yarn start`
 
 This command will build the frontend bundle in development mode and automatically rebuild on file changes. This command will also start up the Django server at the same time.
 
-#### 5. Navigate to [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in your browser
+#### 6. Navigate to [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in your browser
 
 If everything works, you'll see the home landing page.
 Refresh the page to see any code changes.  
