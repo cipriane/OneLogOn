@@ -1,4 +1,6 @@
-### Please do not push to master.  
+### How to Contribute
+
+#### Please do not push to master.  
 
 Major work should be done via pull requests (PR).  
 
