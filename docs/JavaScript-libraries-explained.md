@@ -18,7 +18,7 @@ hundreds of requests to GET all of the code. Webpack can pack all of files
 into one (or multiple) bundles. (Our bundle is in `backend/server/static/main.js`)
 
 Webpack is also used to make optimizations and other changes to the code.
-We have Webpack setup to use Babel, so our bundle is in an older style of JS.
+We have Webpack setup to use Babel, so our code is translated into older style of JS.
 These optimizations are customized in the `webpack.config.js` file.
 
 #### Yarn
