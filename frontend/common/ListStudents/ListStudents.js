@@ -19,10 +19,11 @@ export default class ListStudents extends Component {
     }
     catch (err) {
       console.error(err);
-      return this.setState({
+      this.setState({
         isLoading: false,
         error: err,
       });
+      return;
     }
   }
 

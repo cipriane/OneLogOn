@@ -5,15 +5,15 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cipriane/OneRegistrationOff.git"
+    "url": "git+https://github.com/cipriane/OneLogOn.git"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/cipriane/OneRegistrationOff/issues"
+    "url": "https://github.com/cipriane/OneLogOn/issues"
   },
-  "homepage": "https://github.com/cipriane/OneRegistrationOff#readme",
+  "homepage": "https://github.com/cipriane/OneLogOn#readme",
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
@@ -26,14 +26,19 @@
     ]
   },
   "devDependencies": {
-    "@babel/polyfill": "^7.2.5",
     "@babel/core": "^7.1.2",
+    "@babel/polyfill": "^7.2.5",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.4",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "css-loader": "^1.0.1",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.8.0",
     "husky": "^1.1.2",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^24.0.0",
+    "jest-fetch-mock": "^2.1.0",
     "lint-staged": "^8.0.4",
     "parallelshell": "3.0.1",
     "prettier": "^1.14.3",
@@ -48,9 +53,10 @@
     "webpack-cli": "^3.1.2"
   },
   "scripts": {
-    "prestart": "python3 manage.py migrate",
-    "start": "parallelshell --kill-others \"yarn dev\" \"python3 manage.py runserver\"",
-    "start-prod": "yarn build && python3 manage.py runserver",
+    "test": "jest",
+    "prestart": "python manage.py migrate",
+    "start": "parallelshell --kill-others \"yarn dev\" \"python manage.py runserver\"",
+    "start-prod": "yarn build && python manage.py runserver",
     "clean": "rimraf ./backend/server/static/*",
     "prebuild": "yarn clean",
     "predev": "yarn clean",
