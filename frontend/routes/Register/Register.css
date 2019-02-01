@@ -1,0 +1,55 @@
+.root {
+  color: black;
+  text-align: center;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+input {
+  line-height: normal;
+}
+
+label {
+  width: 80%;
+}
+
+.form {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.field {
+  width: 100%;
+  border-radius: 4px;
+  background-color: #F8F8F8;
+  border: 1px solid #E8E8E8;
+  margin: 10px auto;
+  padding: 9px;
+  font-size: 12pt;
+}
+
+.buttonContainer {
+  height: auto;
+  width: 80%;
+  margin: 10px auto;
+  background: #009b4e;
+  border: 1px solid #009b4e;
+  border-radius: 4px;
+}
+
+.button {
+  font-size: 12pt;
+  color: white;
+  width: 80%;
+  background: #009b4e;
+  border: 1px solid #009b4e;
+  margin: 5px 0;
+}
+
+.button:hover {
+  cursor: pointer;
+}

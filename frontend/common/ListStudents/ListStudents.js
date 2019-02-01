@@ -11,6 +11,9 @@ export default class ListStudents extends Component {
   async componentDidMount() {
     try {
       const resp = await fetch('api/student');
+      if (!resp.ok) {
+        throw Error(resp.statusText);
+      }
       const data = await resp.json();
       this.setState({
         data,
@@ -19,10 +22,11 @@ export default class ListStudents extends Component {
     }
     catch (err) {
       console.error(err);
-      return this.setState({
+      this.setState({
         isLoading: false,
         error: err,
       });
+      return;
     }
   }
 
