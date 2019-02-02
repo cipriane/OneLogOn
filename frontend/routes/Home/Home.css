@@ -3,16 +3,11 @@
   align-items: center;
   flex-direction: column; 
   justify-content: center;
+  height: 100vh;
 
-  /* some reason nav bar won't work when position absolute so added margin give room to navbar */
-  margin-top: 100px; 
-
-  /* http://dabblet.com/gist/2872671 */
-  position: absolute;
-	top:0;
-	bottom: 0;
-	left: 0;
-	right: 0;
+  background: #7F7FD5;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left, #91EAE4, #86A8E7, #7F7FD5);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, #91EAE4, #86A8E7, #7F7FD5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 /* https://bootsnipp.com/snippets/dldxB */
@@ -97,7 +92,7 @@ input[type=text]:placeholder {
 
 .icon {
   width:50%;
-  padding-bottom: 5em;
+  padding: 2em;
 }
 
 .headerText {
