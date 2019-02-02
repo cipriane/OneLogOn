@@ -62,5 +62,8 @@
     "predev": "yarn clean",
     "dev": "webpack --watch --mode development",
     "build": "webpack --mode production"
+  },
+  "dependencies": {
+    "react-bootstrap": "^1.0.0-beta.5"
   }
 }
