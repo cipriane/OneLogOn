@@ -3,9 +3,9 @@
   align-items: center;
   flex-direction: column; 
   justify-content: center;
-  width: 100%;
-  min-height: 100%;
-  padding: 100px 20px 20px 20px;
+
+  /* some reason nav bar won't work when position absolute so added margin give room to navbar */
+  margin-top: 100px; 
 
   /* http://dabblet.com/gist/2872671 */
   position: absolute;
@@ -13,8 +13,6 @@
 	bottom: 0;
 	left: 0;
 	right: 0;
-	
-	margin: auto;
 }
 
 /* https://bootsnipp.com/snippets/dldxB */
