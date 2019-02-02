@@ -8,7 +8,16 @@ export default class Header extends Component {
     return (
       <div>
         <Navbar bg="success" variant="dark">
-          <Navbar.Brand href="/">OneLogOn</Navbar.Brand>
+          <Navbar.Brand href="/">
+            <img
+              alt=""
+              src="https://proxy.duckduckgo.com/ip3/www.makerhq.org.ico"
+              width="30"
+              height="30"
+              className="d-inline-block align-top"
+            />
+            {' OneLogOn'}
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav"/>
           <Navbar.Collapse className="justify-content-end">
             <Navigation/>
