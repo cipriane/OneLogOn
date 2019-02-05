@@ -1,6 +1,12 @@
 from django.shortcuts import render
 from backend.server.models import Student
+from backend.server.models import Admin
+from backend.server.models import Company
+from backend.server.models import SignIns
 from backend.server.serializers import StudentSerializer
+from backend.server.serializers import AdminSerializer
+from backend.server.serializers import CompanySerializer
+from backend.server.serializers import SignInsSerializer
 from rest_framework import generics
 
 def index(request):
@@ -9,3 +15,15 @@ def index(request):
 class StudentListCreate(generics.ListCreateAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+
+class AdminListCreate(generics.ListCreateAPIView):
+    queryset = Admin.objects.all()
+    serializer_class = AdminSerializer
+
+class CompanyListCreate(generics.ListCreateAPIView):
+    queryset = Company.objects.all()
+    serializer_class = CompanySerializer
+
+class SignInsListCreate(generics.ListCreateAPIView):
+    queryset = SignIns.objects.all()
+    serializer_class = SignInsSerializer
