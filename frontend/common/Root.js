@@ -6,6 +6,7 @@ import ReduxExample from 'routes/ReduxExample/ReduxExample';
 import Login from 'routes/Login/Login';
 import Register from 'routes/Register/Register';
 import NoMatch from 'routes/NoMatch/NoMatch';
+import DashBoard from 'routes/DashBoard/DashBoard';
 
 export default class App extends Component {
   render() {
@@ -17,6 +18,7 @@ export default class App extends Component {
           <Route exact path='/login' component={Login} />
           <Route exact path='/register' component={Register} />
           <Route exact path='/ReduxExample' component={ReduxExample} />
+          <Route exact path='/DashBoard' component={DashBoard} />
           <Route component={NoMatch}/>
         </Switch>
       </BrowserRouter>
