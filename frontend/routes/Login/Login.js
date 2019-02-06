@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Layout from 'common/Layout/Layout';
 import s from './Login.css';
+import login from 'utils/login';
 
 export default class Login extends Component {
   state = {
@@ -33,6 +34,7 @@ export default class Login extends Component {
       }
 
       const data = await resp.json();
+      login(data);
       this.setState({ isLoading: false });
     }
     catch(err) {
