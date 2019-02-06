@@ -98,6 +98,7 @@ input[type=text]:placeholder {
 .icon {
   width:50%;
   padding-bottom: 5em;
+  padding-top: 5em;
 }
 
 .headerText {
