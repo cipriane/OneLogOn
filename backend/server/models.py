@@ -5,21 +5,20 @@ from django.utils.timezone import now
 class Student(models.Model):
     name = models.CharField(max_length=100)
     major = models.CharField(max_length=100)
-<<<<<<< HEAD
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+class SignIns(models.Model):
+    user_id = models.CharField(max_length=30)
+    sign_in = models.DateTimeField()
+    sign_out = models.DateTimeField()
+
 class Visitors(models.Model):
     user_id = models.ForeignKey(SignIns, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=30, 
-        null=True)
-    last_name = models.CharField(max_length=30,
-        null=True)
+    first_name = models.CharField(max_length=30, null=True)
+    last_name = models.CharField(max_length=30,null=True)
     isEmployee = models.BooleanField(default=False)
     waiver = models.BooleanField(default=False)
-=======
-    created_at = models.DateTimeField(default=now, editable=False)
-    updated_at = models.DateTimeField(default=now, editable=False)
 
 class Company(models.Model):
     company_name = models.CharField(max_length=30)
@@ -34,8 +33,4 @@ class Admin(models.Model):
     last_name = models.CharField(max_length=30)
     role = models.CharField(max_length=10)
 
-class SignIns(models.Model):
-    user_id = models.CharField(max_length=30)
-    sign_in = models.DateTimeField()
-    sign_out = models.DateTimeField()
->>>>>>> upstream/master
+

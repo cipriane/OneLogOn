@@ -3,10 +3,12 @@ from backend.server.models import Student
 from backend.server.models import Admin
 from backend.server.models import Company
 from backend.server.models import SignIns
+from backend.server.models import Visitors
 from backend.server.serializers import StudentSerializer
 from backend.server.serializers import AdminSerializer
 from backend.server.serializers import CompanySerializer
 from backend.server.serializers import SignInsSerializer
+from backend.server.serializers import VisitorsSerializer
 from rest_framework import generics
 
 def index(request):
@@ -27,3 +29,7 @@ class CompanyListCreate(generics.ListCreateAPIView):
 class SignInsListCreate(generics.ListCreateAPIView):
     queryset = SignIns.objects.all()
     serializer_class = SignInsSerializer
+
+class VisitorsListCreate(generics.ListCreateAPIView):
+    queryset = Visitors.objects.all()
+    serializer_class = VisitorsSerializer
