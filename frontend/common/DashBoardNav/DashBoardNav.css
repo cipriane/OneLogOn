@@ -1,0 +1,35 @@
+.root {
+    background-color: #333333;
+}
+
+@media screen and (min-width: 768px) {
+    .root {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 240px;
+        height: 100vh;
+        padding-top: 50px;
+    }
+}
+
+.root ul {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+}
+
+.root ul a {
+    border-left: 3px solid transparent;
+    color: #fff;
+    display: block;
+    padding: 1.5rem;
+    text-decoration: none;
+    transition: .4s ease all;
+}
+
+.root ul a:hover {
+    background-color: #515052;
+    border-color: #0e8cff;
+    color: #0e8cff;
+}
