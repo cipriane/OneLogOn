@@ -1,6 +1,5 @@
 function myFetch(url, options) {
   const jwt = localStorage.getItem('jwt');
-
   const defaults = {
     method: 'GET',
     mode: 'same-origin',
@@ -19,7 +18,7 @@ function myFetch(url, options) {
       ...defaults.headers,
       ...(options && options.headers),
     },
-  };
+  });
 }
 
 export default myFetch;

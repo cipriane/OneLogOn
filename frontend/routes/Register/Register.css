@@ -50,6 +50,6 @@ label {
   margin: 5px 0;
 }
 
-.button:hover {
+.buttonContainer:hover {
   cursor: pointer;
 }
