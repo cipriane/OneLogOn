@@ -1,55 +1,31 @@
 .root {
-  color: black;
-  text-align: center;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-input {
-  line-height: normal;
-}
-
-label {
-  width: 80%;
-}
-
-.form {
-  margin: 0 auto;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
   justify-content: center;
-  box-sizing: border-box;
+  height: 100vh;
+
+  background: #7F7FD5;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left, #91EAE4, #86A8E7, #7F7FD5);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, #91EAE4, #86A8E7, #7F7FD5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
-.field {
-  width: 100%;
-  border-radius: 4px;
-  background-color: #F8F8F8;
-  border: 1px solid #E8E8E8;
-  margin: 10px auto;
-  padding: 9px;
-  font-size: 12pt;
+.textfield {
+  background-color: #f6f6f6;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  margin: 5px;
+  width: 85%;
+  border: 2px solid #f6f6f6;
 }
 
-.buttonContainer {
-  height: auto;
-  width: 80%;
-  margin: 10px auto;
-  background: #009b4e;
-  border: 1px solid #009b4e;
-  border-radius: 4px;
+.textfield:focus {
+  background-color: #fff;
 }
 
-.button {
-  font-size: 12pt;
-  color: white;
-  width: 80%;
-  background: #009b4e;
-  border: 1px solid #009b4e;
-  margin: 5px 0;
-}
-
-.buttonContainer:hover {
-  cursor: pointer;
+.headerText {
+  font-size: 25px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  padding-bottom: 25px;
 }
