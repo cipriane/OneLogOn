@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import Form from 'react-bootstrap/Form';
 import Layout from 'common/Layout/Layout';
+import FullScreenLayout from 'common/FullScreenLayout/FullScreenLayout';
 import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import FancyButton from 'common/FancyButton/FancyButton';
 import FormIcon from 'common/FormIcon/FormIcon';
@@ -82,7 +83,7 @@ class Register extends Component {
 
     return (
       <Layout>
-        <div className={s.root}>
+        <FullScreenLayout>
           <h1>Register Route</h1>
           {errorMessage}
           <Form onSubmit={this.handleSubmit}>
@@ -108,7 +109,7 @@ class Register extends Component {
             <FancyButton label={buttonText} type="submit"/>
             </MainFormLayout>
           </Form>
-        </div>
+        </FullScreenLayout>
       </Layout>
     );
   }
