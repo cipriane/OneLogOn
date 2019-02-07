@@ -7,7 +7,7 @@ export default class Header extends Component {
   render() {
     return (
       <div>
-        <Navbar bg="success" variant="dark">
+        <Navbar bg="success" fixed="top" variant="dark">
           <Navbar.Brand href="/">
             <img
               alt=""
