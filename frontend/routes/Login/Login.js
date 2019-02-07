@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router';
 import Layout from 'common/Layout/Layout';
 import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import FancyButton from 'common/FancyButton/FancyButton';
 import Form from 'react-bootstrap/Form';
 import FormIcon from 'common/FormIcon/FormIcon';
 import s from './Login.css';
+import fetch from 'utils/fetch';
+import login from 'utils/login';
 
-export default class Login extends Component {
+class Login extends Component {
   state = {
     username: '',
     password: '',
@@ -15,10 +18,10 @@ export default class Login extends Component {
   };
 
   handleChange = (event) => {
+    console.log(event)
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
-
     this.setState({
       [name]: value
     });
@@ -26,10 +29,15 @@ export default class Login extends Component {
 
   handleSubmit = async (event) => {
     event.preventDefault();
+    console.log('this.state')
     try {
       this.setState({ isLoading: true, error: null });
       const resp = await fetch('api/login', {
         method: 'POST',
+        body: JSON.stringify({
+          username: this.state.username,
+          password: this.state.password,
+        }),
       });
 
       if (!resp.ok) {
@@ -37,7 +45,8 @@ export default class Login extends Component {
       }
 
       const data = await resp.json();
-      this.setState({ isLoading: false });
+      login(data);
+      this.props.history.push('/dashboard');
     }
     catch(err) {
       this.setState({
@@ -69,8 +78,20 @@ export default class Login extends Component {
               <Form.Group >
                 <FormIcon url="https://proxy.duckduckgo.com/ip3/www.makerhq.org.ico" />
                 <Form.Label className={s.headerText}>Welcome to OneLogOn</Form.Label> <br/>
-                <Form.Control className={s.textfield} type="text" placeholder="username" onChange={this.handleChange}/>
-                <Form.Control className={s.textfield} type="text" placeholder="password" onChange={this.handleChange}/>
+                <Form.Control
+                  className={s.textfield}
+                  type="text"
+                  placeholder="username"
+                  name="username"
+                  onChange={this.handleChange}
+                />
+                <Form.Control
+                  className={s.textfield}
+                  type="text"
+                  placeholder="password"
+                  name="password"
+                  onChange={this.handleChange}
+                />
               </Form.Group>
               <FancyButton label={buttonText} type="submit"/>
             </MainFormLayout>
@@ -80,3 +101,5 @@ export default class Login extends Component {
     );
   }
 }
+
+export default withRouter(Login);
