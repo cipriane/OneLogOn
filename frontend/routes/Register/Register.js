@@ -90,8 +90,20 @@ class Register extends Component {
             <Form.Group >
               <FormIcon url="https://proxy.duckduckgo.com/ip3/www.makerhq.org.ico" />
               <Form.Label className={s.headerText}>Welcome to OneLogOn</Form.Label> <br/>
-              <Form.Control className={s.textfield} type="text" placeholder="username" onChange={this.handleChange}/>
-              <Form.Control className={s.textfield} type="text" placeholder="password" onChange={this.handleChange}/>
+              <Form.Control
+                className={s.textfield}
+                type="text"
+                placeholder="username"
+                name="username"
+                onChange={this.handleChange}
+              />
+              <Form.Control
+                className={s.textfield}
+                type="text"
+                placeholder="password"
+                name="password"
+                onChange={this.handleChange}
+              />
             </Form.Group>
             <FancyButton label={buttonText} type="submit"/>
             </MainFormLayout>
