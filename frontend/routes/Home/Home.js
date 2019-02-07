@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
+import FullScreenLayout from 'common/FullScreenLayout/FullScreenLayout';
 import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import FancyButton from 'common/FancyButton/FancyButton';
 import FormIcon from 'common/FormIcon/FormIcon';
@@ -27,16 +28,18 @@ export default class Home extends Component {
   render() {
     return (
       <Layout>
-          <Form className={s.root} onSubmit={this.handleSubmit}>
-            <MainFormLayout>
-              <Form.Group >
-                <FormIcon url="https://proxy.duckduckgo.com/ip3/www.makerhq.org.ico" />
-                <Form.Label className={s.headerText}>Welcome to OneLogOn</Form.Label> <br/>
-                <Form.Control className={s.textfield} type="text" placeholder="Enter ID" onChange={this.handleChange}/>
-              </Form.Group>
-              <FancyButton label="Log in" type="submit"/>
-            </MainFormLayout>
-        </Form>
+        <FullScreenLayout>
+          <Form onSubmit={this.handleSubmit}>
+              <MainFormLayout>
+                <Form.Group >
+                  <FormIcon url="https://proxy.duckduckgo.com/ip3/www.makerhq.org.ico" />
+                  <Form.Label className={s.headerText}>Welcome to OneLogOn</Form.Label> <br/>
+                  <Form.Control className={s.textfield} type="text" placeholder="Enter ID" onChange={this.handleChange}/>
+                </Form.Group>
+                <FancyButton label="Log in" type="submit"/>
+              </MainFormLayout>
+          </Form>
+        </FullScreenLayout>
       </Layout>
     );
   }
