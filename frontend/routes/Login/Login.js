@@ -18,10 +18,10 @@ class Login extends Component {
   };
 
   handleChange = (event) => {
+    console.log(event)
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
-
     this.setState({
       [name]: value
     });
@@ -29,6 +29,7 @@ class Login extends Component {
 
   handleSubmit = async (event) => {
     event.preventDefault();
+    console.log('this.state')
     try {
       this.setState({ isLoading: true, error: null });
       const resp = await fetch('api/login', {
@@ -77,8 +78,20 @@ class Login extends Component {
               <Form.Group >
                 <FormIcon url="https://proxy.duckduckgo.com/ip3/www.makerhq.org.ico" />
                 <Form.Label className={s.headerText}>Welcome to OneLogOn</Form.Label> <br/>
-                <Form.Control className={s.textfield} type="text" placeholder="username" onChange={this.handleChange}/>
-                <Form.Control className={s.textfield} type="text" placeholder="password" onChange={this.handleChange}/>
+                <Form.Control
+                  className={s.textfield}
+                  type="text"
+                  placeholder="username"
+                  name="username"
+                  onChange={this.handleChange}
+                />
+                <Form.Control
+                  className={s.textfield}
+                  type="text"
+                  placeholder="password"
+                  name="password"
+                  onChange={this.handleChange}
+                />
               </Form.Group>
               <FancyButton label={buttonText} type="submit"/>
             </MainFormLayout>
