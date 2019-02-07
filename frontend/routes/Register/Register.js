@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
+import Form from 'react-bootstrap/Form';
 import Layout from 'common/Layout/Layout';
+import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
+import FancyButton from 'common/FancyButton/FancyButton';
+import FormIcon from 'common/FormIcon/FormIcon';
 import fetch from 'utils/fetch';
 import s from './Register.css';
 
@@ -81,32 +85,17 @@ class Register extends Component {
         <div className={s.root}>
           <h1>Register Route</h1>
           {errorMessage}
-          <form className={s.form} onSubmit={this.handleSubmit}>
-            <label htmlFor="username">
-              <input
-                className={s.field}
-                name="username"
-                value={username}
-                placeholder="username"
-                onChange={this.handleChange}
-              />
-            </label>
-            <label htmlFor="password">
-              <input
-                className={s.field}
-                name="password"
-                type="password"
-                value={password}
-                placeholder="password"
-                onChange={this.handleChange}
-              />
-            </label>
-            <div className={s.buttonContainer}>
-              <button type="submit" className={s.button}>
-                {buttonText}
-              </button>
-            </div>
-          </form>
+          <Form onSubmit={this.handleSubmit}>
+            <MainFormLayout>
+            <Form.Group >
+              <FormIcon url="https://proxy.duckduckgo.com/ip3/www.makerhq.org.ico" />
+              <Form.Label className={s.headerText}>Welcome to OneLogOn</Form.Label> <br/>
+              <Form.Control className={s.textfield} type="text" placeholder="username" onChange={this.handleChange}/>
+              <Form.Control className={s.textfield} type="text" placeholder="password" onChange={this.handleChange}/>
+            </Form.Group>
+            <FancyButton label={buttonText} type="submit"/>
+            </MainFormLayout>
+          </Form>
         </div>
       </Layout>
     );
