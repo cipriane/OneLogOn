@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router';
 import Layout from 'common/Layout/Layout';
+import fetch from 'utils/fetch';
 import s from './Register.css';
 
-export default class Login extends Component {
+class Register extends Component {
   state = {
     username: '',
     password: '',
@@ -26,6 +28,10 @@ export default class Login extends Component {
       this.setState({ isLoading: true, error: null });
       const resp = await fetch('api/register', {
         method: 'POST',
+        body: JSON.stringify({
+          username: this.state.username,
+          password: this.state.password,
+        }),
       });
 
       if (!resp.ok) {
@@ -33,7 +39,22 @@ export default class Login extends Component {
       }
 
       const data = await resp.json();
-      this.setState({ isLoading: false });
+
+      const loginResp = await login('api/login', {
+        method: 'POST',
+        body: JSON.stringify({
+          username: this.state.username,
+          password: this.state.password,
+        }),
+      });
+
+      if (!loginResp.ok) {
+        this.props.history.push('/login');
+      }
+
+      const loginData = await resp.json();
+      login(loginData);
+      this.props.history.push('/dashboard');
     }
     catch(err) {
       this.setState({
@@ -91,3 +112,5 @@ export default class Login extends Component {
     );
   }
 }
+
+export default withRouter(Register);

@@ -3,7 +3,7 @@ import { withRouter } from 'react-router';
 import logout from 'utils/logout';
 
 class Logout extends Component {
-  onComponentDidMount() {
+  componentDidMount() {
     logout();
     this.props.history.push('/');
   }
