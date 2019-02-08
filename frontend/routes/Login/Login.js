@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import Layout from 'common/Layout/Layout';
+import FullScreenLayout from 'common/FullScreenLayout/FullScreenLayout';
 import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import FancyButton from 'common/FancyButton/FancyButton';
 import Form from 'react-bootstrap/Form';
@@ -70,33 +71,33 @@ class Login extends Component {
 
     return (
       <Layout>
-        <div className={s.root}>
-          <h1>Login Route</h1>
-          {errorMessage}
-          <Form className={s.form} onSubmit={this.handleSubmit}>
-            <MainFormLayout>
-              <Form.Group >
-                <FormIcon url="https://proxy.duckduckgo.com/ip3/www.makerhq.org.ico" />
-                <Form.Label className={s.headerText}>Welcome to OneLogOn</Form.Label> <br/>
-                <Form.Control
-                  className={s.textfield}
-                  type="text"
-                  placeholder="username"
-                  name="username"
-                  onChange={this.handleChange}
-                />
-                <Form.Control
-                  className={s.textfield}
-                  type="text"
-                  placeholder="password"
-                  name="password"
-                  onChange={this.handleChange}
-                />
-              </Form.Group>
-              <FancyButton label={buttonText} type="submit"/>
-            </MainFormLayout>
-          </Form>
-        </div>
+        <FullScreenLayout>
+            <h1>Login Route</h1>
+            {errorMessage}
+            <Form className={s.form} onSubmit={this.handleSubmit}>
+              <MainFormLayout>
+                <Form.Group >
+                  <FormIcon url="https://proxy.duckduckgo.com/ip3/www.makerhq.org.ico" />
+                  <Form.Label className={s.headerText}>Welcome to OneLogOn</Form.Label> <br/>
+                  <Form.Control
+                    className={s.textfield}
+                    type="text"
+                    placeholder="username"
+                    name="username"
+                    onChange={this.handleChange}
+                  />
+                  <Form.Control
+                    className={s.textfield}
+                    type="text"
+                    placeholder="password"
+                    name="password"
+                    onChange={this.handleChange}
+                  />
+                </Form.Group>
+                <FancyButton label={buttonText} type="submit"/>
+              </MainFormLayout>
+            </Form>
+        </FullScreenLayout>
       </Layout>
     );
   }
