@@ -23,7 +23,7 @@ export default class NoMatch extends Component {
 					<Form onSubmit={this.handleSubmit}>
 						<MainFormLayout>
 							<Form.Group >
-								<h1 className={s.test}>
+								<h1 className={s.padding}>
 									Page Not Found
 								</h1>
 								<FancyButton 
