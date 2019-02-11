@@ -2,12 +2,7 @@
   font-size: 18px;
 }
 
-.test {
+.padding {
 	padding-top: 10%;
 	padding-bottom: 8%;
-}
-
-.padding {
-	padding: 100%;
-	background: red;
 }
