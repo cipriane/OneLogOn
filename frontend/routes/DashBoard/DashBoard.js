@@ -4,11 +4,13 @@ import dashboardRoutes from 'routes/routes';
 import s from './DashBoard.css';
 
 export default class DashBoard extends Component {
-  state = {
-    mainContent: dashboardRoutes[0].component,
-    sideContent: null,
-    currentPageId: 0
-  };
+  constructor(props){
+    super(props);
+    this.state={
+      mainContent: dashboardRoutes[0].component,
+      userName: 'Admin'
+    };
+  }
 
   openSideMenu = () => {
     document.getElementById('sideMenu').style.width = '250px';
@@ -18,6 +20,12 @@ export default class DashBoard extends Component {
   closeSideMenu = () => {
     document.getElementById('sideMenu').style.width = '0';
     document.getElementById('main').style.marginLeft = '0';
+  }
+
+  renderPage = (id) => {
+    this.setState({
+      mainContent: dashboardRoutes[id].component
+    });
   }
 
   render() {
@@ -35,14 +43,16 @@ export default class DashBoard extends Component {
           </span>
 
           <div className={s.navbarNav}>
-            <p className={s.detail}>Signed in as: <span className={s.name}>Admin</span> </p>
+            <p className={s.detail}>Signed in as: <span className={s.name}>{this.state.userName}</span> </p>
           </div>
         </nav>
 
         <div id="sideMenu" className={s.sideNav}>
           <a href="#" className={s.btnClose} onClick={this.closeSideMenu}>&times;</a>
           {dashboardRoutes.map((route) => {
-            return <a key={route.id} href={route.path}>{route.name}</a>
+            return <Button variant="outline-primary" key={route.id} onClick={() => this.renderPage(route.id)} className={s.sideNavItem}>
+              {route.name}
+            </Button>
           })}
         </div>
 
