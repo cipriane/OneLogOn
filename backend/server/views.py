@@ -7,11 +7,15 @@ from backend.server.models import Admin
 from backend.server.models import Company
 from backend.server.models import SignIns
 from backend.server.models import Visitors
+from backend.server.models import VisitorReason
+from backend.server.models import SignInVisitorReason
 from backend.server.serializers import StudentSerializer
 from backend.server.serializers import AdminSerializer
 from backend.server.serializers import CompanySerializer
 from backend.server.serializers import SignInsSerializer
 from backend.server.serializers import VisitorsSerializer
+from backend.server.serializers import VisitorReasonSerializer
+from backend.server.serializers import SignInVisitorReasonSerializer
 
 def index(request):
     return render(request, 'index.html')
@@ -44,3 +48,11 @@ class SignInsListCreate(generics.ListCreateAPIView):
 class VisitorsListCreate(generics.ListCreateAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
+
+class VisitorReasonListCreate(generics.ListCreateAPIView):
+    queryset = VisitorReason.objects.all()
+    serializer_class = VisitorReasonSerializer
+
+class SignInVisitorReasonListCreate(generics.ListCreateAPIView):
+    queryset = SignInVisitorReason.objects.all()
+    serializer_class = SignInVisitorReasonSerializer

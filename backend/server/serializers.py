@@ -4,6 +4,8 @@ from backend.server.models import Admin
 from backend.server.models import Company
 from backend.server.models import SignIns
 from backend.server.models import Visitors
+from backend.server.models import VisitorReason
+from backend.server.models import SignInVisitorReason
 
 
 class StudentSerializer(serializers.ModelSerializer):
@@ -29,4 +31,14 @@ class SignInsSerializer(serializers.ModelSerializer):
 class VisitorsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Visitors
+        fields ='__all__'
+
+class VisitorReasonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VisitorReason
+        fields ='__all__'
+
+class SignInVisitorReasonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SignInVisitorReason
         fields ='__all__'
