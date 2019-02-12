@@ -9,6 +9,11 @@ import Register from 'routes/Register/Register';
 import NoMatch from 'routes/NoMatch/NoMatch';
 import DashBoard from 'routes/DashBoard/DashBoard';
 
+// temporary will be rendered by dashboard
+import Settings from 'routes/Settings/Settings';
+import Statistics from 'routes/Statistics/Statistics';
+import ManageUsers from 'routes/ManageUsers/ManageUsers';
+
 export default class App extends Component {
   render() {
     return (
@@ -21,6 +26,9 @@ export default class App extends Component {
           <Route exact path='/register' component={Register} />
           <Route exact path='/ReduxExample' component={ReduxExample} />
           <Route exact path='/DashBoard' component={DashBoard} />
+          <Route exact path='/Settings' component={Settings} />
+          <Route exact path='/Statistics' component={Statistics} />
+          <Route exact path='/ManageUsers' component={ManageUsers} />
           <Route component={NoMatch}/>
         </Switch>
       </BrowserRouter>
