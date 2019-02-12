@@ -19,11 +19,6 @@
   font-size: 17px;
 }
 
-.navbar a:hover {
-  background-color: #ddd;
-  color: #000;
-}
-
 .navbarNav {
   float: right;
   padding: 16px 16px;
@@ -51,17 +46,20 @@
   transition: 0.5s;
 }
 
-.sideNav a {
-  padding: 10px 10px 10px 30px;
+.sideNav .sideNavItem {
   text-decoration: none;
   font-size: 22px;
-  color: #ccc;
-  display: block;
   transition: 0.3s;
+  width: 100%;
+  color: #fff;
+  padding: 1.5rem;
+  transition: .4s ease all;
+  border: 0px;
 }
 
-.sideNav a:hover {
-  color: #fff;
+.sideNav .sideNavItem:hover {
+  background-color: #515052;
+  color: #0e8cff;
 }
 
 .sideNav .btnClose {
@@ -70,6 +68,12 @@
   right: 22px;
   font-size: 36px;
   margin-left: 50px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.sideNav .btnClose:hover {
+  color: #0e8cff;
 }
 
 #main {
