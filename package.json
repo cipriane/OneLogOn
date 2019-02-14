@@ -65,5 +65,8 @@
   },
   "dependencies": {
     "react-bootstrap": "^1.0.0-beta.5"
+  },
+  "resolutions": {
+    "ajv": "6.8.1"
   }
 }
