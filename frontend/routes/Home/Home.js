@@ -34,7 +34,7 @@ export default class Home extends Component {
                 <Form.Group >
                   <FormIcon url="https://proxy.duckduckgo.com/ip3/www.makerhq.org.ico" />
                   <Form.Label className={s.headerText}>Welcome to OneLogOn</Form.Label> <br/>
-                  <Form.Control className={s.textfield} type="text" placeholder="Enter ID" onChange={this.handleChange}/>
+                  <Form.Control autoFocus className={s.textfield} type="text" placeholder="Enter ID" onChange={this.handleChange}/>
                 </Form.Group>
                 <FancyButton label="Log in" type="submit"/>
               </MainFormLayout>
