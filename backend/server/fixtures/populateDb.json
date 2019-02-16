@@ -19,4 +19,18 @@
             "updated_at": "2019-01-22T00:00:00Z"
         }
     }
+
+    {
+        "model": "server.company",
+        "pk": 1,
+        "fields": {
+            "company_name": "Azc",
+            "company_address": "6000 J street",
+            "company_city":"Sacramento",
+            "company_zip": "95678",
+            "company_state": "CA"
+        }
+    }
+
+
 ]

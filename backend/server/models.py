@@ -11,6 +11,7 @@ class Student(models.Model):
 class Company(models.Model):
     company_name = models.CharField(max_length=30)
     company_address = models.CharField(max_length=50)
+    company_city = models.CharField(max_length=30)
     company_zip = models.CharField(max_length=15)
     company_state = models.CharField(max_length=2)
 
