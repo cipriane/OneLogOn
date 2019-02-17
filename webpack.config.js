@@ -35,6 +35,14 @@ module.exports = {
               localIdentName: '[local]--[hash:base64:5]',
             },
           },
+          {
+            loader: 'postcss-loader',
+            options: {
+              config: {
+                path: './tools/postcss.config.js',
+              },
+            },
+          },
         ],
       },
       {
