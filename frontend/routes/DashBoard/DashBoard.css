@@ -1,0 +1,90 @@
+.root {
+  font-family: "Arial", Serif;
+  overflow-x: hidden;
+}
+
+.navbar {
+  background-color: #660033;
+  overflow: hidden;
+  height: 63px;
+}
+
+.navbar .burger {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.navbarNav {
+  float: right;
+  padding: 16px 16px;
+}
+
+.navbarNav .detail {
+  color: lightgray;
+}
+
+.navbarNav .name {
+  color: #fff;
+}
+
+.sideNav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  opacity: 0.9;
+  overflow-x: hidden;
+  padding-top: 60px;
+  transition: 0.5s;
+}
+
+.sideNav .sideNavItem {
+  text-decoration: none;
+  font-size: 22px;
+  transition: 0.3s;
+  width: 100%;
+  color: #fff;
+  padding: 1.5rem;
+  transition: .4s ease all;
+  border: 0px;
+}
+
+.sideNav .sideNavItem:hover {
+  background-color: #515052;
+  color: #0e8cff;
+}
+
+.sideNav .btnClose {
+  position: absolute;
+  top: 0;
+  right: 22px;
+  font-size: 36px;
+  margin-left: 50px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.sideNav .btnClose:hover {
+  color: #0e8cff;
+}
+
+#main {
+  transition: margin-left 0.5s;
+  padding: 20px;
+  overflow: hidden;
+  width: 100%;
+}
+
+@media(max-width:568px) {
+  .navbarNav {
+    display: none
+  }
+}
