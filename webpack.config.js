@@ -18,7 +18,7 @@ module.exports = {
 
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(js|jsx|mjs)$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
@@ -33,6 +33,26 @@ module.exports = {
             options: {
               modules: true,
               localIdentName: '[local]--[hash:base64:5]',
+            },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              config: {
+                path: './tools/postcss.config.js',
+              },
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(bmp|gif|jpg|jpeg|png|svg)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              publicPath: 'static',
             },
           },
         ],

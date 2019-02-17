@@ -1,3 +1,5 @@
+import isValidJWT from 'utils/isValidJWT';
+
 function myFetch(url, options) {
   const jwt = localStorage.getItem('jwt');
   const defaults = {
@@ -7,7 +9,7 @@ function myFetch(url, options) {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      Authorization: jwt ? `JWT ${jwt}` : null,
+      Authorization: isValidJWT(jwt) ? `JWT ${jwt}` : null,
     },
   };
 
