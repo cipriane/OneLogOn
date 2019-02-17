@@ -9,7 +9,7 @@ import FormIcon from 'common/FormIcon/FormIcon';
 import s from './Login.css';
 import fetch from 'utils/fetch';
 import login from 'utils/login';
-
+import logo from 'assets/logo-full.png';
 class Login extends Component {
   state = {
     username: '',
@@ -74,7 +74,7 @@ class Login extends Component {
           <Form className={s.form} onSubmit={this.handleSubmit}>
             <MainFormLayout>
               <Form.Group>
-                <FormIcon url="https://proxy.duckduckgo.com/ip3/www.makerhq.org.ico" />
+                <FormIcon url={logo} />
                 <Form.Label className={s.headerText}>Welcome to OneLogOn</Form.Label> <br />
                 <Form.Control
                   className={s.textfield}

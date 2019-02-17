@@ -7,7 +7,7 @@ import FancyButton from 'common/FancyButton/FancyButton';
 import FormIcon from 'common/FormIcon/FormIcon';
 import Layout from 'common/Layout/Layout';
 import s from './Home.css';
-import logo from 'assets/Asset_1.png';
+import logo from 'assets/logo-full.png';
 
 export default class Home extends Component {
   state = {
