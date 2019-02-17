@@ -7,6 +7,7 @@ import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import FancyButton from 'common/FancyButton/FancyButton';
 import FormIcon from 'common/FormIcon/FormIcon';
 import fetch from 'utils/fetch';
+import login from 'utils/login';
 import s from './Register.css';
 
 class Register extends Component {
@@ -17,17 +18,17 @@ class Register extends Component {
     isLoading: false,
   };
 
-  handleChange = (event) => {
+  handleChange = event => {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
 
     this.setState({
-      [name]: value
+      [name]: value,
     });
   };
 
-  handleSubmit = async (event) => {
+  handleSubmit = async event => {
     event.preventDefault();
     try {
       this.setState({ isLoading: true, error: null });
@@ -45,7 +46,7 @@ class Register extends Component {
 
       const data = await resp.json();
 
-      const loginResp = await login('api/login', {
+      const loginResp = await fetch('api/login', {
         method: 'POST',
         body: JSON.stringify({
           username: this.state.username,
@@ -57,11 +58,10 @@ class Register extends Component {
         this.props.history.push('/login');
       }
 
-      const loginData = await resp.json();
+      const loginData = await loginResp.json();
       login(loginData);
       this.props.history.push('/dashboard');
-    }
-    catch(err) {
+    } catch (err) {
       this.setState({
         error: err.toString(),
         isLoading: false,
@@ -88,25 +88,25 @@ class Register extends Component {
           {errorMessage}
           <Form onSubmit={this.handleSubmit}>
             <MainFormLayout>
-            <Form.Group >
-              <FormIcon url="https://proxy.duckduckgo.com/ip3/www.makerhq.org.ico" />
-              <Form.Label className={s.headerText}>Welcome to OneLogOn</Form.Label> <br/>
-              <Form.Control
-                className={s.textfield}
-                type="text"
-                placeholder="username"
-                name="username"
-                onChange={this.handleChange}
-              />
-              <Form.Control
-                className={s.textfield}
-                type="text"
-                placeholder="password"
-                name="password"
-                onChange={this.handleChange}
-              />
-            </Form.Group>
-            <FancyButton label={buttonText} type="submit"/>
+              <Form.Group>
+                <FormIcon url="https://proxy.duckduckgo.com/ip3/www.makerhq.org.ico" />
+                <Form.Label className={s.headerText}>Welcome to OneLogOn</Form.Label> <br />
+                <Form.Control
+                  className={s.textfield}
+                  type="text"
+                  placeholder="username"
+                  name="username"
+                  onChange={this.handleChange}
+                />
+                <Form.Control
+                  className={s.textfield}
+                  type="password"
+                  placeholder="password"
+                  name="password"
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+              <FancyButton label={buttonText} type="submit" />
             </MainFormLayout>
           </Form>
         </FullScreenLayout>

@@ -11,24 +11,28 @@ class Student(models.Model):
 class Company(models.Model):
     company_name = models.CharField(max_length=30)
     company_address = models.CharField(max_length=50)
+    company_city = models.CharField(max_length=30)
     company_zip = models.CharField(max_length=15)
     company_state = models.CharField(max_length=2)
 
 class Visitors(models.Model):
-    company_id = models.ForeignKey(Company, on_delete=models.CASCADE)
+    company_id = models.ForeignKey(Company, on_delete=models.CASCADE,verbose_name="compamy ID")
     visitor_id = models.CharField(max_length=10)
     first_name = models.CharField(max_length=30, null=True)
     last_name = models.CharField(max_length=30,null=True)
-    is_Employee = models.BooleanField(default=False)
+    is_employee = models.BooleanField(default=False)
     waiver_signed = models.BooleanField(default=False)
 
-class SignIns(models.Model):
+class ListReasons(models.Model):
+    company_sponsoring = models.ForeignKey(Company, on_delete=models.CASCADE)
+    visit_reason = models.CharField(max_length=50)
+
+class CheckIns(models.Model):
     visitor_id = models.IntegerField()
     user_id = models.CharField(max_length=30)
-    sign_in = models.DateTimeField()
-    sign_out = models.DateTimeField()
-    visit_reason = models.ForeignKey(Visitors, on_delete=models.CASCADE)
-
+    check_in = models.DateTimeField()
+    check_out = models.DateTimeField()
+    visit_reason = models.ForeignKey(ListReasons, on_delete=models.CASCADE)
 
 class Admin(models.Model):
     company_id = models.ForeignKey(Company,on_delete=models.CASCADE)
@@ -38,11 +42,16 @@ class Admin(models.Model):
     last_name = models.CharField(max_length=30)
     role = models.CharField(max_length=10)
 
+class TimeSheet(models.Model):
+    admin_id = models.ForeignKey (Admin, on_delete=models.CASCADE)
+    time_in = models.DateTimeField()
+    time_out = models.DateTimeField()
+
 class VisitorReason(models.Model):
     company_id = models.ForeignKey(Company, on_delete=models.CASCADE)
     visit_reason = models.CharField(max_length=30)
     is_active = models.BooleanField(default=False)
 
-class SignInVisitorReason(models.Model):
-    signin_id = models.ForeignKey(SignIns, on_delete=models.CASCADE)
+class CheckInVisitorReason(models.Model):
+    CheckIn_id = models.ForeignKey(CheckIns, on_delete=models.CASCADE)
     visitor_reason_id = models.ForeignKey(VisitorReason, on_delete=models.CASCADE)
