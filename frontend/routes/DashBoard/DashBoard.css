@@ -1,5 +1,5 @@
 .root {
-  font-family: "Arial", Serif;
+  font-family: 'Arial', Serif;
   overflow-x: hidden;
 }
 
@@ -53,7 +53,7 @@
   width: 100%;
   color: #fff;
   padding: 1.5rem;
-  transition: .4s ease all;
+  transition: 0.4s ease all;
   border: 0px;
 }
 
@@ -83,8 +83,8 @@
   width: 100%;
 }
 
-@media(max-width:568px) {
+@media (max-width: 568px) {
   .navbarNav {
-    display: none
+    display: none;
   }
 }

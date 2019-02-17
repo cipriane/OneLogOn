@@ -20,7 +20,7 @@
     }
   },
   "lint-staged": {
-    "./frontend/*.{js,json,css,md}": [
+    "./frontend/**/*.{js,json,css,md}": [
       "prettier --write",
       "git add"
     ]

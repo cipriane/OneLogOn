@@ -19,8 +19,7 @@ export default class ListStudents extends Component {
         data,
         isLoading: false,
       });
-    }
-    catch (err) {
+    } catch (err) {
       console.error(err);
       this.setState({
         isLoading: false,
@@ -31,25 +30,20 @@ export default class ListStudents extends Component {
   }
 
   render() {
-    const {error, isLoading, data} = this.state;
+    const { error, isLoading, data } = this.state;
 
     if (error) {
-      return (
-        <div>Error loading students.</div>
-      );
-    }
-    else if (isLoading) {
-      return (
-        <div>Loading Students...</div>
-      );
+      return <div>Error loading students.</div>;
+    } else if (isLoading) {
+      return <div>Loading Students...</div>;
     }
     return (
       <React.Fragment>
-        {data.map((student) =>
+        {data.map(student => (
           <div key={student.id} className={s.row}>
             {student.name}
           </div>
-        )}
+        ))}
       </React.Fragment>
     );
   }

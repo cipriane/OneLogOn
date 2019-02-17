@@ -5,7 +5,7 @@ import { combineReducers } from 'redux';
 // store looks like
 const initialState = {
   count: 0,
-}
+};
 
 const counter = (state = 0, action) => {
   switch (action.type) {
@@ -14,7 +14,7 @@ const counter = (state = 0, action) => {
     default:
       return state;
   }
-}
+};
 const rootReducer = combineReducers({
   count: counter,
 });
