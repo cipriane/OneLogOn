@@ -8,10 +8,7 @@ class Logout extends Component {
     this.props.history.push('/');
   }
   render() {
-
-    return (
-      <div>Logging out...</div>
-    );
+    return <div>Logging out...</div>;
   }
 }
 

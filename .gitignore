@@ -17,7 +17,7 @@ yarn-error.log*
 
 # Editors and IDEs
 .idea
-.vscode/*
+.vscode/
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
@@ -33,7 +33,7 @@ webpack-stats.json
 *.pyc
 __pycache__/
 local_settings.py
-db.sqlite3
+db.sqlite3*
 media
 
 ### Django.Python Stack ###
