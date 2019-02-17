@@ -99,7 +99,7 @@ class Register extends Component {
                 />
                 <Form.Control
                   className={s.textfield}
-                  type="text"
+                  type="password"
                   placeholder="password"
                   name="password"
                   onChange={this.handleChange}
