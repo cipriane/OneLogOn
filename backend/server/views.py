@@ -3,6 +3,12 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from backend.server.serializers import UserSerializer
+from django.contrib.auth.models import User
+
 from backend.server.models import Admin
 from backend.server.models import Student
 from backend.server.models import Company
@@ -69,3 +75,15 @@ class CheckInVisitorReasonListCreate(generics.ListCreateAPIView):
 class ListReasonsListCreate(generics.ListCreateAPIView):
     queryset = ListReasons.objects.all()
     serializer_class = ListReasonsSerializer
+
+class UserCreate(APIView):
+    permission_classes = []
+    """
+    Creates the user.
+    """
+    def post(self, request, format='json'):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            if user:
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
