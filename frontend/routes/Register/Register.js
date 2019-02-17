@@ -8,6 +8,7 @@ import FancyButton from 'common/FancyButton/FancyButton';
 import FormIcon from 'common/FormIcon/FormIcon';
 import fetch from 'utils/fetch';
 import login from 'utils/login';
+import logo from 'assets/logo-full.png';
 import s from './Register.css';
 
 class Register extends Component {
@@ -89,7 +90,7 @@ class Register extends Component {
           <Form onSubmit={this.handleSubmit}>
             <MainFormLayout>
               <Form.Group>
-                <FormIcon url="https://proxy.duckduckgo.com/ip3/www.makerhq.org.ico" />
+                <FormIcon url={logo} />
                 <Form.Label className={s.headerText}>Welcome to OneLogOn</Form.Label> <br />
                 <Form.Control
                   className={s.textfield}
