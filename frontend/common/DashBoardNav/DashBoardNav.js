@@ -26,6 +26,6 @@ export default class DashBoardNav extends Component {
           </li>
         </ul>
       </nav>
-    )
+    );
   }
 }
