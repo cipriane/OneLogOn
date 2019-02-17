@@ -1,11 +1,9 @@
 .root {
   font-family: 'Arial', Serif;
-  overflow-x: hidden;
 }
 
 .navbar {
   background-color: #660033;
-  overflow: hidden;
   height: 63px;
 }
 
@@ -21,15 +19,24 @@
 
 .navbarNav {
   float: right;
-  padding: 16px 16px;
+  padding-top: 13px;
+  margin-right: 10px;
 }
 
-.navbarNav .detail {
-  color: lightgray;
+.navbarNav .dropToggle {
+  background-color: transparent;
+  border-color: transparent;
+  margin-right: 15px;
+  color: white;
 }
 
-.navbarNav .name {
-  color: #fff;
+.navbarNav .dropToggle:active {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.navbarNav .profileImage {
+  padding-right: 8px;
 }
 
 .sideNav {
@@ -63,6 +70,8 @@
 }
 
 .sideNav .btnClose {
+  background: transparent;
+  border-color: transparent;
   position: absolute;
   top: 0;
   right: 22px;
@@ -74,10 +83,10 @@
 
 .sideNav .btnClose:hover {
   color: #0e8cff;
+  cursor: pointer;
 }
 
 #main {
-  transition: margin-left 0.5s;
   padding: 20px;
   overflow: hidden;
   width: 100%;
