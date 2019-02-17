@@ -7,6 +7,7 @@ import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import FancyButton from 'common/FancyButton/FancyButton';
 import FormIcon from 'common/FormIcon/FormIcon';
 import fetch from 'utils/fetch';
+import login from 'utils/login';
 import s from './Register.css';
 
 class Register extends Component {
@@ -45,7 +46,7 @@ class Register extends Component {
 
       const data = await resp.json();
 
-      const loginResp = await login('api/login', {
+      const loginResp = await fetch('api/login', {
         method: 'POST',
         body: JSON.stringify({
           username: this.state.username,
@@ -57,7 +58,7 @@ class Register extends Component {
         this.props.history.push('/login');
       }
 
-      const loginData = await resp.json();
+      const loginData = await loginResp.json();
       login(loginData);
       this.props.history.push('/dashboard');
     } catch (err) {

@@ -19,7 +19,6 @@ class Login extends Component {
   };
 
   handleChange = event => {
-    console.log(event);
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
@@ -30,7 +29,6 @@ class Login extends Component {
 
   handleSubmit = async event => {
     event.preventDefault();
-    console.log('this.state');
     try {
       this.setState({ isLoading: true, error: null });
       const resp = await fetch('api/login', {
