@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 import Navigation from '../../common/Navigation/Navigation';
 import './Header.css';
@@ -18,9 +18,9 @@ export default class Header extends Component {
             />
             {' OneLogOn'}
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse className="justify-content-end">
-            <Navigation/>
+            <Navigation />
           </Navbar.Collapse>
         </Navbar>
       </div>

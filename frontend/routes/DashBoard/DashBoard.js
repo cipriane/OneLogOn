@@ -12,6 +12,6 @@ export default class DashBoard extends Component {
         <DashBoardNav />
         <DashBoardView />
       </div>
-    )
+    );
   }
 }
