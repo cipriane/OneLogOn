@@ -2,10 +2,12 @@ from rest_framework import serializers
 from backend.server.models import Student
 from backend.server.models import Admin
 from backend.server.models import Company
-from backend.server.models import SignIns
+from backend.server.models import CheckIns
+from backend.server.models import TimeSheet
 from backend.server.models import Visitors
+from backend.server.models import ListReasons
 from backend.server.models import VisitorReason
-from backend.server.models import SignInVisitorReason
+from backend.server.models import CheckInVisitorReason
 
 
 class StudentSerializer(serializers.ModelSerializer):
@@ -23,9 +25,14 @@ class AdminSerializer(serializers.ModelSerializer):
         model = Admin
         fields = '__all__'
 
-class SignInsSerializer(serializers.ModelSerializer):
+class CheckInsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = SignIns
+        model = CheckIns
+        fields = '__all__'
+
+class TimeSheetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TimeSheet
         fields = '__all__'
 
 class VisitorsSerializer(serializers.ModelSerializer):
@@ -38,7 +45,12 @@ class VisitorReasonSerializer(serializers.ModelSerializer):
         model = VisitorReason
         fields ='__all__'
 
-class SignInVisitorReasonSerializer(serializers.ModelSerializer):
+class CheckInVisitorReasonSerializer(serializers.ModelSerializer):
     class Meta:
-        model = SignInVisitorReason
+        model = CheckInVisitorReason
+        fields ='__all__'
+
+class ListReasonsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ListReasons
         fields ='__all__'
