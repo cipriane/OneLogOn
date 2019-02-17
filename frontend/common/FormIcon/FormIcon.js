@@ -7,6 +7,6 @@ export default class FormIcon extends Component {
       <div>
         <img src={this.props.url} className={s.root} alt="Form Icon" />
       </div>
-    )
+    );
   }
 }

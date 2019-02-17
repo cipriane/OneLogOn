@@ -1,0 +1,32 @@
+.root {
+  background-color: #333333;
+  display: flex;
+  position: fixed;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.root a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.logo {
+  font-size: 26px;
+  width: 240px;
+  text-align: center;
+  display: block;
+}
+
+.logo span {
+  color: #0e8cff;
+}
+
+.logForm {
+  margin-right: 1rem;
+}
