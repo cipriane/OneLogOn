@@ -7,6 +7,7 @@ import FancyButton from 'common/FancyButton/FancyButton';
 import FormIcon from 'common/FormIcon/FormIcon';
 import Layout from 'common/Layout/Layout';
 import s from './Home.css';
+import logo from 'assets/Asset_1.png';
 
 export default class Home extends Component {
   state = {
@@ -32,7 +33,7 @@ export default class Home extends Component {
           <Form onSubmit={this.handleSubmit}>
             <MainFormLayout>
               <Form.Group>
-                <FormIcon url="https://proxy.duckduckgo.com/ip3/www.makerhq.org.ico" />
+                <FormIcon url={logo} />
                 <Form.Label className={s.headerText}>Welcome to OneLogOn</Form.Label> <br />
                 <Form.Control
                   autoFocus
@@ -42,7 +43,7 @@ export default class Home extends Component {
                   onChange={this.handleChange}
                 />
               </Form.Group>
-              <FancyButton label="Log in" type="submit" />
+              <FancyButton label="Check in" type="submit" />
             </MainFormLayout>
           </Form>
         </FullScreenLayout>
