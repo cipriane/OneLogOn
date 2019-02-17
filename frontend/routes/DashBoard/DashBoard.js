@@ -3,6 +3,7 @@ import { Button, Dropdown } from 'react-bootstrap';
 import dashboardRoutes from 'routes/routes';
 import userlogo from 'assets/user.png';
 import s from './DashBoard.css';
+import logout from 'utils/logout';
 
 export default class DashBoard extends Component {
   constructor(props) {
@@ -29,6 +30,11 @@ export default class DashBoard extends Component {
     });
   };
 
+  handleLogout = () => {
+    logout();
+    this.props.history.push('/');
+  };
+
   render() {
     return (
       <div className={s.root}>
@@ -44,9 +50,6 @@ export default class DashBoard extends Component {
           </span>
 
           <div className={s.navbarNav}>
-            {/* <p className={s.detail}>
-              Signed in as: <span className={s.name}>{this.state.userName}</span>{' '}
-            </p> */}
             <Dropdown>
               <Dropdown.Toggle variant="link" id="dropdown-basic" className={s.dropToggle}>
                 <img className={s.profileImage} src={userlogo} alt="user pic" />
@@ -54,7 +57,7 @@ export default class DashBoard extends Component {
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                <Dropdown.Item href="">Logout</Dropdown.Item>
+                <Dropdown.Item onClick={this.handleLogout}>Logout</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </div>
