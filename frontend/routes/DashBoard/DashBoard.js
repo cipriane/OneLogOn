@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import { Button, Dropdown } from 'react-bootstrap';
-import dashboardRoutes from 'routes/routes';
+import { Link } from 'react-router-dom';
+import dashboardRoutes from 'routes/DashBoard/routes';
 import userlogo from 'assets/user.png';
 import s from './DashBoard.css';
-import logout from 'utils/logout';
 
 export default class DashBoard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mainContent: dashboardRoutes[0].component,
       username: 'Admin',
     };
   }
@@ -22,17 +21,6 @@ export default class DashBoard extends Component {
   closeSideMenu = () => {
     document.getElementById('sideMenu').style.width = '0';
     document.getElementById('main').style.marginLeft = '0';
-  };
-
-  renderPage = id => {
-    this.setState({
-      mainContent: dashboardRoutes[id].component,
-    });
-  };
-
-  handleLogout = () => {
-    logout();
-    this.props.history.push('/');
   };
 
   render() {
@@ -57,7 +45,9 @@ export default class DashBoard extends Component {
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                <Dropdown.Item onClick={this.handleLogout}>Logout</Dropdown.Item>
+                <Dropdown.Item>
+                  <Link to="/logout">Logout</Link>
+                </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </div>
@@ -69,20 +59,15 @@ export default class DashBoard extends Component {
           </button>
           {dashboardRoutes.map(route => {
             return (
-              <Button
-                variant="outline-primary"
-                key={route.id}
-                onClick={() => this.renderPage(route.id)}
-                className={s.sideNavItem}
-              >
-                {route.name}
+              <Button variant="outline-primary" key={route.id} className={s.sideNavItem}>
+                <Link to={`dashboard/${route.path}`}>{route.name}</Link>
               </Button>
             );
           })}
         </div>
 
         <div id="main" className={s.main}>
-          {<this.state.mainContent />}
+          {this.props.children}
         </div>
       </div>
     );

@@ -9,7 +9,7 @@ const Authorization = (allowedRoles, isRegsiterOrLogin = false) => {
         super(props);
 
         const user = me();
-        console.log(user);
+        // console.log(user);
         this.state = {
           name: user.name,
           role: user.role || '',

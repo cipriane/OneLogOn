@@ -46,7 +46,7 @@ media
 
 # Distribution / packaging
 .Python
-backend/server/static/*.js
+backend/server/static/*
 build/
 develop-eggs/
 dist/
