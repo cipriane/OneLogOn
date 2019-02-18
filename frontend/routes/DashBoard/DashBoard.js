@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Dropdown } from 'react-bootstrap';
-import { Link, withRouter } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import userlogo from 'assets/user.png';
 import s from './DashBoard.css';
@@ -8,11 +8,13 @@ import s from './DashBoard.css';
 import Settings from 'routes/Settings/Settings';
 import ManageUsers from 'routes/ManageUsers/ManageUsers';
 import Statistics from 'routes/Statistics/Statistics';
+import Kiosk from 'routes/Kiosk/Kiosk';
 
 const dashboardRoutes = [
   { id: 0, name: 'Settings', path: 'settings', component: Settings },
   { id: 1, name: 'ManageUsers', path: 'manage', component: ManageUsers },
   { id: 2, name: 'Statistics', path: 'statistics', component: Statistics },
+  { id: 3, name: 'Kiosk Mode', path: 'kiosk', component: Kiosk },
 ];
 
 class DashBoard extends Component {
@@ -75,11 +77,11 @@ class DashBoard extends Component {
           </button>
           {dashboardRoutes.map(route => {
             return (
-              <Link key={route.id} to={`${this.props.url}/${route.path}`}>
+              <NavLink key={route.id} to={`${this.props.url}/${route.path}`}>
                 <Button variant="outline-primary" className={s.sideNavItem}>
                   {route.name}
                 </Button>
-              </Link>
+              </NavLink>
             );
           })}
         </div>
