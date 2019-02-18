@@ -10,11 +10,6 @@ import NoMatch from 'routes/NoMatch/NoMatch';
 import DashBoard from 'routes/DashBoard/Root';
 import Authorization from 'common/Authorization/Authorization';
 
-// temporary will be rendered by dashboard
-import Settings from 'routes/Settings/Settings';
-import Statistics from 'routes/Statistics/Statistics';
-import ManageUsers from 'routes/ManageUsers/ManageUsers';
-
 // Role-based authorization
 const NotIfLoggedIn = Authorization(['None'], true);
 const Staff = Authorization(['staff', 'admin']);
@@ -35,10 +30,7 @@ export default class App extends Component {
           <Route exact path="/logout" component={Logout} />
           <Route exact path="/register" component={RegisterProtected} />
           <Route exact path="/ReduxExample" component={ReduxExample} />
-          <Route exact path="/DashBoard" component={DashBoardIsStaff} />
-          <Route exact path="/Settings" component={Settings} />
-          <Route exact path="/Statistics" component={Statistics} />
-          <Route exact path="/ManageUsers" component={ManageUsers} />
+          <Route path="/dashboard" component={DashBoardIsStaff} />
           <Route component={NoMatch} />
         </Switch>
       </BrowserRouter>

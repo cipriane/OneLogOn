@@ -1,11 +1,25 @@
 import React, { Component } from 'react';
 import { Button, Dropdown } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import dashboardRoutes from 'routes/DashBoard/routes';
+import { Link, withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import userlogo from 'assets/user.png';
 import s from './DashBoard.css';
 
-export default class DashBoard extends Component {
+import Settings from 'routes/Settings/Settings';
+import ManageUsers from 'routes/ManageUsers/ManageUsers';
+import Statistics from 'routes/Statistics/Statistics';
+
+const dashboardRoutes = [
+  { id: 0, name: 'Settings', path: 'settings', component: Settings },
+  { id: 1, name: 'ManageUsers', path: 'manage', component: ManageUsers },
+  { id: 2, name: 'Statistics', path: 'statistics', component: Statistics },
+];
+
+class DashBoard extends Component {
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -21,6 +35,10 @@ export default class DashBoard extends Component {
   closeSideMenu = () => {
     document.getElementById('sideMenu').style.width = '0';
     document.getElementById('main').style.marginLeft = '0';
+  };
+
+  handleLogout = () => {
+    this.props.history.push('/logout');
   };
 
   render() {
@@ -45,9 +63,7 @@ export default class DashBoard extends Component {
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                <Dropdown.Item>
-                  <Link to="/logout">Logout</Link>
-                </Dropdown.Item>
+                <Dropdown.Item onClick={this.handleLogout}>Logout</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </div>
@@ -59,9 +75,11 @@ export default class DashBoard extends Component {
           </button>
           {dashboardRoutes.map(route => {
             return (
-              <Button variant="outline-primary" key={route.id} className={s.sideNavItem}>
-                <Link to={`dashboard/${route.path}`}>{route.name}</Link>
-              </Button>
+              <Link key={route.id} to={`${this.props.url}/${route.path}`}>
+                <Button variant="outline-primary" className={s.sideNavItem}>
+                  {route.name}
+                </Button>
+              </Link>
             );
           })}
         </div>
@@ -73,3 +91,5 @@ export default class DashBoard extends Component {
     );
   }
 }
+
+export default withRouter(DashBoard);
