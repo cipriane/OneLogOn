@@ -7,7 +7,7 @@ import Login from 'routes/Login/Login';
 import Logout from 'routes/Logout/Logout';
 import Register from 'routes/Register/Register';
 import NoMatch from 'routes/NoMatch/NoMatch';
-import DashBoard from 'routes/DashBoard/DashBoard';
+import DashBoard from 'routes/DashBoard/Root';
 import Authorization from 'common/Authorization/Authorization';
 
 // temporary will be rendered by dashboard
