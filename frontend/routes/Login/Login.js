@@ -74,15 +74,8 @@ class Login extends Component {
         <FullScreenLayout>
           <h1>Login Route</h1>
           {errorMessage}
-          <Form
-            className={s.form}
-            noValidate
-            validated={validated}
-            onSubmit={e => this.handleSubmit(e)}
-          >
+          <Form className={s.form} validated={validated} onSubmit={e => this.handleSubmit(e)}>
             <MainFormLayout>
-              <FormIcon url={logo} />
-              <Form.Label className={s.headerText}>Welcome to OneLogOn</Form.Label><br />
               <Form.Group>
                 <FancyFormHeader text="Welcome to OneLogOn" />
                 <FancyTextField
@@ -109,7 +102,7 @@ class Login extends Component {
                 <Form.Control.Feedback type="invalid">
                   The password you entered was incorrect.
                 </Form.Control.Feedback>
-              <Form.Group />
+              </Form.Group>
               <FancyButton label={buttonText} type="submit" />
             </MainFormLayout>
           </Form>
