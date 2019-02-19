@@ -18,7 +18,7 @@ export default class WaiverPage extends Component {
         <h1>Waiver</h1>
         <div>You must sign a waiver to use the facilities.</div>
         <div>Please ask a staff member for assistance in signing a waiver.</div>
-        <FancyButton label="Ok" onClick={this.props.next} />
+        <FancyButton label="Ok" onClick={this.props.next(null)} />
       </FullScreenLayout>
     );
   }

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Form from 'react-bootstrap/Form';
+import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import FullScreenLayout from 'common/FullScreenLayout/FullScreenLayout';
+import FancyTextField from 'common/FancyTextField/FancyTextField';
 import FancyButton from 'common/FancyButton/FancyButton';
 
 export default class CheckInPage extends Component {
@@ -8,16 +11,41 @@ export default class CheckInPage extends Component {
     next: PropTypes.func.isRequired,
   };
 
-  constructor(props) {
-    super(props);
-  }
+  state = {
+    id: '',
+  };
+
+  handleChange = event => {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+    this.setState({
+      [name]: value,
+    });
+  };
 
   render() {
+    const { id } = this.state;
     return (
       <FullScreenLayout>
-        <h1>Check In Page</h1>
-        <div>Enter Your ID</div>
-        <FancyButton label="Check In" onClick={this.props.next} />
+        <Form noValidate validated onSubmit={this.props.next(id)}>
+          <MainFormLayout>
+            <Form.Group>
+              <h1>Check In Page</h1>
+              <div>Enter Your ID without the W</div>
+              <FancyTextField
+                autoFocus
+                autoComplete="off"
+                required
+                type="text"
+                placeholder="Student ID"
+                name="id"
+                onChange={this.handleChange}
+              />
+            </Form.Group>
+            <FancyButton label="Check In" type="submit" />
+          </MainFormLayout>
+        </Form>
       </FullScreenLayout>
     );
   }

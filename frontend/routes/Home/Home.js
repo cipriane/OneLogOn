@@ -32,7 +32,7 @@ export default class Home extends Component {
     return (
       <Layout>
         <FullScreenLayout>
-          <Form noValidate validated={validated} onSubmit={e => this.handleSubmit(e)}>
+          <Form noValidate validated={validated} onSubmit={this.handleSubmit}>
             <MainFormLayout>
               <Form.Group>
                 <FancyFormHeader text="Welcome to OneLogOn" />
