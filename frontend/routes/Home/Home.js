@@ -14,8 +14,9 @@ export default class Home extends Component {
     id: '',
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
+  handleSubmit = event => {
+    event.preventDefault();
+    this.setState({ validated: true });
   };
 
   handleChange = evt => {
