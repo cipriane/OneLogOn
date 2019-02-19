@@ -93,17 +93,30 @@ class Register extends Component {
                 <FancyFormHeader text="Welcome to OneLogOn" />
 
                 <FancyTextField
+                  required
+                  autoFocus
                   type="text"
                   placeholder="username"
                   name="username"
                   onChange={this.handleChange}
                 />
+
+                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">
+                  Please enter a valid Username.
+                </Form.Control.Feedback>
+
                 <FancyTextField
                   type="password"
                   placeholder="password"
                   name="password"
                   onChange={this.handleChange}
                 />
+
+                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">
+                  Please enter a valid Username.
+                </Form.Control.Feedback>
               </Form.Group>
               <FancyButton label={buttonText} type="submit" />
             </MainFormLayout>
