@@ -5,13 +5,10 @@ import Form from 'react-bootstrap/Form';
 
 export default class FancyTextField extends React.Component {
   render() {
-    const _required = this.props.required == null ? false : true;
-    const _autofocus = this.props.autoFocus == null ? false : true;
-
     return (
       <Form.Control
-        required={_required}
-        autoFocus={_autofocus}
+        required={this.props.required}
+        autoFocus={this.props.autoFocus}
         className={s.textfield}
         type={this.props.type}
         placeholder={this.props.placeholder}
