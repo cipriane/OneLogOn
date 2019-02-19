@@ -10,9 +10,11 @@ import Layout from 'common/Layout/Layout';
 import s from './Home.css';
 
 export default class Home extends Component {
-  state = {
-    id: '',
-  };
+  constructor(...args) {
+    super(...args);
+
+    this.state = { validated: false, id: '' };
+  }
 
   handleSubmit = event => {
     event.preventDefault();
@@ -26,10 +28,11 @@ export default class Home extends Component {
   };
 
   render() {
+    const { validated } = this.state;
     return (
       <Layout>
         <FullScreenLayout>
-          <Form onSubmit={this.handleSubmit}>
+          <Form noValidate validated={validated} onSubmit={e => this.handleSubmit(e)}>
             <MainFormLayout>
               <Form.Group>
                 <FancyFormHeader text="Welcome to OneLogOn" />
@@ -40,6 +43,10 @@ export default class Home extends Component {
                   placeholder="Enter ID"
                   onChange={this.handleChange}
                 />
+                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">
+                  Please enter a valid ID.
+                </Form.Control.Feedback>
               </Form.Group>
               <FancyButton label="Check in" type="submit" />
             </MainFormLayout>

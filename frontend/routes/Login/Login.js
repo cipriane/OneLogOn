@@ -17,6 +17,7 @@ class Login extends Component {
     password: '',
     error: null,
     isLoading: false,
+    validated: false,
   };
 
   handleChange = event => {
@@ -30,8 +31,9 @@ class Login extends Component {
 
   handleSubmit = async event => {
     event.preventDefault();
+
     try {
-      this.setState({ isLoading: true, error: null });
+      this.setState({ isLoading: true, error: null, validated: true });
       const resp = await fetch('api/login', {
         method: 'POST',
         body: JSON.stringify({
@@ -56,7 +58,7 @@ class Login extends Component {
   };
 
   render() {
-    const { error, isLoading, username, password } = this.state;
+    const { error, isLoading, username, password, validated } = this.state;
     let errorMessage = null;
     if (error) {
       errorMessage = (
@@ -72,11 +74,17 @@ class Login extends Component {
         <FullScreenLayout>
           <h1>Login Route</h1>
           {errorMessage}
-          <Form className={s.form} onSubmit={this.handleSubmit}>
+          <Form
+            className={s.form}
+            noValidate
+            validated={validated}
+            onSubmit={e => this.handleSubmit(e)}
+          >
             <MainFormLayout>
+              <FormIcon url={logo} />
+              <Form.Label className={s.headerText}>Welcome to OneLogOn</Form.Label><br />
               <Form.Group>
                 <FancyFormHeader text="Welcome to OneLogOn" />
-
                 <FancyTextField
                   autoFocus
                   required
@@ -85,19 +93,23 @@ class Login extends Component {
                   name="username"
                   onChange={this.handleChange}
                 />
-
+                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">
+                  Please enter a valid Username.
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group>
                 <FancyTextField
                   type="password"
                   placeholder="password"
                   name="password"
                   onChange={this.handleChange}
                 />
-
                 <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                 <Form.Control.Feedback type="invalid">
-                  Please enter a valid Username.
+                  The password you entered was incorrect.
                 </Form.Control.Feedback>
-              </Form.Group>
+              <Form.Group />
               <FancyButton label={buttonText} type="submit" />
             </MainFormLayout>
           </Form>
