@@ -17,6 +17,7 @@ class Register extends Component {
     password: '',
     error: null,
     isLoading: false,
+    validated: false,
   };
 
   handleChange = event => {
@@ -32,7 +33,7 @@ class Register extends Component {
   handleSubmit = async event => {
     event.preventDefault();
     try {
-      this.setState({ isLoading: true, error: null });
+      this.setState({ isLoading: true, error: null, validated: true });
       const resp = await fetch('api/register', {
         method: 'POST',
         body: JSON.stringify({
@@ -71,7 +72,7 @@ class Register extends Component {
   };
 
   render() {
-    const { error, isLoading, username, password } = this.state;
+    const { error, isLoading, username, password, validated } = this.state;
     let errorMessage = null;
     if (error) {
       errorMessage = (
@@ -87,11 +88,10 @@ class Register extends Component {
         <FullScreenLayout>
           <h1>Register Route</h1>
           {errorMessage}
-          <Form onSubmit={this.handleSubmit}>
+          <Form noValidate validated={validated} onSubmit={e => this.handleSubmit(e)}>
             <MainFormLayout>
               <Form.Group>
                 <FancyFormHeader text="Welcome to OneLogOn" />
-
                 <FancyTextField
                   required
                   autoFocus
@@ -100,12 +100,12 @@ class Register extends Component {
                   name="username"
                   onChange={this.handleChange}
                 />
-
                 <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                 <Form.Control.Feedback type="invalid">
                   Please enter a valid Username.
                 </Form.Control.Feedback>
-
+              </Form.Group>
+              <Form.Group>
                 <FancyTextField
                   required
                   type="password"
@@ -113,10 +113,8 @@ class Register extends Component {
                   name="password"
                   onChange={this.handleChange}
                 />
-
-                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                 <Form.Control.Feedback type="invalid">
-                  Please enter a valid Username.
+                  The password you entered was incorrect.
                 </Form.Control.Feedback>
               </Form.Group>
               <FancyButton label={buttonText} type="submit" />
