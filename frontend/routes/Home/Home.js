@@ -4,20 +4,21 @@ import Form from 'react-bootstrap/Form';
 import FullScreenLayout from 'common/FullScreenLayout/FullScreenLayout';
 import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import FancyButton from 'common/FancyButton/FancyButton';
-import FormIcon from 'common/FormIcon/FormIcon';
+import FancyTextField from 'common/FancyTextField/FancyTextField';
+import FancyFormHeader from 'common/FancyFormHeader/FancyFormHeader';
 import Layout from 'common/Layout/Layout';
 import s from './Home.css';
-import logo from 'assets/Asset_1.png';
 
 export default class Home extends Component {
-  state = {
-    id: '',
-  };
+  constructor(...args) {
+    super(...args);
 
-  handleSubmit = e => {
-    e.preventDefault();
-    console.log('form submitted');
-    console.log(this.state.id);
+    this.state = { validated: false, id: '' };
+  }
+
+  handleSubmit = event => {
+    event.preventDefault();
+    this.setState({ validated: true });
   };
 
   handleChange = evt => {
@@ -27,21 +28,25 @@ export default class Home extends Component {
   };
 
   render() {
+    const { validated } = this.state;
     return (
       <Layout>
         <FullScreenLayout>
-          <Form onSubmit={this.handleSubmit}>
+          <Form noValidate validated={validated} onSubmit={this.handleSubmit}>
             <MainFormLayout>
               <Form.Group>
-                <FormIcon url={logo} />
-                <Form.Label className={s.headerText}>Welcome to OneLogOn</Form.Label> <br />
-                <Form.Control
+                <FancyFormHeader text="Welcome to OneLogOn" />
+                <FancyTextField
                   autoFocus
-                  className={s.textfield}
+                  required
                   type="text"
                   placeholder="Enter ID"
                   onChange={this.handleChange}
                 />
+                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">
+                  Please enter a valid ID.
+                </Form.Control.Feedback>
               </Form.Group>
               <FancyButton label="Check in" type="submit" />
             </MainFormLayout>

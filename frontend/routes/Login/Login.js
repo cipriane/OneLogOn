@@ -5,7 +5,8 @@ import FullScreenLayout from 'common/FullScreenLayout/FullScreenLayout';
 import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import FancyButton from 'common/FancyButton/FancyButton';
 import Form from 'react-bootstrap/Form';
-import FormIcon from 'common/FormIcon/FormIcon';
+import FancyTextField from 'common/FancyTextField/FancyTextField';
+import FancyFormHeader from 'common/FancyFormHeader/FancyFormHeader';
 import s from './Login.css';
 import fetch from 'utils/fetch';
 import login from 'utils/login';
@@ -16,6 +17,7 @@ class Login extends Component {
     password: '',
     error: null,
     isLoading: false,
+    validated: false,
   };
 
   handleChange = event => {
@@ -29,8 +31,9 @@ class Login extends Component {
 
   handleSubmit = async event => {
     event.preventDefault();
+
     try {
-      this.setState({ isLoading: true, error: null });
+      this.setState({ isLoading: true, error: null, validated: true });
       const resp = await fetch('api/login', {
         method: 'POST',
         body: JSON.stringify({
@@ -55,7 +58,7 @@ class Login extends Component {
   };
 
   render() {
-    const { error, isLoading, username, password } = this.state;
+    const { error, isLoading, username, password, validated } = this.state;
     let errorMessage = null;
     if (error) {
       errorMessage = (
@@ -71,25 +74,34 @@ class Login extends Component {
         <FullScreenLayout>
           <h1>Login Route</h1>
           {errorMessage}
-          <Form className={s.form} onSubmit={this.handleSubmit}>
+          <Form className={s.form} noValidate validated={validated} onSubmit={this.handleSubmit}>
             <MainFormLayout>
               <Form.Group>
-                <FormIcon url="https://proxy.duckduckgo.com/ip3/www.makerhq.org.ico" />
-                <Form.Label className={s.headerText}>Welcome to OneLogOn</Form.Label> <br />
-                <Form.Control
-                  className={s.textfield}
+                <FancyFormHeader text="Welcome to OneLogOn" />
+                <FancyTextField
+                  autoFocus
+                  required
                   type="text"
                   placeholder="username"
                   name="username"
                   onChange={this.handleChange}
                 />
-                <Form.Control
-                  className={s.textfield}
+                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">
+                  Please enter a valid Username.
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group>
+                <FancyTextField
                   type="password"
                   placeholder="password"
                   name="password"
                   onChange={this.handleChange}
                 />
+                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">
+                  The password you entered was incorrect.
+                </Form.Control.Feedback>
               </Form.Group>
               <FancyButton label={buttonText} type="submit" />
             </MainFormLayout>

@@ -1,14 +1,31 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
-import dashboardRoutes from 'routes/routes';
+import { Button, Dropdown } from 'react-bootstrap';
+import { NavLink, withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import userlogo from 'assets/user.png';
 import s from './DashBoard.css';
 
-export default class DashBoard extends Component {
+import Settings from 'routes/Settings/Settings';
+import ManageUsers from 'routes/ManageUsers/ManageUsers';
+import Statistics from 'routes/Statistics/Statistics';
+import Kiosk from 'routes/Kiosk/Kiosk';
+
+const dashboardRoutes = [
+  { id: 0, name: 'Settings', path: 'settings', component: Settings },
+  { id: 1, name: 'ManageUsers', path: 'manage', component: ManageUsers },
+  { id: 2, name: 'Statistics', path: 'statistics', component: Statistics },
+  { id: 3, name: 'Kiosk Mode', path: 'kiosk', component: Kiosk },
+];
+
+class DashBoard extends Component {
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
-      mainContent: dashboardRoutes[0].component,
-      userName: 'Admin',
+      username: 'Admin',
     };
   }
 
@@ -22,10 +39,8 @@ export default class DashBoard extends Component {
     document.getElementById('main').style.marginLeft = '0';
   };
 
-  renderPage = id => {
-    this.setState({
-      mainContent: dashboardRoutes[id].component,
-    });
+  handleLogout = () => {
+    this.props.history.push('/logout');
   };
 
   render() {
@@ -43,34 +58,40 @@ export default class DashBoard extends Component {
           </span>
 
           <div className={s.navbarNav}>
-            <p className={s.detail}>
-              Signed in as: <span className={s.name}>{this.state.userName}</span>{' '}
-            </p>
+            <Dropdown>
+              <Dropdown.Toggle variant="link" id="dropdown-basic" className={s.dropToggle}>
+                <img className={s.profileImage} src={userlogo} alt="user pic" />
+                {this.state.username}
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={this.handleLogout}>Logout</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </div>
         </nav>
 
         <div id="sideMenu" className={s.sideNav}>
-          <a href="#" className={s.btnClose} onClick={this.closeSideMenu}>
+          <button className={s.btnClose} onClick={this.closeSideMenu}>
             &times;
-          </a>
+          </button>
           {dashboardRoutes.map(route => {
             return (
-              <Button
-                variant="outline-primary"
-                key={route.id}
-                onClick={() => this.renderPage(route.id)}
-                className={s.sideNavItem}
-              >
-                {route.name}
-              </Button>
+              <NavLink key={route.id} to={`${this.props.url}/${route.path}`}>
+                <Button variant="outline-primary" className={s.sideNavItem}>
+                  {route.name}
+                </Button>
+              </NavLink>
             );
           })}
         </div>
 
         <div id="main" className={s.main}>
-          {<this.state.mainContent />}
+          {this.props.children}
         </div>
       </div>
     );
   }
 }
+
+export default withRouter(DashBoard);
