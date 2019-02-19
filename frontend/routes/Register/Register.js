@@ -107,6 +107,7 @@ class Register extends Component {
                 </Form.Control.Feedback>
 
                 <FancyTextField
+                  required
                   type="password"
                   placeholder="password"
                   name="password"

@@ -35,6 +35,7 @@ export default class Home extends Component {
                 <FancyFormHeader text="Welcome to OneLogOn" />
                 <FancyTextField
                   autoFocus
+                  required
                   type="text"
                   placeholder="Enter ID"
                   onChange={this.handleChange}
