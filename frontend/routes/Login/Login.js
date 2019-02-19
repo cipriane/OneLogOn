@@ -81,8 +81,6 @@ class Login extends Component {
             onSubmit={e => this.handleSubmit(e)}
           >
             <MainFormLayout>
-              <FormIcon url={logo} />
-              <Form.Label className={s.headerText}>Welcome to OneLogOn</Form.Label><br />
               <Form.Group>
                 <FancyFormHeader text="Welcome to OneLogOn" />
                 <FancyTextField
@@ -109,7 +107,7 @@ class Login extends Component {
                 <Form.Control.Feedback type="invalid">
                   The password you entered was incorrect.
                 </Form.Control.Feedback>
-              <Form.Group />
+              </Form.Group>
               <FancyButton label={buttonText} type="submit" />
             </MainFormLayout>
           </Form>
