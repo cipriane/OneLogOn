@@ -88,7 +88,7 @@ class Register extends Component {
         <FullScreenLayout>
           <h1>Register Route</h1>
           {errorMessage}
-          <Form noValidate validated={validated} onSubmit={e => this.handleSubmit(e)}>
+          <Form noValidate validated={validated} onSubmit={this.handleSubmit}>
             <MainFormLayout>
               <Form.Group>
                 <FancyFormHeader text="Welcome to OneLogOn" />
