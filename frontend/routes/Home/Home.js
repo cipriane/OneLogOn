@@ -10,14 +10,15 @@ import s from './Home.css';
 import logo from 'assets/logo-full.png';
 
 export default class Home extends Component {
-  state = {
-    id: '',
-  };
+  constructor(...args) {
+    super(...args);
 
-  handleSubmit = e => {
-    e.preventDefault();
-    console.log('form submitted');
-    console.log(this.state.id);
+    this.state = { validated: false, id: '' };
+  }
+
+  handleSubmit = event => {
+    event.preventDefault();
+    this.setState({ validated: true });
   };
 
   handleChange = evt => {
@@ -27,21 +28,27 @@ export default class Home extends Component {
   };
 
   render() {
+    const { validated } = this.state;
     return (
       <Layout>
         <FullScreenLayout>
-          <Form onSubmit={this.handleSubmit}>
+          <Form noValidate validated={validated} onSubmit={e => this.handleSubmit(e)}>
             <MainFormLayout>
               <Form.Group>
                 <FormIcon url={logo} />
                 <Form.Label className={s.headerText}>Welcome to OneLogOn</Form.Label> <br />
                 <Form.Control
                   autoFocus
+                  required
                   className={s.textfield}
                   type="text"
                   placeholder="Enter ID"
                   onChange={this.handleChange}
                 />
+                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">
+                  Please enter a valid ID.
+                </Form.Control.Feedback>
               </Form.Group>
               <FancyButton label="Check in" type="submit" />
             </MainFormLayout>
