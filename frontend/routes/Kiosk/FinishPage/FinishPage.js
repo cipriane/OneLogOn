@@ -17,7 +17,7 @@ export default class FinishPage extends Component {
       <FullScreenLayout>
         <h1>Thank you for checking in!</h1>
         <div>Please remember to sign out.</div>
-        <FancyButton label="Finish" onClick={this.props.next} />
+        <FancyButton label="Finish" onClick={this.props.next(null)} />
       </FullScreenLayout>
     );
   }
