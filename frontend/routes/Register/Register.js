@@ -5,10 +5,10 @@ import Layout from 'common/Layout/Layout';
 import FullScreenLayout from 'common/FullScreenLayout/FullScreenLayout';
 import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import FancyButton from 'common/FancyButton/FancyButton';
-import FormIcon from 'common/FormIcon/FormIcon';
+import FancyTextField from 'common/FancyTextField/FancyTextField';
+import FancyFormHeader from 'common/FancyFormHeader/FancyFormHeader';
 import fetch from 'utils/fetch';
 import login from 'utils/login';
-import logo from 'assets/logo-full.png';
 import s from './Register.css';
 
 class Register extends Component {
@@ -90,17 +90,15 @@ class Register extends Component {
           <Form onSubmit={this.handleSubmit}>
             <MainFormLayout>
               <Form.Group>
-                <FormIcon url={logo} />
-                <Form.Label className={s.headerText}>Welcome to OneLogOn</Form.Label> <br />
-                <Form.Control
-                  className={s.textfield}
+                <FancyFormHeader text="Welcome to OneLogOn" />
+
+                <FancyTextField
                   type="text"
                   placeholder="username"
                   name="username"
                   onChange={this.handleChange}
                 />
-                <Form.Control
-                  className={s.textfield}
+                <FancyTextField
                   type="password"
                   placeholder="password"
                   name="password"

@@ -5,11 +5,12 @@ import FullScreenLayout from 'common/FullScreenLayout/FullScreenLayout';
 import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import FancyButton from 'common/FancyButton/FancyButton';
 import Form from 'react-bootstrap/Form';
-import FormIcon from 'common/FormIcon/FormIcon';
+import FancyTextField from 'common/FancyTextField/FancyTextField';
+import FancyFormHeader from 'common/FancyFormHeader/FancyFormHeader';
 import s from './Login.css';
 import fetch from 'utils/fetch';
 import login from 'utils/login';
-import logo from 'assets/logo-full.png';
+
 class Login extends Component {
   state = {
     username: '',
@@ -74,17 +75,16 @@ class Login extends Component {
           <Form className={s.form} onSubmit={this.handleSubmit}>
             <MainFormLayout>
               <Form.Group>
-                <FormIcon url={logo} />
-                <Form.Label className={s.headerText}>Welcome to OneLogOn</Form.Label> <br />
-                <Form.Control
-                  className={s.textfield}
+                <FancyFormHeader text="Welcome to OneLogOn" />
+
+                <FancyTextField
                   type="text"
                   placeholder="username"
                   name="username"
                   onChange={this.handleChange}
                 />
-                <Form.Control
-                  className={s.textfield}
+
+                <FancyTextField
                   type="password"
                   placeholder="password"
                   name="password"
