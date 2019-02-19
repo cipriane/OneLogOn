@@ -74,7 +74,12 @@ class Login extends Component {
         <FullScreenLayout>
           <h1>Login Route</h1>
           {errorMessage}
-          <Form className={s.form} validated={validated} onSubmit={e => this.handleSubmit(e)}>
+          <Form
+            className={s.form}
+            noValidate
+            validated={validated}
+            onSubmit={e => this.handleSubmit(e)}
+          >
             <MainFormLayout>
               <Form.Group>
                 <FancyFormHeader text="Welcome to OneLogOn" />
