@@ -4,10 +4,10 @@ import Form from 'react-bootstrap/Form';
 import FullScreenLayout from 'common/FullScreenLayout/FullScreenLayout';
 import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import FancyButton from 'common/FancyButton/FancyButton';
-import FormIcon from 'common/FormIcon/FormIcon';
+import FancyTextField from 'common/FancyTextField/FancyTextField';
+import FancyFormHeader from 'common/FancyFormHeader/FancyFormHeader';
 import Layout from 'common/Layout/Layout';
 import s from './Home.css';
-import logo from 'assets/logo-full.png';
 
 export default class Home extends Component {
   constructor(...args) {
@@ -35,12 +35,10 @@ export default class Home extends Component {
           <Form noValidate validated={validated} onSubmit={e => this.handleSubmit(e)}>
             <MainFormLayout>
               <Form.Group>
-                <FormIcon url={logo} />
-                <Form.Label className={s.headerText}>Welcome to OneLogOn</Form.Label> <br />
-                <Form.Control
+                <FancyFormHeader text="Welcome to OneLogOn" />
+                <FancyTextField
                   autoFocus
                   required
-                  className={s.textfield}
                   type="text"
                   placeholder="Enter ID"
                   onChange={this.handleChange}

@@ -5,11 +5,12 @@ import FullScreenLayout from 'common/FullScreenLayout/FullScreenLayout';
 import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import FancyButton from 'common/FancyButton/FancyButton';
 import Form from 'react-bootstrap/Form';
-import FormIcon from 'common/FormIcon/FormIcon';
+import FancyTextField from 'common/FancyTextField/FancyTextField';
+import FancyFormHeader from 'common/FancyFormHeader/FancyFormHeader';
 import s from './Login.css';
 import fetch from 'utils/fetch';
 import login from 'utils/login';
-import logo from 'assets/logo-full.png';
+
 class Login extends Component {
   state = {
     username: '',
@@ -81,10 +82,11 @@ class Login extends Component {
           >
             <MainFormLayout>
               <FormIcon url={logo} />
-              <Form.Label className={s.headerText}>Welcome to OneLogOn</Form.Label> <br />
+              <Form.Label className={s.headerText}>Welcome to OneLogOn</Form.Label><br />
               <Form.Group>
-                <Form.Control
-                  className={s.textfield}
+                <FancyFormHeader text="Welcome to OneLogOn" />
+                <FancyTextField
+                  autoFocus
                   required
                   type="text"
                   placeholder="username"
@@ -96,18 +98,17 @@ class Login extends Component {
                   Please enter a valid Username.
                 </Form.Control.Feedback>
               </Form.Group>
-              <Form.Control
-                className={s.textfield}
-                required
-                type="password"
-                placeholder="password"
-                name="password"
-                onChange={this.handleChange}
-              />
-              <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-              <Form.Control.Feedback type="invalid">
-                The password you entered was incorrect.
-              </Form.Control.Feedback>
+              <Form.Group>
+                <FancyTextField
+                  type="password"
+                  placeholder="password"
+                  name="password"
+                  onChange={this.handleChange}
+                />
+                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">
+                  The password you entered was incorrect.
+                </Form.Control.Feedback>
               <Form.Group />
               <FancyButton label={buttonText} type="submit" />
             </MainFormLayout>
