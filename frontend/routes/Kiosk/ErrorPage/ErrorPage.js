@@ -17,7 +17,7 @@ export default class ErrorPage extends Component {
       <FullScreenLayout>
         <h1>Error Page</h1>
         <div>There was an error</div>
-        <FancyButton label="Go Back" />
+        <FancyButton label="Start Over" onClick={this.props.next(null)} />
       </FullScreenLayout>
     );
   }
