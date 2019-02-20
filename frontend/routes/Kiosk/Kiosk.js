@@ -35,63 +35,72 @@ const defaultState = {
 export default class Kiosk extends Component {
   state = defaultState;
 
-  next = param => async event => {
+  checkInLogic = async param => {
+    /*
+    const resp = await fetch('api/visitor', {
+      body: JSON.stringify({
+        id: param,
+      }),
+    });
+
+    if (!resp.ok) {
+      throw Error(resp.statusText);
+    }
+    const data = await resp.json();
+    if (data.is_checked_in) {
+      this.setState({
+        page: FINISH_PAGE,
+      });
+      return;
+    }
+    */
+
+    // TODO: delete this with above comment
+    this.setState(prevState => ({
+      page: (prevState.page + 1) % PAGES.length,
+    }));
+  };
+
+  reasonsLogic = async param => {
+    /*
+    const resp = await fetch('api/checkin', {
+      method: 'POST',
+      body: JSON.stringify({
+        reasons: param,
+      }),
+    });
+
+    if (!resp.ok) {
+      throw Error(resp.statusText);
+    }
+    const data = await resp.json();
+    */
+    // TODO: delete this with above comment
+    this.setState(prevState => ({
+      page: (prevState.page + 1) % PAGES.length,
+    }));
+  };
+
+  next = param => event => {
     event && event.preventDefault();
     try {
       // ALright, so some crazy logic is going to have to go in here.
       if (this.state.error) {
-        this.setState({
+        return this.setState({
           ...defaultState,
           isKioskModeActivated: true,
         });
       } else if (this.state.page === CHECK_IN_PAGE) {
-        /*
-        const resp = await fetch('api/visitor', {
-          body: JSON.stringify({
-            id: param,
-          }),
-        });
-
-        if (!resp.ok) {
-          throw Error(resp.statusText);
-        }
-        const data = await resp.json();
-        if (data.is_checked_in) {
-          this.setState({
-            page: FINISH_PAGE,
-          });
-          return;
-        }
-        */
-
-        // TODO: delete this with above comment
-        this.setState(prevState => ({
-          page: (prevState.page + 1) % PAGES.length,
-        }));
+        return this.checkInLogic(param);
       } else if (this.state.page === REAONS_PAGE) {
-        /*
-        const resp = await fetch('api/checkin', {
-          method: 'POST',
-          body: JSON.stringify({
-            reasons: param,
-          }),
-        });
-
-        if (!resp.ok) {
-          throw Error(resp.statusText);
-        }
-        const data = await resp.json();
-        */
-        // TODO: delete this with above comment
-        this.setState(prevState => ({
-          page: (prevState.page + 1) % PAGES.length,
-        }));
+        return this.reasonsLogic(param);
       } else {
         this.setState(prevState => ({
           page: (prevState.page + 1) % PAGES.length,
         }));
       }
     } catch (err) {
+      console.error(err);
       this.setState({
         error: err.toString(),
       });
