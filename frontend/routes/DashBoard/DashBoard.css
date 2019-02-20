@@ -4,39 +4,24 @@
 
 .navbar {
   background-color: #660033;
-  height: 63px;
+  height: 70px;
 }
 
-.navbar .burger {
-  float: left;
-  display: block;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
+.navbar .title {
+  color: white;
+  padding-top: 15px;
 }
 
-.navbarNav {
-  float: right;
-  padding-top: 13px;
-  margin-right: 10px;
-}
-
-.navbarNav .dropToggle {
-  background-color: transparent;
-  border-color: transparent;
-  margin-right: 15px;
+.navbar .dropDownToggle {
   color: white;
 }
 
-.navbarNav .dropToggle:active {
-  background-color: transparent;
-  border-color: transparent;
+.navbar .dropDownToggle:hover {
+  color: white;
 }
 
-.navbarNav .profileImage {
-  padding-right: 8px;
+.profileImage {
+  padding: 5px;
 }
 
 .sideNav {
