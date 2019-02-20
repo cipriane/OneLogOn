@@ -1,5 +1,4 @@
 .root {
-  background-color: #56baed;
   border: none;
   color: white;
   padding: 15px 80px;
@@ -8,23 +7,47 @@
   display: inline-block;
   text-transform: uppercase;
   font-size: 13px;
-  box-shadow: 0 10px 30px 0 rgba(95, 186, 233, 0.4);
   border-radius: 5px 5px 5px 5px;
   margin: 5px 20px 40px 20px;
   transition: all 0.3s ease-in-out;
 }
 
 .root:hover {
-  background-color: #39ace7;
   cursor: pointer;
 }
 
 .root:disabled {
-  background-color: #77c6ee;
-  box-shadow: 0 10px 30px 0 rgba(53, 169, 227, 0.4);
   cursor: not-allowed;
 }
 
 .root:active {
   transform: scale(0.95);
+}
+
+.vibrant {
+  background-color: #56baed;
+  box-shadow: 0 10px 30px 0 rgba(95, 186, 233, 0.4);
+}
+
+.vibrant:hover {
+  background-color: #39ace7;
+}
+
+.vibrant:disabled {
+  background-color: #77c6ee;
+  box-shadow: 0 10px 30px 0 rgba(53, 169, 227, 0.4);
+}
+
+.muted {
+  background-color: #a2a2a2;
+  box-shadow: 0 10px 30px 0 rgba(164, 164, 164, 0.4);
+}
+
+.muted:hover {
+  background-color: #909090;
+}
+
+.muted:disabled {
+  background-color: #b3b3b3;
+  box-shadow: 0 10px 30px 0 rgba(141, 141, 141, 0.4);
 }

@@ -9,6 +9,8 @@ import FinishPage from './FinishPage/FinishPage';
 import ReasonsPage from './ReasonsPage/ReasonsPage';
 import WaiverPage from './WaiverPage/WaiverPage';
 import fetch from 'utils/fetch';
+import s from './Kiosk.css';
+import fullscreenIcon from 'assets/fullscreen.svg';
 
 const CHECK_IN_PAGE = 0;
 const REAONS_PAGE = 1;
@@ -22,19 +24,25 @@ const PAGES = [
   { id: FINISH_PAGE, name: 'Finish', component: FinishPage },
 ];
 
-const defaultState = {
-  isKioskModeActivated: false,
-  page: CHECK_IN_PAGE,
-  error: null,
-  reasons: [
-    { id: 1, desc: 'Anything' },
-    { id: 2, desc: "Doesn't matter what I type here" },
-    { id: 3, desc: 'TODO: replace with API call' },
-  ],
-};
-
 export default class Kiosk extends Component {
-  state = defaultState;
+  state = {
+    isKioskModeActivated: false,
+    isFullscreen: false,
+    page: CHECK_IN_PAGE,
+    error: null,
+    reasons: [
+      { id: 1, desc: '3D Printing' },
+      { id: 2, desc: 'Audio/Video' },
+      { id: 3, desc: 'CNC/Milling' },
+      { id: 4, desc: 'Fiber Arts' },
+      { id: 5, desc: 'General' },
+      { id: 6, desc: 'Internships' },
+      { id: 7, desc: 'Laser' },
+      { id: 8, desc: 'Meeting' },
+      { id: 9, desc: 'Power/Hand Tools' },
+      { id: 10, desc: 'Vinyl Cutter' },
+    ],
+  };
 
   checkInLogic = async param => {
     /*
@@ -88,8 +96,8 @@ export default class Kiosk extends Component {
       // ALright, so some crazy logic is going to have to go in here.
       if (this.state.error) {
         return this.setState({
-          ...defaultState,
-          isKioskModeActivated: true,
+          page: CHECK_IN_PAGE,
+          error: null,
         });
       } else if (this.state.page === CHECK_IN_PAGE) {
         return this.checkInLogic(param);
@@ -110,10 +118,9 @@ export default class Kiosk extends Component {
 
   cancel = event => {
     event.preventDefault();
-    console.log('Canceled');
     this.setState({
-      ...defaultState,
-      isKioskModeActivated: true,
+      page: CHECK_IN_PAGE,
+      error: null,
     });
   };
 
@@ -121,6 +128,7 @@ export default class Kiosk extends Component {
     // TODO: change user's role so user is not logged in anymore
     this.setState({
       isKioskModeActivated: true,
+      isFullscreen: true,
     });
   };
 
@@ -128,7 +136,10 @@ export default class Kiosk extends Component {
     const { page, isKioskModeActivated, error } = this.state;
     if (!isKioskModeActivated) {
       return (
-        <Fullscreen enabled={isKioskModeActivated}>
+        <Fullscreen
+          enabled={isFullscreen}
+          onChange={isFullscreen => this.setState({ isFullscreen })}
+        >
           <FullScreenLayout>
             <MainFormLayout>
               <h1>Kiosk Page</h1>
@@ -147,10 +158,21 @@ export default class Kiosk extends Component {
       PageToDisplay = PAGES[page].component;
     }
 
-    const { reasons } = this.state;
+    const { reasons, isFullscreen } = this.state;
+    const fullscreenButton = isFullscreen ? null : (
+      <div className={s.icon} onClick={this.activateKioskMode}>
+        <img src={fullscreenIcon} alt="Fullscreen" />
+      </div>
+    );
+
     return (
-      <Fullscreen enabled={isKioskModeActivated}>
-        <PageToDisplay cancel={this.cancel} next={this.next} reasons={reasons} />
+      <Fullscreen enabled={isFullscreen} onChange={isFullscreen => this.setState({ isFullscreen })}>
+        <FullScreenLayout>
+          <MainFormLayout>
+            <PageToDisplay cancel={this.cancel} next={this.next} reasons={reasons} />
+          </MainFormLayout>
+          {fullscreenButton}
+        </FullScreenLayout>
       </Fullscreen>
     );
   }
