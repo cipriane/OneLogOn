@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Form from 'react-bootstrap/Form';
 import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import FullScreenLayout from 'common/FullScreenLayout/FullScreenLayout';
+import FancyFormHeader from 'common/FancyFormHeader/FancyFormHeader';
 import FancyTextField from 'common/FancyTextField/FancyTextField';
 import FancyButton from 'common/FancyButton/FancyButton';
 
@@ -13,6 +14,10 @@ export default class CheckInPage extends Component {
 
   state = {
     id: '',
+  };
+
+  isValid = input => {
+    return /^\d+$/.test(input) && input.length === 7;
   };
 
   handleChange = event => {
@@ -28,11 +33,10 @@ export default class CheckInPage extends Component {
     const { id } = this.state;
     return (
       <FullScreenLayout>
-        <Form noValidate validated onSubmit={this.props.next(id)}>
+        <Form validated={id && this.isValid(id)} onSubmit={this.props.next(id)}>
           <MainFormLayout>
             <Form.Group>
-              <h1>Check In Page</h1>
-              <div>Enter Your ID without the W</div>
+              <FancyFormHeader text="Welcome to the Innovation Center  Please check in" />
               <FancyTextField
                 autoFocus
                 autoComplete="off"
@@ -40,10 +44,13 @@ export default class CheckInPage extends Component {
                 type="text"
                 placeholder="Student ID"
                 name="id"
+                isValid={id && this.isValid(id)}
+                isInvalid={id && !this.isValid(id)}
                 onChange={this.handleChange}
               />
+              <Form.Text className="text-muted">Enter Your ID without the W</Form.Text>
             </Form.Group>
-            <FancyButton label="Check In" type="submit" />
+            <FancyButton label="Check In" disabled={!this.isValid(id)} type="submit" />
           </MainFormLayout>
         </Form>
       </FullScreenLayout>

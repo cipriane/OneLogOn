@@ -19,6 +19,12 @@
   cursor: pointer;
 }
 
+.root:disabled {
+  background-color: #77c6ee;
+  box-shadow: 0 10px 30px 0 rgba(53, 169, 227, 0.4);
+  cursor: not-allowed;
+}
+
 .root:active {
   transform: scale(0.95);
 }

@@ -30,7 +30,7 @@ export default class ReasonsPage extends Component {
       }));
     } else {
       this.setState(prevState => ({
-        selected: prevState.filter(el => el !== name),
+        selected: prevState.selected.filter(el => el !== name),
       }));
     }
   };
@@ -54,6 +54,7 @@ export default class ReasonsPage extends Component {
                 />
               );
             })}
+            <FancyButton label="Cancel" type="button" onClick={this.props.cancel} />
             <FancyButton label="Next" type="submit" />
           </MainFormLayout>
         </Form>

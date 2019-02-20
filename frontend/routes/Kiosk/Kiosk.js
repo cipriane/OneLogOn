@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import FullScreenLayout from 'common/FullScreenLayout/FullScreenLayout';
 import Fullscreen from 'react-full-screen';
 import FancyButton from 'common/FancyButton/FancyButton';
@@ -107,6 +108,15 @@ export default class Kiosk extends Component {
     }
   };
 
+  cancel = event => {
+    event.preventDefault();
+    console.log('Canceled');
+    this.setState({
+      ...defaultState,
+      isKioskModeActivated: true,
+    });
+  };
+
   activateKioskMode = () => {
     // TODO: change user's role so user is not logged in anymore
     this.setState({
@@ -120,10 +130,12 @@ export default class Kiosk extends Component {
       return (
         <Fullscreen enabled={isKioskModeActivated}>
           <FullScreenLayout>
-            <h1>Kiosk Page</h1>
-            <div>Activating Kiosk mode will activate fullscreen mode and log you out.</div>
-            <div>To escape Kiosk mode, press shift + ESC.</div>
-            <FancyButton label="Activate Kiosk Mode" onClick={this.activateKioskMode} />
+            <MainFormLayout>
+              <h1>Kiosk Page</h1>
+              <div>Activating Kiosk mode will activate fullscreen mode and log you out.</div>
+              <div>To escape Kiosk mode, press shift + ESC.</div>
+              <FancyButton label="Activate Kiosk Mode" onClick={this.activateKioskMode} />
+            </MainFormLayout>
           </FullScreenLayout>
         </Fullscreen>
       );
@@ -138,7 +150,7 @@ export default class Kiosk extends Component {
     const { reasons } = this.state;
     return (
       <Fullscreen enabled={isKioskModeActivated}>
-        <PageToDisplay next={this.next} reasons={reasons} />
+        <PageToDisplay cancel={this.cancel} next={this.next} reasons={reasons} />
       </Fullscreen>
     );
   }
