@@ -72,12 +72,11 @@ class Login extends Component {
     return (
       <Layout>
         <FullScreenLayout>
-          <h1>Login Route</h1>
           {errorMessage}
           <Form className={s.form} noValidate validated={validated} onSubmit={this.handleSubmit}>
             <MainFormLayout>
               <Form.Group>
-                <FancyFormHeader text="Welcome to OneLogOn" />
+                <FancyFormHeader text="Login" />
                 <FancyTextField
                   autoFocus
                   required
