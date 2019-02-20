@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Form from 'react-bootstrap/Form';
-import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
-import FullScreenLayout from 'common/FullScreenLayout/FullScreenLayout';
 import FancyFormHeader from 'common/FancyFormHeader/FancyFormHeader';
 import FancyTextField from 'common/FancyTextField/FancyTextField';
 import FancyButton from 'common/FancyButton/FancyButton';
+import s from './CheckInPage.css';
 
 export default class CheckInPage extends Component {
   static propTypes = {
@@ -32,28 +31,27 @@ export default class CheckInPage extends Component {
   render() {
     const { id } = this.state;
     return (
-      <FullScreenLayout>
+      <React.Fragment>
         <Form validated={id && this.isValid(id)} onSubmit={this.props.next(id)}>
-          <MainFormLayout>
-            <Form.Group>
-              <FancyFormHeader text="Welcome to the Innovation Center  Please check in" />
-              <FancyTextField
-                autoFocus
-                autoComplete="off"
-                required
-                type="text"
-                placeholder="Student ID"
-                name="id"
-                isValid={id && this.isValid(id)}
-                isInvalid={id && !this.isValid(id)}
-                onChange={this.handleChange}
-              />
-              <Form.Text className="text-muted">Enter Your ID without the W</Form.Text>
-            </Form.Group>
-            <FancyButton label="Check In" disabled={!this.isValid(id)} type="submit" />
-          </MainFormLayout>
+          <Form.Group>
+            <FancyFormHeader text="" />
+            <div className={s.greeting}>Welcome to the Innovation Center{'\n'}Please check in</div>
+            <FancyTextField
+              autoFocus
+              autoComplete="off"
+              required
+              type="text"
+              placeholder="Student ID"
+              name="id"
+              isValid={id && this.isValid(id)}
+              isInvalid={id && !this.isValid(id)}
+              onChange={this.handleChange}
+            />
+            <Form.Text className="text-muted">Enter your ID without the W</Form.Text>
+          </Form.Group>
+          <FancyButton label="Check In" disabled={!this.isValid(id)} type="submit" />
         </Form>
-      </FullScreenLayout>
+      </React.Fragment>
     );
   }
 }
