@@ -142,9 +142,11 @@ export default class Kiosk extends Component {
         >
           <FullScreenLayout>
             <MainFormLayout>
-              <h1>Kiosk Page</h1>
-              <div>Activating Kiosk mode will activate fullscreen mode and log you out.</div>
-              <div>To escape Kiosk mode, press shift + ESC.</div>
+              <h1 className={s.title}>Kiosk Page</h1>
+              <div className={s.text}>
+                <p>Activating Kiosk mode will activate fullscreen mode and log you out.</p>
+                <p>To escape Kiosk mode, press shift + ESC.</p>
+              </div>
               <FancyButton label="Activate Kiosk Mode" onClick={this.activateKioskMode} />
             </MainFormLayout>
           </FullScreenLayout>

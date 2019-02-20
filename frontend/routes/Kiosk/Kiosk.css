@@ -24,3 +24,11 @@ svg {
 .icon:hover {
   cursor: pointer;
 }
+
+.title {
+  padding: 15px;
+}
+
+.text {
+  padding: 0px 15px 0px 15px;
+}

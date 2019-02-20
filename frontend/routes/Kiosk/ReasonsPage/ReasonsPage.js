@@ -39,7 +39,7 @@ export default class ReasonsPage extends Component {
     return (
       <React.Fragment>
         <Form onSubmit={this.props.next(selected)}>
-          <h1>Please select at least one reason for this visit</h1>
+          <h1 className={s.title}>Please select at least one reason for this visit</h1>
           <div className={s.checkboxContainer}>
             {this.props.reasons.map(reason => {
               return (

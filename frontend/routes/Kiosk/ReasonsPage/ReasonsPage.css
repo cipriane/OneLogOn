@@ -29,3 +29,7 @@
 .alignRight {
   float: right;
 }
+
+.title {
+  padding: 15px;
+}
