@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Form from 'react-bootstrap/Form';
-import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
-import FullScreenLayout from 'common/FullScreenLayout/FullScreenLayout';
 import FancyButton from 'common/FancyButton/FancyButton';
+import s from './ReasonsPage.css';
 
 export default class ReasonsPage extends Component {
   static propTypes = {
@@ -30,7 +29,7 @@ export default class ReasonsPage extends Component {
       }));
     } else {
       this.setState(prevState => ({
-        selected: prevState.filter(el => el !== name),
+        selected: prevState.selected.filter(el => el !== name),
       }));
     }
   };
@@ -38,26 +37,37 @@ export default class ReasonsPage extends Component {
   render() {
     const { selected } = this.state;
     return (
-      <FullScreenLayout>
+      <React.Fragment>
         <Form onSubmit={this.props.next(selected)}>
-          <MainFormLayout>
-            <h1>Why are you here?</h1>
-            <div>Please select at least one</div>
+          <h1>Please select at least one reason for this visit</h1>
+          <div className={s.checkboxContainer}>
             {this.props.reasons.map(reason => {
               return (
-                <Form.Check
-                  type="checkbox"
-                  key={reason.id}
-                  name={reason.id}
-                  label={reason.desc}
-                  onChange={this.handleChange}
-                />
+                <Form.Check className={s.checkbox} key={reason.id}>
+                  <Form.Check.Input
+                    className={s.checkboxInput}
+                    name={reason.id}
+                    id={`checkbox${reason.id}`}
+                    type="checkbox"
+                    onChange={this.handleChange}
+                  />
+                  <Form.Check.Label className={s.checkboxLabel} htmlFor={`checkbox${reason.id}`}>
+                    {reason.desc}
+                  </Form.Check.Label>
+                </Form.Check>
               );
             })}
-            <FancyButton label="Next" type="submit" />
-          </MainFormLayout>
+          </div>
+          <div className={s.buttonsBar}>
+            <div className={s.alignLeft}>
+              <FancyButton muted label="Cancel" type="button" onClick={this.props.cancel} />
+            </div>
+            <div className={s.alignRight}>
+              <FancyButton disabled={!selected.length} label="Next" type="submit" />
+            </div>
+          </div>
         </Form>
-      </FullScreenLayout>
+      </React.Fragment>
     );
   }
 }
