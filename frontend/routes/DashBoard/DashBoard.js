@@ -28,17 +28,20 @@ class DashBoard extends Component {
     super(props);
     this.state = {
       username: 'Admin',
+      sideBarOpen: false,
     };
   }
 
   openSideMenu = () => {
     document.getElementById('sideMenu').style.width = '250px';
     document.getElementById('main').style.marginLeft = '250px';
+    this.setState({ sideBarOpen: true });
   };
 
   closeSideMenu = () => {
     document.getElementById('sideMenu').style.width = '0';
     document.getElementById('main').style.marginLeft = '0';
+    this.setState({ sideBarOpen: false });
   };
 
   handleLogout = () => {
@@ -49,12 +52,14 @@ class DashBoard extends Component {
     return (
       <div className={s.root}>
         <Navbar className={s.navbar}>
-          <HamburgerButton onClick={this.openSideMenu} />
+          <HamburgerButton
+            onClick={this.state.sideBarOpen == true ? this.closeSideMenu : this.openSideMenu}
+          />
           <Navbar.Brand>
             <img alt="" src={logo} width="30" height="30" className="d-inline-block align-top" />
           </Navbar.Brand>
           <Navbar.Brand>
-            <p className={s.title}>OneLogOn</p>
+            <p className={s.title}>DashBoard</p>
           </Navbar.Brand>
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -72,9 +77,6 @@ class DashBoard extends Component {
         </Navbar>
 
         <div id="sideMenu" className={s.sideNav}>
-          <button className={s.btnClose} onClick={this.closeSideMenu}>
-            &times;
-          </button>
           {dashboardRoutes.map(route => {
             return (
               <NavLink key={route.id} to={`${this.props.url}/${route.path}`}>
