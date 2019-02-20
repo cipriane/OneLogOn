@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Button, Dropdown } from 'react-bootstrap';
+import { Button, Dropdown, Navbar } from 'react-bootstrap';
 import { NavLink, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import userlogo from 'assets/user.png';
+import logo from 'assets/logo-white.png';
+import HamburgerButton from 'common/HamburgerButton/HamburgerButton';
 import s from './DashBoard.css';
 
 import Settings from 'routes/Settings/Settings';
@@ -26,17 +28,20 @@ class DashBoard extends Component {
     super(props);
     this.state = {
       username: 'Admin',
+      sideBarOpen: false,
     };
   }
 
   openSideMenu = () => {
     document.getElementById('sideMenu').style.width = '250px';
     document.getElementById('main').style.marginLeft = '250px';
+    this.setState({ sideBarOpen: true });
   };
 
   closeSideMenu = () => {
     document.getElementById('sideMenu').style.width = '0';
     document.getElementById('main').style.marginLeft = '0';
+    this.setState({ sideBarOpen: false });
   };
 
   handleLogout = () => {
@@ -46,35 +51,32 @@ class DashBoard extends Component {
   render() {
     return (
       <div className={s.root}>
-        <nav className={s.navbar}>
-          <span>
-            <Button className={s.burger} variant="outline-secondary" onClick={this.openSideMenu}>
-              <svg width="30" height="30">
-                <path d="M0,5 30,5" stroke="#fff" strokeWidth="5" />
-                <path d="M0,14 30,14" stroke="#fff" strokeWidth="5" />
-                <path d="M0,23 30,23" stroke="#fff" strokeWidth="5" />
-              </svg>
-            </Button>
-          </span>
+        <Navbar className={s.navbar}>
+          <HamburgerButton
+            onClick={this.state.sideBarOpen == true ? this.closeSideMenu : this.openSideMenu}
+          />
+          <Navbar.Brand>
+            <img alt="" src={logo} width="30" height="30" className="d-inline-block align-top" />
+          </Navbar.Brand>
+          <Navbar.Brand>
+            <p className={s.title}>DashBoard</p>
+          </Navbar.Brand>
 
-          <div className={s.navbarNav}>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse className="justify-content-end">
             <Dropdown>
-              <Dropdown.Toggle variant="link" id="dropdown-basic" className={s.dropToggle}>
+              <Dropdown.Toggle variant="link" id="dropdown-basic" className={s.dropDownToggle}>
                 <img className={s.profileImage} src={userlogo} alt="user pic" />
                 {this.state.username}
               </Dropdown.Toggle>
-
               <Dropdown.Menu>
                 <Dropdown.Item onClick={this.handleLogout}>Logout</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-          </div>
-        </nav>
+          </Navbar.Collapse>
+        </Navbar>
 
         <div id="sideMenu" className={s.sideNav}>
-          <button className={s.btnClose} onClick={this.closeSideMenu}>
-            &times;
-          </button>
           {dashboardRoutes.map(route => {
             return (
               <NavLink key={route.id} to={`${this.props.url}/${route.path}`}>
