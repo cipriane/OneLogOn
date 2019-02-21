@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import FullScreenLayout from 'common/FullScreenLayout/FullScreenLayout';
 import FancyButton from 'common/FancyButton/FancyButton';
 
 export default class ErrorPage extends Component {
@@ -14,11 +13,11 @@ export default class ErrorPage extends Component {
 
   render() {
     return (
-      <FullScreenLayout>
+      <React.Fragment>
         <h1>Error Page</h1>
         <div>There was an error</div>
         <FancyButton label="Start Over" onClick={this.props.next(null)} />
-      </FullScreenLayout>
+      </React.Fragment>
     );
   }
 }
