@@ -1,0 +1,31 @@
+.buttonsBar {
+  display: inline;
+}
+
+.checkboxContainer {
+  column-count: 2;
+  max-height: 300px;
+  text-align: left;
+  padding-left: 150px;
+  margin: 20px 0 50px;
+}
+
+.checkbox {
+  margin: 10px 0;
+}
+
+.checkboxInput:hover {
+  cursor: pointer;
+}
+
+.checkboxLabel:hover {
+  cursor: pointer;
+}
+
+.alignLeft {
+  float: left;
+}
+
+.alignRight {
+  float: right;
+}

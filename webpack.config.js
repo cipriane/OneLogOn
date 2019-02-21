@@ -26,6 +26,11 @@ module.exports = {
       },
       {
         test: /\.css$/,
+        include: /node_modules/,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.css$/,
         exclude: /node_modules/,
         use: [
           { loader: 'style-loader' },
@@ -47,11 +52,6 @@ module.exports = {
         ],
       },
       {
-        test: /\.css$/,
-        include: /node_modules/,
-        use: ['style-loader', 'css-loader'],
-      },
-      {
         test: /\.(bmp|gif|jpg|jpeg|png|svg)$/,
         use: [
           {
@@ -64,7 +64,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.(woff|woff2|eot|ttf|svg)$/,
+        test: /\.(woff|woff2|eot|ttf)$/,
         loader: 'url-loader?limit=10000',
       },
     ],
