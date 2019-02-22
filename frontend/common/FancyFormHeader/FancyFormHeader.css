@@ -4,3 +4,7 @@
     sans-serif;
   padding-bottom: 25px;
 }
+
+.logoContainer {
+  max-width: 600px;
+}
