@@ -2,14 +2,11 @@ from django.shortcuts import get_object_or_404, render
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from backend.server.serializers import UserSerializer
 from django.contrib.auth.models import User
-
-from backend.server.models import Admin
 from backend.server.models import Student
 from backend.server.models import Company
 from backend.server.models import Visitors
@@ -19,7 +16,6 @@ from backend.server.models import ListReasons
 from backend.server.models import VisitorReason
 from backend.server.models import CheckInVisitorReason
 from backend.server.serializers import StudentSerializer
-from backend.server.serializers import AdminSerializer
 from backend.server.serializers import CompanySerializer
 from backend.server.serializers import CheckInsSerializer
 from backend.server.serializers import TimeSheetSerializer
@@ -43,10 +39,6 @@ class StudentListCreate(generics.ListCreateAPIView):
     def get(self, request):
         content = { 'message': 'mitch says hello' }
         return Response(content)
-
-class AdminListCreate(generics.ListCreateAPIView):
-    queryset = Admin.objects.all()
-    serializer_class = AdminSerializer
 
 class CompanyListCreate(generics.ListCreateAPIView):
     queryset = Company.objects.all()
@@ -87,3 +79,17 @@ class UserCreate(APIView):
             user = serializer.save()
             if user:
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+# class Registration(APIView):
+#     permission_classes = (AllowAny,)
+#     def post(self, request, format='json')
+#         serializer = AdminSerializer(data=request.data)
+#         if serializer.is_valid():
+#             admin = serializer.save()
+#             admin.set_password(serializer.validated_data['password'])
+#             admin.save()
+#             if admin:
+#                 return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         else
+#            return Response(MESSAGE, status=status.HTTP_400_BAD_REQUEST)
+        
