@@ -17,7 +17,7 @@ class Company(models.Model):
     company_state = models.CharField(max_length=2)
 
 class Visitors(models.Model):
-    company = models.ForeignKey(Company,on_delete=models.CASCADE,verbose_name="compamy ID")
+    company = models.ForeignKey(Company,on_delete=models.CASCADE,verbose_name="company_ID")
     visitor_id = models.CharField(max_length=10)
     first_name = models.CharField(max_length=30, null=True)
     last_name = models.CharField(max_length=30,null=True)
