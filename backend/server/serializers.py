@@ -2,7 +2,6 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.models import User
 from backend.server.models import Student
-from backend.server.models import Admin
 from backend.server.models import Company
 from backend.server.models import CheckIns
 from backend.server.models import TimeSheet
@@ -20,11 +19,6 @@ class StudentSerializer(serializers.ModelSerializer):
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
-        fields = '__all__'
-
-class AdminSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Admin
         fields = '__all__'
 
 class CheckInsSerializer(serializers.ModelSerializer):
