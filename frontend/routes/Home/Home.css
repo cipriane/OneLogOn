@@ -25,7 +25,7 @@
 
 h3.centered {
   color: white;
-  padding: 10%;
+  padding: 6vh;
 }
 
 .fiftyfifty {
@@ -85,6 +85,7 @@ h3.centered {
 .functionality {
   margin-top: 10% !important;
   width: 85% !important;
+  max-width: 800px !important;
   padding: 1% 5% 2% 1% !important;
   margin: 0 auto;
   background: rgba(255, 255, 255, 0.8);
@@ -93,6 +94,8 @@ h3.centered {
 }
 
 .tagline {
+  width: 85% !important;
+  max-width: 800px;
 }
 
 /*
@@ -127,6 +130,10 @@ h3.centered {
 @media screen and (min-width: 1200px) {
   .title {
     font-size: 170px;
+  }
+
+  .functionality {
+    margin-top: 115px !important;
   }
 }
 
