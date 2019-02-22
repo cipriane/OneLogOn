@@ -79,17 +79,4 @@ class UserCreate(APIView):
             user = serializer.save()
             if user:
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-# class Registration(APIView):
-#     permission_classes = (AllowAny,)
-#     def post(self, request, format='json')
-#         serializer = AdminSerializer(data=request.data)
-#         if serializer.is_valid():
-#             admin = serializer.save()
-#             admin.set_password(serializer.validated_data['password'])
-#             admin.save()
-#             if admin:
-#                 return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         else
-#            return Response(MESSAGE, status=status.HTTP_400_BAD_REQUEST)
         
