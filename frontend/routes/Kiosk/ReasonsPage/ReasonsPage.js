@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Form from 'react-bootstrap/Form';
+import { Button, Form } from 'react-bootstrap';
 import FancyButton from 'common/FancyButton/FancyButton';
 import s from './ReasonsPage.css';
 
@@ -21,15 +21,22 @@ export default class ReasonsPage extends Component {
 
   handleChange = event => {
     const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
-    if (value) {
+    const id = target.id;
+    const isChecked = this.state.selected.includes(name);
+    const currentButton = document.getElementById(id);
+
+    if (!isChecked) {
       this.setState(prevState => ({
-        selected: [...prevState.selected, name],
+        selected: [...prevState.selected, id],
       }));
+      currentButton.classList.remove('btn-outline-info');
+      currentButton.classList.add('btn-info');
     } else {
+      currentButton.classList.remove('btn-info');
+      currentButton.classList.add('btn-outline-info');
       this.setState(prevState => ({
-        selected: prevState.selected.filter(el => el !== name),
+        selected: prevState.selected.filter(el => el != id),
       }));
     }
   };
@@ -39,22 +46,20 @@ export default class ReasonsPage extends Component {
     return (
       <React.Fragment>
         <Form onSubmit={this.props.next(selected)}>
-          <h1>Please select at least one reason for this visit</h1>
+          <h1 className={s.title}>Please select at least one reason for this visit</h1>
           <div className={s.checkboxContainer}>
             {this.props.reasons.map(reason => {
               return (
-                <Form.Check className={s.checkbox} key={reason.id}>
-                  <Form.Check.Input
+                <div className={s.checkbox} key={reason.id}>
+                  <Button
                     className={s.checkboxInput}
-                    name={reason.id}
                     id={`checkbox${reason.id}`}
-                    type="checkbox"
-                    onChange={this.handleChange}
-                  />
-                  <Form.Check.Label className={s.checkboxLabel} htmlFor={`checkbox${reason.id}`}>
+                    variant="outline-info"
+                    onClick={this.handleChange}
+                  >
                     {reason.desc}
-                  </Form.Check.Label>
-                </Form.Check>
+                  </Button>
+                </div>
               );
             })}
           </div>
