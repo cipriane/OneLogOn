@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-export default class Statistics extends Component {
+export default class ManageUsers extends Component {
   render() {
     return (
       <div>
-        <h1>Statistics</h1>
+        <h1>Manage</h1>
       </div>
     );
   }
