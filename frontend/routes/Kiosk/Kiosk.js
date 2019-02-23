@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
+import Fullscreen from 'react-full-screen';
 import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import FullScreenLayout from 'common/FullScreenLayout/FullScreenLayout';
-import Fullscreen from 'react-full-screen';
 import FancyButton from 'common/FancyButton/FancyButton';
+import FancyFormHeader from 'common/FancyFormHeader/FancyFormHeader';
+import fullscreenIcon from 'assets/fullscreen.svg';
+import { Alert } from 'react-bootstrap';
+import fetch from 'utils/fetch';
+import s from './Kiosk.css';
+
 import CheckInPage from './CheckInPage/CheckInPage';
 import ErrorPage from './ErrorPage/ErrorPage';
 import FinishPage from './FinishPage/FinishPage';
 import ReasonsPage from './ReasonsPage/ReasonsPage';
 import WaiverPage from './WaiverPage/WaiverPage';
-import fetch from 'utils/fetch';
-import s from './Kiosk.css';
-import fullscreenIcon from 'assets/fullscreen.svg';
 
 const CHECK_IN_PAGE = 0;
 const REAONS_PAGE = 1;
@@ -142,9 +145,11 @@ export default class Kiosk extends Component {
         >
           <FullScreenLayout>
             <MainFormLayout>
-              <h1 className={s.title}>Kiosk Page</h1>
+              <FancyFormHeader />
               <div className={s.text}>
-                <p>Activating Kiosk mode will activate fullscreen mode and log you out.</p>
+                <Alert variant="danger">
+                  Activating Kiosk mode will activate fullscreen mode and log you out.
+                </Alert>
                 <p>To escape Kiosk mode, press shift + ESC.</p>
               </div>
               <FancyButton label="Activate Kiosk Mode" onClick={this.activateKioskMode} />
