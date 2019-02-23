@@ -16,6 +16,6 @@ urlpatterns = [
     path('api/checkinvisitorreason', views.CheckInVisitorReasonListCreate.as_view()),
     path('api/login', TokenObtainPairView.as_view()),
     path('api/refresh', TokenRefreshView.as_view()),
-    path('api/register', views.UserCreate.as_view()),
+    path('api/register', views.Registration.as_view()),
     re_path(r'', views.index, name='index'),
 ]
