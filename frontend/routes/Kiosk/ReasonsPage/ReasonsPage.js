@@ -23,7 +23,7 @@ export default class ReasonsPage extends Component {
     const target = event.target;
     const name = target.name;
     const id = target.id;
-    const isChecked = this.state.selected.includes(name);
+    const isChecked = this.state.selected.includes(id);
     const currentButton = document.getElementById(id);
 
     if (!isChecked) {
