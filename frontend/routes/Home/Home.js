@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import Form from 'react-bootstrap/Form';
-import FullScreenLayout from 'common/FullScreenLayout/FullScreenLayout';
-import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import FancyButton from 'common/FancyButton/FancyButton';
-import FancyTextField from 'common/FancyTextField/FancyTextField';
-import FancyFormHeader from 'common/FancyFormHeader/FancyFormHeader';
-import Layout from 'common/Layout/Layout';
-import { Container, Jumbotron, Row, Col } from 'react-bootstrap';
+import CustomCarousel from 'common/CustomCarousel/CustomCarousel';
+import { Container, Row, Col } from 'react-bootstrap';
 import s from './Home.css';
-//import Jumbotron from 'react-bootstrap/Jumbotron'
-//import Container from 'react-bootstrap/Container'
+
+import image1 from 'assets/screenshots/dashboard-reasons.png';
+import image2 from 'assets/screenshots/login-page.png';
+
+const images = [
+  { id: 0, title: 'dashboard-reasons', src: image1 },
+  { id: 1, title: 'login-page', src: image2 },
+];
 
 export default class Home extends Component {
   handleLogInButton = event => {
@@ -64,14 +64,7 @@ export default class Home extends Component {
 
         <Row>
           <Col className={s.functionality}>
-            <h1 className={s.centered}>Functionality</h1>
-            <p>
-              /* TO DO */
-              <br />
-              Add some diagrams / screenshots of the awesome app
-              <br />
-              Carousel?
-            </p>
+            <CustomCarousel images={images} />
           </Col>
         </Row>
       </Container>
