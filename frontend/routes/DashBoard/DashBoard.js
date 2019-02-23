@@ -7,14 +7,14 @@ import logo from 'assets/logo-white.png';
 import HamburgerButton from 'common/HamburgerButton/HamburgerButton';
 import s from './DashBoard.css';
 
-import Settings from 'routes/Settings/Settings';
-import ManageUsers from 'routes/ManageUsers/ManageUsers';
-import Statistics from 'routes/Statistics/Statistics';
-import Kiosk from 'routes/Kiosk/Kiosk';
+import Settings from 'routes/DashBoard/Settings/Settings';
+import Manage from 'routes/DashBoard/Manage/Manage';
+import Statistics from 'routes/DashBoard/Statistics/Statistics';
+import Kiosk from 'routes/DashBoard/Kiosk/Kiosk';
 
 const dashboardRoutes = [
   { id: 0, name: 'Settings', path: 'settings', component: Settings },
-  { id: 1, name: 'ManageUsers', path: 'manage', component: ManageUsers },
+  { id: 1, name: 'Manage', path: 'manage', component: Manage },
   { id: 2, name: 'Statistics', path: 'statistics', component: Statistics },
   { id: 3, name: 'Kiosk Mode', path: 'kiosk', component: Kiosk },
 ];
