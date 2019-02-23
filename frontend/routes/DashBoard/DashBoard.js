@@ -56,7 +56,7 @@ class DashBoard extends Component {
             onClick={this.state.sideBarOpen == true ? this.closeSideMenu : this.openSideMenu}
           />
           <Navbar.Brand>
-            <img alt="" src={logo} width="30" height="30" className="d-inline-block align-top" />
+            <img alt="" src={logo} width="30" height="30" />
           </Navbar.Brand>
           <Navbar.Brand>
             <p className={s.title}>DashBoard</p>
@@ -77,6 +77,13 @@ class DashBoard extends Component {
         </Navbar>
 
         <div id="sideMenu" className={s.sideNav}>
+          <div className={s.sideNavHeader}>
+            <HamburgerButton
+              onClick={this.state.sideBarOpen == true ? this.closeSideMenu : this.openSideMenu}
+            />
+            <img className={s.sideNavLogo} alt="" src={logo} width="30" height="30" />
+            <p className={s.sideNavTitle}>DashBoard</p>
+          </div>
           {dashboardRoutes.map(route => {
             return (
               <NavLink key={route.id} to={`${this.props.url}/${route.path}`}>
