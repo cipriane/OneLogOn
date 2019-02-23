@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Form from 'react-bootstrap/Form';
+import { Button, Form } from 'react-bootstrap';
 import FancyButton from 'common/FancyButton/FancyButton';
 import s from './ReasonsPage.css';
 
@@ -26,11 +26,9 @@ export default class ReasonsPage extends Component {
     const isChecked = this.state.selected.includes(name);
     const currentButton = document.getElementById(id);
 
-    console.log(name);
-
     if (!isChecked) {
       this.setState(prevState => ({
-        selected: [...prevState.selected, name],
+        selected: [...prevState.selected, id],
       }));
       currentButton.classList.remove('btn-outline-info');
       currentButton.classList.add('btn-info');
@@ -38,7 +36,7 @@ export default class ReasonsPage extends Component {
       currentButton.classList.remove('btn-info');
       currentButton.classList.add('btn-outline-info');
       this.setState(prevState => ({
-        selected: prevState.selected.filter(el => el != name),
+        selected: prevState.selected.filter(el => el != id),
       }));
     }
   };
