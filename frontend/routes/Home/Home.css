@@ -1,0 +1,162 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.secondaryButton {
+  background: rgba(0, 0, 0, 0.05);
+  text-transform: uppercase;
+  color: rgba(200, 200, 200, 0.8);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  border-radius: 5px 5px 5px 5px;
+  transition: all 0.3s ease-in-out;
+}
+.secondaryButton:hover,
+.secondaryButton:active {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.centered {
+  text-align: center !important;
+  margin: 0 auto;
+  vertical-align: middle;
+}
+
+h3.centered {
+  color: white;
+  padding: 6vh;
+}
+
+.fiftyfifty {
+  margin: 0;
+  float: left;
+  width: 50%;
+}
+
+/*Styling for both the buttons*/
+.fiftyfifty > button {
+  margin: 0 auto;
+  height: 60px;
+  width: 300px;
+  line-height: 1rem;
+}
+
+/*Adjustments per button from center*/
+.fiftyfifty:nth-of-type(1) > button {
+  float: right;
+  margin-right: 2%;
+}
+
+.fiftyfifty:nth-of-type(2) > button {
+  float: left;
+  margin-left: 2%;
+}
+
+/*overriding jumbotron settings*/
+.background,
+.splash,
+.blank,
+.section {
+  margin-bottom: 0 !important;
+  padding: 0 !important;
+  background: none;
+}
+
+/* one log on and buttons container */
+.splash {
+  background: rgba(0, 0, 0, 0.1) !important;
+  /*height: 40vh;*/
+  /*min-height: 400px;*/
+  min-height: 500px;
+  overflow: hidden;
+}
+
+.section {
+  margin: 0 auto;
+  margin-top: 150px;
+  text-align: center;
+  width: 85%;
+  background-color: rgba(1, 1, 1, 0.1) !important;
+  border-radius: 5px 5px 5px 5px !important;
+  padding: 5% !important;
+}
+
+.functionality {
+  margin-top: 10% !important;
+  width: 85% !important;
+  max-width: 800px !important;
+  padding: 1% 5% 2% 1% !important;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.8);
+  flex-grow: 0.85 !important;
+  border-radius: 5px 5px 5px 5px;
+}
+
+.tagline {
+  width: 85% !important;
+  max-width: 800px;
+}
+
+/*
+.splash > *{
+	top: 75px; 
+	left: 0;
+	position: relative;
+}*/
+
+.blank {
+  background-color: rgba(0, 0, 0, 0) !important;
+  margin-bottom: 5% !important;
+}
+
+.background {
+  min-height: 100vh;
+  min-width: 100vw;
+
+  background: linear-gradient(124deg, #2b60de, #a3c1ad);
+
+  background-size: 1800% 1800%;
+}
+
+.title {
+  margin-top: 10vw;
+  font-size: 14vw;
+  margin-bottom: 100px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/*max size*/
+@media screen and (min-width: 1200px) {
+  .title {
+    font-size: 170px;
+  }
+
+  .functionality {
+    margin-top: 115px !important;
+  }
+}
+
+/*min size*/
+@media screen and (max-width: 900px) {
+  .title {
+    margin-bottom: 50px;
+  }
+
+  .fiftyfifty {
+    margin: 0 auto;
+    float: right !important;
+    width: 100%;
+  }
+
+  /*Adjustments per button from center*/
+  .fiftyfifty > button {
+    /*float: left !important;*/
+    display: block;
+    float: none !important;
+    margin: 20px auto !important;
+    text-align: center !important;
+    /*margin-left: 25% !important;
+		margin-top: 5% !important;*/
+  }
+}
