@@ -6,6 +6,8 @@ import userlogo from 'assets/user.png';
 import logo from 'assets/logo-white.png';
 import HamburgerButton from 'common/HamburgerButton/HamburgerButton';
 import s from './DashBoard.css';
+import { Roles } from 'utils/constants';
+import me from 'utils/me';
 
 import Settings from 'routes/DashBoard/Settings/Settings';
 import Manage from 'routes/DashBoard/Manage/Manage';
@@ -21,13 +23,13 @@ const dashboardRoutes = [
 
 class DashBoard extends Component {
   static propTypes = {
+    jwt: PropTypes.string,
     children: PropTypes.node.isRequired,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      username: 'Admin',
       sideBarOpen: false,
     };
   }
@@ -49,6 +51,11 @@ class DashBoard extends Component {
   };
 
   render() {
+    const user = me(this.props.jwt);
+
+    if (user.role === Roles.kiosk) {
+      return <React.Fragment>{this.props.children}</React.Fragment>;
+    }
     return (
       <div className={s.root}>
         <Navbar className={s.navbar}>
@@ -67,7 +74,7 @@ class DashBoard extends Component {
             <Dropdown>
               <Dropdown.Toggle variant="link" id="dropdown-basic" className={s.dropDownToggle}>
                 <img className={s.profileImage} src={userlogo} alt="user pic" />
-                {this.state.username}
+                {user.username}
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item onClick={this.handleLogout}>Logout</Dropdown.Item>
