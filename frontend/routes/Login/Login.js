@@ -9,9 +9,15 @@ import FancyTextField from 'common/FancyTextField/FancyTextField';
 import FancyFormHeader from 'common/FancyFormHeader/FancyFormHeader';
 import s from './Login.css';
 import fetch from 'utils/fetch';
-import login from 'utils/login';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { login } from 'actions';
 
 class Login extends Component {
+  static propTypes = {
+    login: PropTypes.func.isRequired,
+  };
+
   state = {
     username: '',
     password: '',
@@ -47,7 +53,7 @@ class Login extends Component {
       }
 
       const data = await resp.json();
-      login(data);
+      this.props.login(data);
       this.props.history.push('/dashboard');
     } catch (err) {
       this.setState({
@@ -111,4 +117,18 @@ class Login extends Component {
   }
 }
 
-export default withRouter(Login);
+const mapDispatchToProps = dispatch => {
+  return {
+    login: data => dispatch(login(data)),
+  };
+};
+
+export default withRouter(
+  connect(
+    null,
+    mapDispatchToProps,
+  )(Login),
+);
+
+// Named unconnected export for testing
+export { Login as LoginTest };

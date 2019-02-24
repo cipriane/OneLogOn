@@ -9,15 +9,17 @@ import Register from 'routes/Register/Register';
 import NoMatch from 'routes/NoMatch/NoMatch';
 import DashBoard from 'routes/DashBoard/Root';
 import Authorization from 'common/Authorization/Authorization';
+import { Roles } from 'utils/constants';
 
 // Role-based authorization
 const NotIfLoggedIn = Authorization(['None'], true);
-const Staff = Authorization(['staff', 'admin']);
-const Admin = Authorization(['admin']);
+const Kiosk = Authorization([Roles.kiosk, Roles.staff, Roles.admin]);
+const Staff = Authorization([Roles.staff, Roles.admin]);
+const Admin = Authorization([Roles.admin]);
 
 const LoginProtected = NotIfLoggedIn(Login);
 const RegisterProtected = NotIfLoggedIn(Register);
-const DashBoardIsStaff = Staff(DashBoard);
+const DashBoardIsKiosk = Kiosk(DashBoard);
 
 export default class App extends Component {
   render() {
@@ -30,7 +32,7 @@ export default class App extends Component {
           <Route exact path="/logout" component={Logout} />
           <Route exact path="/register" component={RegisterProtected} />
           <Route exact path="/ReduxExample" component={ReduxExample} />
-          <Route path="/dashboard" component={DashBoardIsStaff} />
+          <Route path="/dashboard" component={DashBoardIsKiosk} />
           <Route component={NoMatch} />
         </Switch>
       </BrowserRouter>

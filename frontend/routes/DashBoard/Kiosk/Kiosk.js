@@ -129,6 +129,7 @@ export default class Kiosk extends Component {
 
   activateKioskMode = () => {
     // TODO: change user's role so user is not logged in anymore
+    // Trigger an API call, and then call the redux login() function
     this.setState({
       isKioskModeActivated: true,
       isFullscreen: true,

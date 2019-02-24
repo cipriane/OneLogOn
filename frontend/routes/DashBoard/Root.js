@@ -6,15 +6,26 @@ import Manage from 'routes/DashBoard/Manage/Manage';
 import Statistics from 'routes/DashBoard/Statistics/Statistics';
 import Kiosk from 'routes/DashBoard/Kiosk/Kiosk';
 import NoMatch from 'routes/NoMatch/NoMatch';
+import Authorization from 'common/Authorization/Authorization';
+import { Roles } from 'utils/constants';
+
+const KioskRole = Authorization([Roles.kiosk, Roles.staff, Roles.admin]);
+const Staff = Authorization([Roles.staff, Roles.admin]);
+const Admin = Authorization([Roles.admin]);
+
+const StatisticsProtected = Staff(Statistics);
+const ManageProtected = Staff(Manage);
+const SettingsProtected = Staff(Settings);
+const KioskProtected = KioskRole(Kiosk);
 
 const Root = ({ match }) => (
   <Dashboard {...match}>
     <Switch>
-      <Route exact path={`${match.url}`} component={Statistics} />
-      <Route path={`${match.url}/statistics`} component={Statistics} />
-      <Route path={`${match.url}/manage`} component={Manage} />
-      <Route path={`${match.url}/settings`} component={Settings} />
-      <Route path={`${match.url}/kiosk`} component={Kiosk} />
+      <Route exact path={`${match.url}`} component={StatisticsProtected} />
+      <Route path={`${match.url}/statistics`} component={StatisticsProtected} />
+      <Route path={`${match.url}/manage`} component={ManageProtected} />
+      <Route path={`${match.url}/settings`} component={SettingsProtected} />
+      <Route path={`${match.url}/kiosk`} component={KioskProtected} />
       <Route component={NoMatch} />
     </Switch>
   </Dashboard>

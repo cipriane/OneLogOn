@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import logout from 'utils/logout';
+import { logout } from 'actions';
 
 class Logout extends Component {
+  static propTypes = {
+    logout: PropTypes.func.isRequired,
+  };
+
   componentDidMount() {
-    logout();
+    this.props.logout();
     this.props.history.push('/');
   }
   render() {
@@ -12,4 +18,16 @@ class Logout extends Component {
   }
 }
 
-export default withRouter(Logout);
+const mapDispatchToProps = {
+  logout,
+};
+
+export default withRouter(
+  connect(
+    null,
+    mapDispatchToProps,
+  )(Logout),
+);
+
+// Named unconnected export for testing
+export { Logout as LogoutTest };
