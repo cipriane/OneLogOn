@@ -8,8 +8,9 @@ import FancyButton from 'common/FancyButton/FancyButton';
 import FancyTextField from 'common/FancyTextField/FancyTextField';
 import FancyFormHeader from 'common/FancyFormHeader/FancyFormHeader';
 import fetch from 'utils/fetch';
-import login from 'utils/login';
 import s from './Register.css';
+import { connect } from 'react-redux';
+import { login } from 'actions';
 
 class Register extends Component {
   state = {
@@ -61,7 +62,7 @@ class Register extends Component {
       }
 
       const loginData = await loginResp.json();
-      login(loginData);
+      this.props.login(loginData);
       this.props.history.push('/dashboard');
     } catch (err) {
       this.setState({
@@ -125,4 +126,18 @@ class Register extends Component {
   }
 }
 
-export default withRouter(Register);
+const mapDispatchToProps = dispatch => {
+  return {
+    login: data => dispatch(login(data)),
+  };
+};
+
+export default withRouter(
+  connect(
+    null,
+    mapDispatchToProps,
+  )(Register),
+);
+
+// Named unconnected export for testing
+export { Register as RegisterTest };

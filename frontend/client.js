@@ -6,7 +6,12 @@ import Root from 'common/Root';
 import rootReducer from 'reducers';
 import 'bootstrap/dist/css/bootstrap.css';
 
-const store = createStore(rootReducer);
+const persistedState = { jwt: localStorage.getItem('jwt') || null };
+const store = createStore(rootReducer, persistedState);
+
+store.subscribe(() => {
+  localStorage.setItem('jwt', store.getState().jwt);
+});
 
 ReactDOM.render(
   <Provider store={store}>
