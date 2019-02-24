@@ -1,0 +1,21 @@
+.reason {
+  display: flex;
+}
+
+.edit {
+  float: right;
+  width: 80px;
+  margin: 10px;
+}
+
+.delete {
+  float: right;
+  width: 80px;
+  margin: 10px;
+}
+
+.save {
+  float: right;
+  margin-right: 10px;
+  width: 180px;
+}
