@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SimpleHeader from 'common/SimpleHeader/SimpleHeader';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Row, Col, ListGroup } from 'react-bootstrap';
+import ReasonList from 'common/Reasons/ReasonList/ReasonList';
 import s from './Settings.css';
 
 export default class Settings extends Component {
@@ -9,6 +10,8 @@ export default class Settings extends Component {
       'A simple Open Source visitor check-in and statistics aggregation system for your facility or site.',
     username: 'Admin',
     password: 'password',
+    reasons: ['reason 1', 'reason 2', 'reason 3'],
+    reason: '',
   };
 
   handleChange = event => {
@@ -22,6 +25,27 @@ export default class Settings extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
+  };
+
+  addReason = () => {
+    const { reason, reasons } = this.state;
+    let list = reasons;
+    list.push(reason);
+    this.setState({ reasons: list, reason: '' });
+  };
+
+  deleteReason = index => {
+    const { reasons } = this.state;
+    let list = reasons;
+    list.splice(index, 1);
+    this.setState({ reasons: list });
+  };
+
+  editReason = (index, value) => {
+    const { reasons } = this.state;
+    let list = reasons;
+    list[index] = value;
+    this.setState({ reasons: list });
   };
 
   render() {
@@ -62,8 +86,34 @@ export default class Settings extends Component {
             <Form.Text className="text-muted">Edit your password.</Form.Text>
           </Form.Group>
 
-          <Button type="submit" variant="success" label="Save">
-            Save
+          <Form.Group controlId="formBasicReasons" className={s.reasonGroup}>
+            <Form.Label className={s.label}>Reasons:</Form.Label>
+            <Row>
+              <Col>
+                <Form.Control
+                  type="text"
+                  name="reason"
+                  placeholder="Add a new Visit Reason"
+                  value={this.state.reason}
+                  onChange={this.handleChange}
+                />
+              </Col>
+              <Col>
+                <Button variant="outline-primary" onClick={this.addReason}>
+                  Add Reason
+                </Button>
+              </Col>
+            </Row>
+          </Form.Group>
+
+          <ReasonList
+            reasonList={this.state.reasons}
+            editReason={this.editReason}
+            deleteReason={this.deleteReason}
+          />
+
+          <Button type="submit" variant="success" label="Save" className={s.submit}>
+            Save changes
           </Button>
         </Form>
       </div>
