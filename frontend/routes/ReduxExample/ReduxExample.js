@@ -2,18 +2,18 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import * as Actions from 'actions';
+import { increaseCount } from 'actions';
 import Layout from 'common/Layout/Layout';
 import s from './ReduxExample.css';
 
 class ReduxExample extends Component {
   static propTypes = {
     value: PropTypes.number.isRequired,
-    onIncreaseClick: PropTypes.func.isRequired,
+    increaseCount: PropTypes.func.isRequired,
   };
 
   render() {
-    const { value, onIncreaseClick } = this.props;
+    const { value, increaseCount } = this.props;
     return (
       <Layout>
         <div className={s.root}>
@@ -21,7 +21,7 @@ class ReduxExample extends Component {
           <Link to="/">Go To Home</Link>
           <div className={s.value}>
             <span>{value}</span>
-            <button onClick={onIncreaseClick}>Increase</button>
+            <button onClick={increaseCount}>Increase</button>
           </div>
         </div>
       </Layout>
@@ -37,10 +37,8 @@ const mapStateToProps = store => {
 };
 
 // Map Redux actions to component props
-const mapDispatchToProps = dispatch => {
-  return {
-    onIncreaseClick: () => dispatch(Actions.increaseCount()),
-  };
+const mapDispatchToProps = {
+  increaseCount,
 };
 
 export default connect(
@@ -48,5 +46,5 @@ export default connect(
   mapDispatchToProps,
 )(ReduxExample);
 
-// Named export for testing
+// Named unconnected export for testing
 export { ReduxExample as ReduxExampleTest };

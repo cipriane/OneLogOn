@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Logout from './Logout';
+import LogoutTest from './Logout';
 
 test('renders without crashing', () => {
-  const logout = shallow(<Logout />);
+  const logout = shallow(<LogoutTest />);
 });
