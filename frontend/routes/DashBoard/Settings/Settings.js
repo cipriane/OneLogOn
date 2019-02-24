@@ -40,7 +40,7 @@ export default class Settings extends Component {
             <Form.Text className="text-muted">Edit the welcome message on the home page.</Form.Text>
           </Form.Group>
 
-          <Form.Group controlId="formBasicMessage">
+          <Form.Group controlId="formBasicUsername">
             <Form.Label className={s.label}>Username:</Form.Label>
             <Form.Control
               type="text"
@@ -51,7 +51,7 @@ export default class Settings extends Component {
             <Form.Text className="text-muted">Edit your username.</Form.Text>
           </Form.Group>
 
-          <Form.Group controlId="formBasicMessage">
+          <Form.Group controlId="formBasicPassword">
             <Form.Label className={s.label}>Password:</Form.Label>
             <Form.Control
               type="password"
