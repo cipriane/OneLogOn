@@ -16,7 +16,7 @@ class Company(models.Model):
     company_state = models.CharField(max_length=2)
 
 class Visitors(models.Model):
-    company_id = models.ForeignKey(Company, on_delete=models.CASCADE,verbose_name="compamy ID")
+    company_id = models.ForeignKey(Company, on_delete=models.CASCADE,verbose_name="company ID")
     visitor_id = models.CharField(max_length=10)
     first_name = models.CharField(max_length=30, null=True)
     last_name = models.CharField(max_length=30,null=True)
@@ -35,7 +35,7 @@ class CheckIns(models.Model):
     visit_reason = models.ForeignKey(ListReasons, on_delete=models.CASCADE)
 
 class Admin(models.Model):
-    company_id = models.ForeignKey(Company,on_delete=models.CASCADE)
+    company = models.ForeignKey(Company,on_delete=models.CASCADE)
     company_name = models.CharField(max_length=50)
     user_name = models.CharField(max_length=25, primary_key=True)
     first_name = models.CharField(max_length=30)
@@ -43,15 +43,15 @@ class Admin(models.Model):
     role = models.CharField(max_length=10)
 
 class TimeSheet(models.Model):
-    admin_id = models.ForeignKey (Admin, on_delete=models.CASCADE)
+    admin = models.ForeignKey (Admin, on_delete=models.CASCADE)
     time_in = models.DateTimeField()
     time_out = models.DateTimeField()
 
 class VisitorReason(models.Model):
-    company_id = models.ForeignKey(Company, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
     visit_reason = models.CharField(max_length=30)
     is_active = models.BooleanField(default=False)
 
 class CheckInVisitorReason(models.Model):
-    CheckIn_id = models.ForeignKey(CheckIns, on_delete=models.CASCADE)
-    visitor_reason_id = models.ForeignKey(VisitorReason, on_delete=models.CASCADE)
+    CheckIn = models.ForeignKey(CheckIns, on_delete=models.CASCADE)
+    visitor_reason = models.ForeignKey(VisitorReason, on_delete=models.CASCADE)

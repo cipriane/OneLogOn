@@ -1,35 +1,41 @@
 [
     {
         "model": "server.listreasons",
-        "pk":1,
+        "pk": 1,
         "fields": {
-            "visist reason": "Nothing better to do"
-        }
-    },
-
-    {
-      "model": "server.company",
-      "pk":2,
-      "fields": {
-            "visit reason": "Use printer",
-            "company_sponsoring": "1"
-        }
-    },
-
-    {
-      "model": "server.company",
-      "pk":3,
-      "fields": {
-            "visit reason": "Beer taste event",
+            "visit_reason": "Nothing better to do",
             "company_sponsoring": "2"
         }
     },
-
     {
-      "model": "server.company",
-      "pk":4,
-      "fields": {
-            "visit reason": "generic use",
+        "model": "server.listreasons",
+        "pk": 2,
+        "fields": {
+            "visit_reason": "Use printer",
+            "company_sponsoring": "1"
+        }
+    },
+    {
+        "model": "server.listreasons",
+        "pk": 3,
+        "fields": {
+            "visit_reason": "Beer taste event",
+            "company_sponsoring": "2"
+        }
+    },
+    {
+        "model": "server.listreasons",
+        "pk": 4,
+        "fields": {
+            "visit_reason": "generic use",
+            "company_sponsoring": "1"
+        }
+    },
+    {
+        "model": "server.listreasons",
+        "pk": 5,
+        "fields": {
+            "visit_reason": "underwater knitting discussion",
             "company_sponsoring": "1"
         }
     }
