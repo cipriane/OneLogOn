@@ -111,6 +111,11 @@ h3.centered {
   color: rgba(255, 255, 255, 0.8);
 }
 
+.fixMargin {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
 /*max size*/
 @media screen and (min-width: 1200px) {
   .title {
