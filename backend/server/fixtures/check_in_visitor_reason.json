@@ -1,0 +1,18 @@
+[
+    {
+        "model": "server.checkinvisitorreason",
+        "pk": 1,
+        "fields": {
+            "CheckIn": 1,
+            "visitor_reason": 1
+        }
+    },
+    {
+        "model": "server.checkinvisitorreason",
+        "pk": 2,
+        "fields": {
+            "CheckIn": 2,
+            "visitor_reason": 2
+        }
+    }
+]

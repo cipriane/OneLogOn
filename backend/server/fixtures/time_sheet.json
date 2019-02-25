@@ -1,0 +1,20 @@
+[
+    {
+        "model": "server.timesheet",
+        "pk": 1,
+        "fields": {
+            "admin": "bill6969",
+            "time_in": "2019-02-24T00:49:00Z",
+            "time_out": "2019-02-24T01:19:22Z"
+        }
+    },
+    {
+        "model": "server.timesheet",
+        "pk": 2,
+        "fields": {
+            "admin": "trump4ever",
+            "time_in": "2019-02-22T00:02:00Z",
+            "time_out": "2019-02-22T00:04:23Z"
+        }
+    }
+]
