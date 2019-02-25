@@ -95,15 +95,13 @@ class Registration(APIView):
 
         if user_serializer.is_valid():
 
-            try: # check if company exists
-                company = Company.objects.get(company_name=request.data['company_name'])
-            except Exception: # create new company
-                company_serializer = CompanySerializer(data=request.data)
-                if company_serializer.is_valid():
-                    company = company_serializer.save()
-                else:
-                    message = {'error' : 'invalid company data'}
-                    return Response(message, status=status.HTTP_400_BAD_REQUEST)
+            # check to make sure company data is valid
+            company_serializer = CompanySerializer(data=request.data)
+            if company_serializer.is_valid():
+                company = company_serializer.save()
+            else:
+                message = {'error' : 'invalid company data'}
+                return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
             # save user
             user = user_serializer.save()
