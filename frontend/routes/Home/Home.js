@@ -27,13 +27,13 @@ export default class Home extends Component {
 
     return (
       <Container className={s.background}>
-        <Row>
+        <Row className={s.fixMargin}>
           <Col>
             <h1 className={`${s.title} ${s.centered}`}>OneLogOn</h1>
           </Col>
         </Row>
 
-        <Row>
+        <Row className={s.fixMargin}>
           <Col>
             <h3 className={`${s.tagline} ${s.centered}`}>
               A simple Open Source visitor check-in and statistics aggregation system for your
@@ -42,7 +42,7 @@ export default class Home extends Component {
           </Col>
         </Row>
 
-        <Row>
+        <Row className={s.fixMargin}>
           <Col>
             <div className={s.fiftyfifty}>
               <FancyButton
@@ -62,7 +62,7 @@ export default class Home extends Component {
           </Col>
         </Row>
 
-        <Row>
+        <Row className={s.fixMargin}>
           <Col className={s.functionality}>
             <CustomCarousel images={images} />
           </Col>

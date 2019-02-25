@@ -10,6 +10,7 @@ import NoMatch from 'routes/NoMatch/NoMatch';
 import DashBoard from 'routes/DashBoard/Root';
 import Authorization from 'common/Authorization/Authorization';
 import { Roles } from 'utils/constants';
+import './Root.css';
 
 // Role-based authorization
 const NotIfLoggedIn = Authorization(['None'], true);
