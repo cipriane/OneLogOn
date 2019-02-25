@@ -1,0 +1,26 @@
+[
+    {
+        "model": "server.admin",
+        "pk": 1,
+        "fields": {
+            "company": 3,
+            "company_name": "One Bit Off",
+            "user_name": "bill6969",
+            "first_name": "Billy",
+            "last_name": "Bob",
+            "role": "staff"
+        }
+    },
+    {
+        "model": "server.admin",
+        "pk": 2,
+        "fields": {
+            "company": 2,
+            "company_name": "Folsom Inovative Center",
+            "user_name": "trump4ever",
+            "first_name": "Barack",
+            "last_name": "Obama",
+            "role": "staff"
+        }
+    }
+]

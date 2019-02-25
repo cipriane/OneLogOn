@@ -1,0 +1,35 @@
+[
+    {
+        "model": "server.checkins",
+        "pk": 1,
+        "fields": {
+            "visitor_id": 666,
+            "user_id": "xXxSephirothxXx",
+            "check_in": "2019-01-22T00:00:00Z",
+            "check_out": "2019-01-22T00:00:00Z",
+            "visit_reason": 2
+        }
+    },
+    {
+        "model": "server.checkins",
+        "pk": 2,
+        "fields": {
+            "visitor_id": 777,
+            "user_id": "pewPewpew",
+            "check_in": "2019-01-22T00:00:00Z",
+            "check_out": "2019-01-22T00:00:00Z",
+            "visit_reason": 5
+        }
+    },
+    {
+        "model": "server.checkins",
+        "pk": 3,
+        "fields": {
+            "visitor_id": 888,
+            "user_id": "OhShitImSorry",
+            "check_in": "2019-01-22T00:00:00Z",
+            "check_out": "2019-01-22T00:00:00Z",
+            "visit_reason": 4
+        }
+    }
+]
