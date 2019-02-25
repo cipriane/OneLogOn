@@ -138,6 +138,7 @@ export default class Kiosk extends Component {
 
   render() {
     const { page, isKioskModeActivated, error } = this.state;
+
     if (!isKioskModeActivated) {
       return (
         <Fullscreen
