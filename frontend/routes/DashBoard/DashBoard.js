@@ -76,7 +76,7 @@ class DashBoard extends Component {
                 <img className={s.profileImage} src={userlogo} alt="user pic" />
                 {user.username}
               </Dropdown.Toggle>
-              <Dropdown.Menu>
+              <Dropdown.Menu alignRight>
                 <Dropdown.Item onClick={this.handleLogout}>Logout</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
@@ -101,7 +101,6 @@ class DashBoard extends Component {
             );
           })}
         </div>
-
         <div id="main" className={s.main}>
           {this.props.children}
         </div>
