@@ -6,28 +6,30 @@ import userlogo from 'assets/user.png';
 import logo from 'assets/logo-white.png';
 import HamburgerButton from 'common/HamburgerButton/HamburgerButton';
 import s from './DashBoard.css';
+import { Roles } from 'utils/constants';
+import me from 'utils/me';
 
-import Settings from 'routes/Settings/Settings';
-import ManageUsers from 'routes/ManageUsers/ManageUsers';
-import Statistics from 'routes/Statistics/Statistics';
-import Kiosk from 'routes/Kiosk/Kiosk';
+import Settings from 'routes/DashBoard/Settings/Settings';
+import Manage from 'routes/DashBoard/Manage/Manage';
+import Statistics from 'routes/DashBoard/Statistics/Statistics';
+import Kiosk from 'routes/DashBoard/Kiosk/Kiosk';
 
 const dashboardRoutes = [
   { id: 0, name: 'Settings', path: 'settings', component: Settings },
-  { id: 1, name: 'ManageUsers', path: 'manage', component: ManageUsers },
+  { id: 1, name: 'Manage', path: 'manage', component: Manage },
   { id: 2, name: 'Statistics', path: 'statistics', component: Statistics },
   { id: 3, name: 'Kiosk Mode', path: 'kiosk', component: Kiosk },
 ];
 
 class DashBoard extends Component {
   static propTypes = {
+    jwt: PropTypes.string,
     children: PropTypes.node.isRequired,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      username: 'Admin',
       sideBarOpen: false,
     };
   }
@@ -49,6 +51,11 @@ class DashBoard extends Component {
   };
 
   render() {
+    const user = me(this.props.jwt);
+
+    if (user.role === Roles.kiosk) {
+      return <React.Fragment>{this.props.children}</React.Fragment>;
+    }
     return (
       <div className={s.root}>
         <Navbar className={s.navbar}>
@@ -56,7 +63,7 @@ class DashBoard extends Component {
             onClick={this.state.sideBarOpen == true ? this.closeSideMenu : this.openSideMenu}
           />
           <Navbar.Brand>
-            <img alt="" src={logo} width="30" height="30" className="d-inline-block align-top" />
+            <img alt="" src={logo} width="30" height="30" />
           </Navbar.Brand>
           <Navbar.Brand>
             <p className={s.title}>DashBoard</p>
@@ -67,9 +74,9 @@ class DashBoard extends Component {
             <Dropdown>
               <Dropdown.Toggle variant="link" id="dropdown-basic" className={s.dropDownToggle}>
                 <img className={s.profileImage} src={userlogo} alt="user pic" />
-                {this.state.username}
+                {user.username}
               </Dropdown.Toggle>
-              <Dropdown.Menu>
+              <Dropdown.Menu alignRight>
                 <Dropdown.Item onClick={this.handleLogout}>Logout</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
@@ -77,6 +84,13 @@ class DashBoard extends Component {
         </Navbar>
 
         <div id="sideMenu" className={s.sideNav}>
+          <div className={s.sideNavHeader}>
+            <HamburgerButton
+              onClick={this.state.sideBarOpen == true ? this.closeSideMenu : this.openSideMenu}
+            />
+            <img className={s.sideNavLogo} alt="" src={logo} width="30" height="30" />
+            <p className={s.sideNavTitle}>DashBoard</p>
+          </div>
           {dashboardRoutes.map(route => {
             return (
               <NavLink key={route.id} to={`${this.props.url}/${route.path}`}>
@@ -87,7 +101,6 @@ class DashBoard extends Component {
             );
           })}
         </div>
-
         <div id="main" className={s.main}>
           {this.props.children}
         </div>
