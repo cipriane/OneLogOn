@@ -70,7 +70,6 @@ class Login extends Component {
     if (error) {
       errorMessage = <Alert variant="danger">{error}</Alert>;
     }
-    const buttonText = isLoading ? 'Sending...' : 'Log In';
 
     return (
       <Layout>
@@ -98,7 +97,7 @@ class Login extends Component {
                   onChange={this.handleChange}
                 />
               </Form.Group>
-              <FancyButton label={buttonText} disabled={isLoading} type="submit" />
+              <FancyButton label="Log in" loading={isLoading} type="submit" />
             </MainFormLayout>
           </Form>
         </FullScreenLayout>
