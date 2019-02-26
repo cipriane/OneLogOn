@@ -2,7 +2,6 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.models import User
 from backend.server.models import Student
-from backend.server.models import Admin
 from backend.server.models import Company
 from backend.server.models import CheckIns
 from backend.server.models import TimeSheet
@@ -10,7 +9,7 @@ from backend.server.models import Visitors
 from backend.server.models import ListReasons
 from backend.server.models import VisitorReason
 from backend.server.models import CheckInVisitorReason
-
+from backend.server.models import UserCompany
 
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,11 +19,6 @@ class StudentSerializer(serializers.ModelSerializer):
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
-        fields = '__all__'
-
-class AdminSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Admin
         fields = '__all__'
 
 class CheckInsSerializer(serializers.ModelSerializer):
@@ -40,33 +34,41 @@ class TimeSheetSerializer(serializers.ModelSerializer):
 class VisitorsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Visitors
-        fields ='__all__'
+        fields = '__all__'
 
 class VisitorReasonSerializer(serializers.ModelSerializer):
     class Meta:
         model = VisitorReason
-        fields ='__all__'
+        fields = '__all__'
 
 class CheckInVisitorReasonSerializer(serializers.ModelSerializer):
     class Meta:
         model = CheckInVisitorReason
-        fields ='__all__'
+        fields = '__all__'
 
 class ListReasonsSerializer(serializers.ModelSerializer):
     class Meta:
         model = ListReasons
-        fields ='__all__'
+        fields = '__all__'
 
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(
         validators=[UniqueValidator(queryset=User.objects.all())]
     )
     password = serializers.CharField(min_length=8, write_only=True)
-
+    email = serializers.EmailField()
+    
     def create(self, validated_data):
         user = User.objects.create_user(validated_data['username'], password=validated_data['password'])
+        user.email = validated_data['email']
+        user.save()
         return user
 
     class Meta:
         model = User
         fields = ('id', 'username', 'email', 'password')
+
+class UserCompanySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserCompany
+        fields = '__all__'
