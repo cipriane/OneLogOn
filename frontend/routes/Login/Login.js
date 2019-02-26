@@ -5,6 +5,7 @@ import FullScreenLayout from 'common/FullScreenLayout/FullScreenLayout';
 import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import FancyButton from 'common/FancyButton/FancyButton';
 import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
 import FancyTextField from 'common/FancyTextField/FancyTextField';
 import FancyFormHeader from 'common/FancyFormHeader/FancyFormHeader';
 import s from './Login.css';
@@ -67,22 +68,17 @@ class Login extends Component {
     const { error, isLoading, username, password, validated } = this.state;
     let errorMessage = null;
     if (error) {
-      errorMessage = (
-        <div>
-          <pre>{error}</pre>
-        </div>
-      );
+      errorMessage = <Alert variant="danger">{error}</Alert>;
     }
-    const buttonText = isLoading ? 'Sending...' : 'Log In';
 
     return (
       <Layout>
         <FullScreenLayout>
-          {errorMessage}
-          <Form className={s.form} noValidate validated={validated} onSubmit={this.handleSubmit}>
+          <Form className={s.form} noValidate onSubmit={this.handleSubmit}>
+            {errorMessage}
             <MainFormLayout>
+              <FancyFormHeader text="Login" />
               <Form.Group>
-                <FancyFormHeader text="Login" />
                 <FancyTextField
                   autoFocus
                   required
@@ -91,24 +87,17 @@ class Login extends Component {
                   name="username"
                   onChange={this.handleChange}
                 />
-                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                <Form.Control.Feedback type="invalid">
-                  Please enter a valid Username.
-                </Form.Control.Feedback>
               </Form.Group>
               <Form.Group>
                 <FancyTextField
+                  required
                   type="password"
                   placeholder="password"
                   name="password"
                   onChange={this.handleChange}
                 />
-                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                <Form.Control.Feedback type="invalid">
-                  The password you entered was incorrect.
-                </Form.Control.Feedback>
               </Form.Group>
-              <FancyButton label={buttonText} type="submit" />
+              <FancyButton label="Log in" loading={isLoading ? 1 : 0} type="submit" />
             </MainFormLayout>
           </Form>
         </FullScreenLayout>
