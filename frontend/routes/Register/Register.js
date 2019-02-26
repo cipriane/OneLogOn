@@ -170,7 +170,7 @@ class Register extends Component {
               <FancyButton
                 label="Register"
                 disabled={!this.isValidAll()}
-                loading={isLoading}
+                loading={isLoading ? 1 : 0}
                 type="submit"
               />
             </MainFormLayout>
