@@ -97,7 +97,7 @@ class Login extends Component {
                   onChange={this.handleChange}
                 />
               </Form.Group>
-              <FancyButton label="Log in" loading={isLoading} type="submit" />
+              <FancyButton label="Log in" loading={isLoading ? 1 : 0} type="submit" />
             </MainFormLayout>
           </Form>
         </FullScreenLayout>

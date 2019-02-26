@@ -11,9 +11,10 @@ function me(jwt) {
 
     // TODO: change to real values
     return {
-      name: decodedJwt.user_id,
+      id: decodedJwt.user_id,
       role: 'admin',
-      name: 'Admin',
+      name: decodedJwt.name,
+      is_staff: decodedJwt.is_staff,
     };
   } catch (err) {
     console.error(err);
