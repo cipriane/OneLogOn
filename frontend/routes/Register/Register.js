@@ -108,7 +108,6 @@ class Register extends Component {
     if (error) {
       errorMessage = <Alert variant="danger">{error}</Alert>;
     }
-    const buttonText = isLoading ? 'Sending...' : 'Register';
 
     const { username, company, email, password, isLoading } = this.state;
     return (
@@ -152,7 +151,7 @@ class Register extends Component {
                   isValid={email && this.isValidEmail(email)}
                   isInvalid={email && !this.isValidEmail(email)}
                   value={email}
-                  onChange={e => this.handleChange(e)}
+                  onChange={this.handleChange}
                 />
               </Form.Group>
               <Form.Group>
@@ -169,8 +168,9 @@ class Register extends Component {
                 <Form.Text className="text-muted">Must be 8 characters or longer</Form.Text>
               </Form.Group>
               <FancyButton
-                label={buttonText}
-                disabled={!this.isValidAll() || isLoading}
+                label="Register"
+                disabled={!this.isValidAll()}
+                loading={isLoading}
                 type="submit"
               />
             </MainFormLayout>
