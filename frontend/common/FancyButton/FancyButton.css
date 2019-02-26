@@ -51,3 +51,13 @@
   background-color: #b3b3b3;
   box-shadow: 0 10px 30px 0 rgba(141, 141, 141, 0.4);
 }
+
+/* Prevent Chrome autofill from turning input yellow
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-transition-delay: 9999s;
+    -webkit-transition: color 9999s ease-out,background-color 9999s ease-out;
+}
+*/

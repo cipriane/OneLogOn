@@ -11,10 +11,10 @@ class Student(models.Model):
 
 class Company(models.Model):
     company_name = models.CharField(max_length=30)
-    company_address = models.CharField(max_length=50)
-    company_city = models.CharField(max_length=30)
-    company_zip = models.CharField(max_length=15)
-    company_state = models.CharField(max_length=2)
+    company_address = models.CharField(max_length=50, null=True)
+    company_city = models.CharField(max_length=30, null=True)
+    company_zip = models.CharField(max_length=15, null=True)
+    company_state = models.CharField(max_length=2, null=True)
 
 class Visitors(models.Model):
     company = models.ForeignKey(Company,on_delete=models.CASCADE,verbose_name="company_ID")
@@ -37,7 +37,7 @@ class CheckIns(models.Model):
 
 class UserCompany(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    company = models.ForeignKey(Company,on_delete=models.CASCADE) 
+    company = models.ForeignKey(Company,on_delete=models.CASCADE)
 
 class TimeSheet(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)

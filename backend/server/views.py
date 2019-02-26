@@ -120,4 +120,3 @@ class Registration(APIView):
         else:
             message = {'error' : 'invalid user data'}
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
-        
