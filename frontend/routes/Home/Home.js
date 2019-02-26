@@ -1,58 +1,73 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import Form from 'react-bootstrap/Form';
-import FullScreenLayout from 'common/FullScreenLayout/FullScreenLayout';
-import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import FancyButton from 'common/FancyButton/FancyButton';
-import FancyTextField from 'common/FancyTextField/FancyTextField';
-import FancyFormHeader from 'common/FancyFormHeader/FancyFormHeader';
-import Layout from 'common/Layout/Layout';
+import CustomCarousel from 'common/CustomCarousel/CustomCarousel';
+import { Container, Row, Col } from 'react-bootstrap';
 import s from './Home.css';
 
+import image1 from 'assets/screenshots/dashboard-reasons.png';
+import image2 from 'assets/screenshots/login-page.png';
+
+const images = [
+  { id: 0, title: 'dashboard-reasons', src: image1 },
+  { id: 1, title: 'login-page', src: image2 },
+];
+
 export default class Home extends Component {
-  constructor(...args) {
-    super(...args);
-
-    this.state = { validated: false, id: '' };
-  }
-
-  handleSubmit = event => {
-    event.preventDefault();
-    this.setState({ validated: true });
+  handleLogInButton = event => {
+    this.props.history.push('/login');
   };
 
-  handleChange = evt => {
-    this.setState({
-      id: evt.target.value,
-    });
+  handleRegisterButton = event => {
+    this.props.history.push('/register');
   };
 
   render() {
-    const { validated } = this.state;
+    const buttonTextLogin = 'Log In';
+    const buttonTextRegister = 'Register';
+
     return (
-      <Layout>
-        <FullScreenLayout>
-          <Form noValidate validated={validated} onSubmit={this.handleSubmit}>
-            <MainFormLayout>
-              <Form.Group>
-                <FancyFormHeader text="Welcome to OneLogOn" />
-                <FancyTextField
-                  autoFocus
-                  required
-                  type="text"
-                  placeholder="Enter ID"
-                  onChange={this.handleChange}
-                />
-                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                <Form.Control.Feedback type="invalid">
-                  Please enter a valid ID.
-                </Form.Control.Feedback>
-              </Form.Group>
-              <FancyButton label="Check in" type="submit" />
-            </MainFormLayout>
-          </Form>
-        </FullScreenLayout>
-      </Layout>
+      <Container className={s.background}>
+        <Row className={s.fixMargin}>
+          <Col>
+            <h1 className={`${s.title} ${s.centered}`}>OneLogOn</h1>
+          </Col>
+        </Row>
+
+        <Row className={s.fixMargin}>
+          <Col>
+            <h3 className={`${s.tagline} ${s.centered}`}>
+              A simple Open Source visitor check-in and statistics aggregation system for your
+              facility or site.
+            </h3>
+          </Col>
+        </Row>
+
+        <Row className={s.fixMargin}>
+          <Col>
+            <div className={s.fiftyfifty}>
+              <FancyButton
+                label={buttonTextRegister}
+                onClick={this.handleRegisterButton}
+                type="submit"
+              />
+            </div>
+            <div className={s.fiftyfifty}>
+              <FancyButton
+                label={buttonTextLogin}
+                onClick={this.handleLogInButton}
+                type="submit"
+                className={s.secondaryButton}
+              />
+            </div>
+          </Col>
+        </Row>
+
+        <Row className={s.fixMargin}>
+          <Col className={s.functionality}>
+            <CustomCarousel images={images} />
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }

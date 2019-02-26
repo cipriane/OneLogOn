@@ -1,8 +1,7 @@
 import jwt_decode from 'jwt-decode';
 import isValidJWT from 'utils/isValidJWT';
 
-function me(url, options) {
-  const jwt = localStorage.getItem('jwt');
+function me(jwt) {
   if (!jwt || !isValidJWT(jwt)) {
     return {};
   }
@@ -14,6 +13,7 @@ function me(url, options) {
     return {
       name: decodedJwt.user_id,
       role: 'admin',
+      name: 'Admin',
     };
   } catch (err) {
     console.error(err);

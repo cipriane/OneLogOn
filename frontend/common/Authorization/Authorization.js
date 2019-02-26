@@ -1,21 +1,20 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import PropTypes from 'prop-types';
 import me from 'utils/me';
 
 const Authorization = (allowedRoles, isRegsiterOrLogin = false) => {
-  return WrappedComponent => {
-    return class WithAuthorization extends React.Component {
-      constructor(props) {
-        super(props);
-        const user = me();
-        // console.log(user);
-        this.state = {
-          name: user.name,
-          role: user.role || '',
-        };
-      }
+  function HOC(WrappedComponent) {
+    return class WithAuthorization extends Component {
+      static propTypes = {
+        jwt: PropTypes.string,
+      };
+
       render() {
-        const { role } = this.state;
+        const user = me(this.props.jwt);
+        const role = user.role;
         const isLoggedIn = !!role;
         const validRole = allowedRoles.includes(role);
         // Sorry this logic is a bit messy
@@ -31,6 +30,19 @@ const Authorization = (allowedRoles, isRegsiterOrLogin = false) => {
         return <WrappedComponent {...this.props} />;
       }
     };
+  }
+  const mapStateToProps = store => {
+    return {
+      jwt: store.jwt,
+    };
   };
+
+  const composedHoc = compose(
+    connect(mapStateToProps),
+    HOC,
+  );
+
+  return composedHoc;
 };
+
 export default Authorization;

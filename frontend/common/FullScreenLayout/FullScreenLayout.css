@@ -1,9 +1,9 @@
-.root {
+.outer {
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  height: 100vh;
+  height: 100%;
 
   background: #283048; /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #859398, #283048); /* Chrome 10-25, Safari 5.1-6 */
