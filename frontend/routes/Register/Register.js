@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
 import Layout from 'common/Layout/Layout';
 import FullScreenLayout from 'common/FullScreenLayout/FullScreenLayout';
 import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
@@ -16,9 +17,36 @@ class Register extends Component {
   state = {
     username: '',
     password: '',
+    email: '',
+    company: '',
     error: null,
     isLoading: false,
-    validated: false,
+  };
+
+  isValidUsername = input => {
+    return input && input.length <= 150;
+  };
+  isValidPassword = input => {
+    return input && input.length >= 8;
+  };
+  isValidCompany = input => {
+    return input && input.length <= 30;
+  };
+  isValidEmail = input => {
+    return (
+      input &&
+      /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(
+        input,
+      )
+    );
+  };
+  isValidAll = () => {
+    return !!(
+      this.isValidUsername(this.state.username) &&
+      this.isValidPassword(this.state.password) &&
+      this.isValidCompany(this.state.company) &&
+      this.isValidEmail(this.state.email)
+    );
   };
 
   handleChange = event => {
@@ -39,15 +67,17 @@ class Register extends Component {
         method: 'POST',
         body: JSON.stringify({
           username: this.state.username,
+          company_name: this.state.company,
+          email: this.state.email,
           password: this.state.password,
         }),
       });
 
-      if (!resp.ok) {
-        throw Error(resp.statusText);
-      }
-
       const data = await resp.json();
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
 
       const loginResp = await fetch('api/login', {
         method: 'POST',
@@ -73,37 +103,56 @@ class Register extends Component {
   };
 
   render() {
-    const { error, isLoading, username, password, validated } = this.state;
+    const { error } = this.state;
     let errorMessage = null;
     if (error) {
-      errorMessage = (
-        <div>
-          <pre>{error}</pre>
-        </div>
-      );
+      errorMessage = <Alert variant="danger">{error}</Alert>;
     }
-    const buttonText = isLoading ? 'Sending...' : 'Register';
 
+    const { username, company, email, password, isLoading } = this.state;
     return (
       <Layout>
         <FullScreenLayout>
-          {errorMessage}
-          <Form noValidate validated={validated} onSubmit={this.handleSubmit}>
+          <Form noValidate onSubmit={this.handleSubmit}>
+            {errorMessage}
             <MainFormLayout>
+              <FancyFormHeader text="Register" />
               <Form.Group>
-                <FancyFormHeader text="Register" />
                 <FancyTextField
                   required
                   autoFocus
                   type="text"
                   placeholder="username"
                   name="username"
+                  isValid={this.isValidUsername(username)}
+                  isInvalid={username && !this.isValidUsername(username)}
+                  value={username}
                   onChange={this.handleChange}
                 />
-                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                <Form.Control.Feedback type="invalid">
-                  Please enter a valid Username.
-                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group>
+                <FancyTextField
+                  required
+                  type="text"
+                  placeholder="company"
+                  name="company"
+                  isValid={company && this.isValidCompany(company)}
+                  isInvalid={company && !this.isValidCompany(company)}
+                  value={company}
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+              <Form.Group>
+                <FancyTextField
+                  required
+                  type="email"
+                  placeholder="email"
+                  name="email"
+                  isValid={email && this.isValidEmail(email)}
+                  isInvalid={email && !this.isValidEmail(email)}
+                  value={email}
+                  onChange={this.handleChange}
+                />
               </Form.Group>
               <Form.Group>
                 <FancyTextField
@@ -111,13 +160,19 @@ class Register extends Component {
                   type="password"
                   placeholder="password"
                   name="password"
+                  isValid={password && this.isValidPassword(password)}
+                  isInvalid={password && !this.isValidPassword(password)}
+                  value={password}
                   onChange={this.handleChange}
                 />
-                <Form.Control.Feedback type="invalid">
-                  The password you entered was incorrect.
-                </Form.Control.Feedback>
+                <Form.Text className="text-muted">Must be 8 characters or longer</Form.Text>
               </Form.Group>
-              <FancyButton label={buttonText} type="submit" />
+              <FancyButton
+                label="Register"
+                disabled={!this.isValidAll()}
+                loading={isLoading}
+                type="submit"
+              />
             </MainFormLayout>
           </Form>
         </FullScreenLayout>
