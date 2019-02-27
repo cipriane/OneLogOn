@@ -63,7 +63,7 @@ class Register extends Component {
     event.preventDefault();
     try {
       this.setState({ isLoading: true, error: null, validated: true });
-      const resp = await fetch('api/register', {
+      const resp = await fetch('/api/register', {
         method: 'POST',
         body: JSON.stringify({
           username: this.state.username,
@@ -79,7 +79,7 @@ class Register extends Component {
         throw new Error(data.error);
       }
 
-      const loginResp = await fetch('api/login', {
+      const loginResp = await fetch('/api/login', {
         method: 'POST',
         body: JSON.stringify({
           username: this.state.username,

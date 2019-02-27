@@ -41,7 +41,7 @@ class Login extends Component {
 
     try {
       this.setState({ isLoading: true, error: null, validated: true });
-      const resp = await fetch('api/login', {
+      const resp = await fetch('/api/login', {
         method: 'POST',
         body: JSON.stringify({
           username: this.state.username,

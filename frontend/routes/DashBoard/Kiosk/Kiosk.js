@@ -50,7 +50,7 @@ export default class Kiosk extends Component {
 
   checkInLogic = async param => {
     /*
-    const resp = await fetch('api/visitor', {
+    const resp = await fetch('/api/visitor', {
       body: JSON.stringify({
         id: param,
       }),
@@ -76,7 +76,7 @@ export default class Kiosk extends Component {
 
   reasonsLogic = async param => {
     /*
-    const resp = await fetch('api/checkin', {
+    const resp = await fetch('/api/checkin', {
       method: 'POST',
       body: JSON.stringify({
         reasons: param,
