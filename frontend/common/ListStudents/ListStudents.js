@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import fetch from 'utils/fetch';
 import s from './ListStudents.css';
 
 export default class ListStudents extends Component {
@@ -10,7 +11,7 @@ export default class ListStudents extends Component {
 
   async componentDidMount() {
     try {
-      const resp = await fetch('api/student');
+      const resp = await fetch('/api/student');
       if (!resp.ok) {
         throw Error(resp.statusText);
       }
