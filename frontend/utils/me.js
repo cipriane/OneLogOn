@@ -4,7 +4,6 @@ import { Roles } from './constants';
 
 function me(jwt) {
   if (!jwt || !isValidJWT(jwt)) {
-    console.log(jwt);
     return {};
   }
   try {

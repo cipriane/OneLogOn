@@ -8,7 +8,7 @@ import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import FancyButton from 'common/FancyButton/FancyButton';
 import FancyTextField from 'common/FancyTextField/FancyTextField';
 import FancyFormHeader from 'common/FancyFormHeader/FancyFormHeader';
-import fetch from 'utils/fetch';
+import myFetch from 'utils/fetch';
 import s from './Register.css';
 import { connect } from 'react-redux';
 import { login } from 'actions';
@@ -62,43 +62,36 @@ class Register extends Component {
   handleSubmit = async event => {
     event.preventDefault();
     try {
-      this.setState({ isLoading: true, error: null, validated: true });
-      const resp = await fetch('/api/register', {
+      this.setState({ isLoading: true, error: null });
+
+      await myFetch('/api/register', {
         method: 'POST',
-        body: JSON.stringify({
+        body: {
           username: this.state.username,
           company_name: this.state.company,
           email: this.state.email,
           password: this.state.password,
-        }),
+        },
       });
-
-      const data = await resp.json();
-
-      if (data.error) {
-        throw new Error(data.error);
-      }
-
-      const loginResp = await fetch('/api/login', {
-        method: 'POST',
-        body: JSON.stringify({
-          username: this.state.username,
-          password: this.state.password,
-        }),
-      });
-
-      if (!loginResp.ok) {
-        this.props.history.push('/login');
-      }
-
-      const loginData = await loginResp.json();
-      this.props.login(loginData);
-      this.props.history.push('/dashboard');
     } catch (err) {
-      this.setState({
+      return this.setState({
         error: err.toString(),
         isLoading: false,
       });
+    }
+    try {
+      const data = await myFetch('/api/login', {
+        method: 'POST',
+        body: {
+          username: this.state.username,
+          password: this.state.password,
+        },
+      });
+
+      this.props.login(data);
+      this.props.history.push('/dashboard');
+    } catch (err) {
+      this.props.history.push('/login');
     }
   };
 
