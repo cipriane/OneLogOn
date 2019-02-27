@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import fetch from 'utils/fetch';
+import myFetch from 'utils/fetch';
 import s from './ListStudents.css';
 
 export default class ListStudents extends Component {
@@ -11,22 +11,21 @@ export default class ListStudents extends Component {
 
   async componentDidMount() {
     try {
-      const resp = await fetch('/api/student');
-      if (!resp.ok) {
-        throw Error(resp.statusText);
-      }
-      const data = await resp.json();
+      this.setState({
+        error: null,
+        isLoading: true,
+      });
+      const data = await myFetch('/api/student');
+
       this.setState({
         data,
         isLoading: false,
       });
     } catch (err) {
-      console.error(err);
       this.setState({
         isLoading: false,
-        error: err,
+        error: err.toString(),
       });
-      return;
     }
   }
 

@@ -6,7 +6,7 @@ import FancyButton from 'common/FancyButton/FancyButton';
 import FancyFormHeader from 'common/FancyFormHeader/FancyFormHeader';
 import fullscreenIcon from 'assets/fullscreen.svg';
 import { Alert } from 'react-bootstrap';
-import fetch from 'utils/fetch';
+import myFetch from 'utils/fetch';
 import s from './Kiosk.css';
 
 import CheckInPage from './CheckInPage/CheckInPage';
@@ -50,15 +50,12 @@ export default class Kiosk extends Component {
 
   checkInLogic = async param => {
     /*
-    const resp = await fetch('api/visitor', {
+    const data  = await myFetch('/api/visitor', {
       body: JSON.stringify({
         id: param,
       }),
     });
 
-    if (!resp.ok) {
-      throw Error(resp.statusText);
-    }
     const data = await resp.json();
     if (data.is_checked_in) {
       this.setState({
@@ -76,16 +73,13 @@ export default class Kiosk extends Component {
 
   reasonsLogic = async param => {
     /*
-    const resp = await fetch('api/checkin', {
+    const data = await myFetch('/api/checkin', {
       method: 'POST',
       body: JSON.stringify({
         reasons: param,
       }),
     });
 
-    if (!resp.ok) {
-      throw Error(resp.statusText);
-    }
     const data = await resp.json();
     */
     // TODO: delete this with above comment
