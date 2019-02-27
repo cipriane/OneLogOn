@@ -4,4 +4,4 @@ import '@babel/polyfill';
 import fetch from 'jest-fetch-mock';
 
 configure({ adapter: new Adapter() });
-global.fetch = fetch;
+global.myFetch = fetch;
