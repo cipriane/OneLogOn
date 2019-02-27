@@ -9,7 +9,7 @@ function myFetch(url, options) {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      Authorization: isValidJWT(jwt) ? `JWT ${jwt}` : null,
+      Authorization: isValidJWT(jwt) ? `Bearer ${jwt}` : null,
     },
   };
 

@@ -32,6 +32,7 @@ export default class Kiosk extends Component {
     isKioskModeActivated: false,
     isFullscreen: false,
     page: CHECK_IN_PAGE,
+    loading: false,
     error: null,
     reasons: [
       { id: 1, desc: '3D Printing' },

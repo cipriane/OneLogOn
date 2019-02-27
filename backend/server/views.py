@@ -34,13 +34,8 @@ class StudentListCreate(generics.ListCreateAPIView):
     /api/student
     Test student API endpoint
     """
-    permission_classes = (IsAuthenticated,)
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
-    # test get
-    def get(self, request):
-        content = { 'message': 'mitch says hello' }
-        return Response(content)
 
 class CompanyListCreate(generics.ListCreateAPIView):
     queryset = Company.objects.all()
@@ -120,4 +115,3 @@ class Registration(APIView):
         else:
             message = {'error' : 'invalid user data'}
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
-        
