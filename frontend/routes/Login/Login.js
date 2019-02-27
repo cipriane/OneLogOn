@@ -9,7 +9,7 @@ import Alert from 'react-bootstrap/Alert';
 import FancyTextField from 'common/FancyTextField/FancyTextField';
 import FancyFormHeader from 'common/FancyFormHeader/FancyFormHeader';
 import s from './Login.css';
-import fetch from 'utils/fetch';
+import myFetch from 'utils/fetch';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { login } from 'actions';
@@ -24,7 +24,6 @@ class Login extends Component {
     password: '',
     error: null,
     isLoading: false,
-    validated: false,
   };
 
   handleChange = event => {
@@ -40,20 +39,16 @@ class Login extends Component {
     event.preventDefault();
 
     try {
-      this.setState({ isLoading: true, error: null, validated: true });
-      const resp = await fetch('/api/login', {
+      this.setState({ isLoading: true, error: null });
+
+      const data = await myFetch('/api/login', {
         method: 'POST',
-        body: JSON.stringify({
+        body: {
           username: this.state.username,
           password: this.state.password,
-        }),
+        },
       });
 
-      if (!resp.ok) {
-        throw Error(resp.statusText);
-      }
-
-      const data = await resp.json();
       this.props.login(data);
       this.props.history.push('/dashboard');
     } catch (err) {
@@ -65,7 +60,7 @@ class Login extends Component {
   };
 
   render() {
-    const { error, isLoading, username, password, validated } = this.state;
+    const { error, isLoading, username, password } = this.state;
     let errorMessage = null;
     if (error) {
       errorMessage = <Alert variant="danger">{error}</Alert>;
