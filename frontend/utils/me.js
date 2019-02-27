@@ -1,5 +1,6 @@
 import jwt_decode from 'jwt-decode';
 import isValidJWT from 'utils/isValidJWT';
+import { Roles } from './constants';
 
 function me(jwt) {
   if (!jwt || !isValidJWT(jwt)) {
@@ -12,8 +13,8 @@ function me(jwt) {
     // TODO: change to real values
     return {
       id: decodedJwt.user_id,
-      role: 'admin',
-      name: decodedJwt.name,
+      role: decodedJwt.is_staff ? Roles.staff : Roles.admin,
+      username: decodedJwt.name,
       is_staff: decodedJwt.is_staff,
     };
   } catch (err) {
