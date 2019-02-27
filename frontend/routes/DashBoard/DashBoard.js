@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Dropdown, Navbar } from 'react-bootstrap';
 import { NavLink, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import userlogo from 'assets/user.png';
 import logo from 'assets/logo-white.png';
@@ -23,7 +24,7 @@ const dashboardRoutes = [
 
 class DashBoard extends Component {
   static propTypes = {
-    jwt: PropTypes.string,
+    jwt: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
   };
 
@@ -109,4 +110,13 @@ class DashBoard extends Component {
   }
 }
 
-export default withRouter(DashBoard);
+const mapStateToProps = store => {
+  return {
+    jwt: store.jwt,
+  };
+};
+
+export default withRouter(connect(mapStateToProps)(DashBoard));
+
+// Named unconnected export for testing
+export { DashBoard as DashBoardTest };
