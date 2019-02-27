@@ -97,7 +97,7 @@ h3.centered {
 
 .background {
   min-height: 100vh;
-  min-width: 100vw;
+  min-width: 100%;
 
   background: linear-gradient(124deg, #2b60de, #a3c1ad);
 
