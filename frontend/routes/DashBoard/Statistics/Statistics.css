@@ -1,2 +1,11 @@
 .root {
+  margin: 15px;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.tableHeader {
+  font-weight: 600;
 }
