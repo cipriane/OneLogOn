@@ -6,7 +6,9 @@ import Root from 'common/Root';
 import rootReducer from 'reducers';
 import 'bootstrap/dist/css/bootstrap.css';
 
-const persistedState = { jwt: localStorage.getItem('jwt') || null };
+const persistedState = {
+  jwt: localStorage.getItem('jwt') || null,
+};
 const store = createStore(rootReducer, persistedState);
 
 store.subscribe(() => {

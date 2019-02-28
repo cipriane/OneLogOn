@@ -10,8 +10,21 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['name'] = user.username
         token['email'] = user.email
         token['is_staff'] = user.is_staff
+        token['is_kiosk_mode'] = False
 
         return token
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
+class MyKioskTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        token['is_kiosk_mode'] = True
+
+        return token
+
+class MyKioskTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyKioskTokenObtainPairSerializer

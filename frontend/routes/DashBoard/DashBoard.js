@@ -54,7 +54,7 @@ class DashBoard extends Component {
   render() {
     const user = me(this.props.jwt);
 
-    if (user.role === Roles.kiosk) {
+    if (user.is_kiosk_mode) {
       return <React.Fragment>{this.props.children}</React.Fragment>;
     }
     return (
