@@ -30,7 +30,6 @@ async function myFetch(url, options) {
   } else if (data.non_field_errors) {
     throw new Error(data.non_field_errors[0]);
   } else if (!resp.ok) {
-    console.log('Bad resp', data);
     let errString = '';
     Object.keys(data).forEach(error => {
       errString += error + ': ' + data[error] + '\n';
