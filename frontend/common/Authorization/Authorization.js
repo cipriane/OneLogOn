@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import me from 'utils/me';
+import { Roles } from 'utils/constants';
 
 const Authorization = (allowedRoles, isRegsiterOrLogin = false) => {
   function HOC(WrappedComponent) {
@@ -14,8 +15,8 @@ const Authorization = (allowedRoles, isRegsiterOrLogin = false) => {
 
       render() {
         const user = me(this.props.jwt);
-        const role = user.role;
-        const isLoggedIn = !!role;
+        const role = user.is_kiosk_mode ? Roles.kiosk : user.role;
+        const isLoggedIn = !!user.id && !user.is_kiosk_mode;
         const validRole = allowedRoles.includes(role);
         // Sorry this logic is a bit messy
         if (validRole) {
