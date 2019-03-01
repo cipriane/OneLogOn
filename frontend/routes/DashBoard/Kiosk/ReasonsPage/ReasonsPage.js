@@ -9,7 +9,7 @@ export default class ReasonsPage extends Component {
     next: PropTypes.func.isRequired,
     reasons: PropTypes.arrayOf(
       PropTypes.shape({
-        id: PropTypes.string,
+        id: PropTypes.number,
         desc: PropTypes.string,
       }),
     ).isRequired,
@@ -51,7 +51,7 @@ export default class ReasonsPage extends Component {
                     className={s.checkboxInput}
                     id={`${reason.id}`}
                     variant={
-                      selected.includes(reason.id) ? isSelectedVariant : isNotSelectedVariant
+                      selected.includes(`${reason.id}`) ? isSelectedVariant : isNotSelectedVariant
                     }
                     onClick={this.handleChange}
                   >
