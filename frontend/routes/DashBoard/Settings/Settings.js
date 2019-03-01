@@ -3,6 +3,7 @@ import SimpleHeader from 'common/SimpleHeader/SimpleHeader';
 import { Form, Button, Row, Col, ListGroup } from 'react-bootstrap';
 import ReasonList from 'common/Reasons/ReasonList/ReasonList';
 import s from './Settings.css';
+import myFetch from 'utils/fetch';
 
 export default class Settings extends Component {
   state = {
@@ -10,9 +11,31 @@ export default class Settings extends Component {
       'A simple Open Source visitor check-in and statistics aggregation system for your facility or site.',
     username: 'Admin',
     password: 'password',
-    reasons: ['reason 1', 'reason 2', 'reason 3'],
+    reasons: [],
     reason: '',
+    isLoading: false,
+    error: null,
   };
+
+  async componentDidMount() {
+    try {
+      this.setState({
+        error: null,
+        isLoading: true,
+      });
+      const data = await myFetch('/api/listreason');
+
+      this.setState({
+        reasons: data,
+        isLoading: false,
+      });
+    } catch (err) {
+      this.setState({
+        isLoading: false,
+        error: err.toString(),
+      });
+    }
+  }
 
   handleChange = event => {
     const target = event.target;
@@ -49,6 +72,8 @@ export default class Settings extends Component {
   };
 
   render() {
+    const { reasons } = this.state;
+
     return (
       <div>
         <SimpleHeader title="Settings" />
@@ -107,7 +132,7 @@ export default class Settings extends Component {
           </Form.Group>
 
           <ReasonList
-            reasonList={this.state.reasons}
+            reasonList={reasons}
             editReason={this.editReason}
             deleteReason={this.deleteReason}
           />

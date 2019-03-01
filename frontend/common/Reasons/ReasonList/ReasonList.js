@@ -11,7 +11,7 @@ export default class ReasonList extends Component {
           <Reason
             key={index}
             index={index}
-            reason={reason}
+            reason={reason.visit_reason}
             deleteReason={deleteReason}
             editReason={editReason}
           />
