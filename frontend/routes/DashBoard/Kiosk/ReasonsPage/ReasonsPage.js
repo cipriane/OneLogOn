@@ -55,7 +55,7 @@ export default class ReasonsPage extends Component {
                     }
                     onClick={this.handleChange}
                   >
-                    {reason.desc}
+                    {reason.visit_reason}
                   </Button>
                 </div>
               );
