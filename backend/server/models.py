@@ -28,6 +28,10 @@ class ListReasons(models.Model):
     company_sponsoring = models.ForeignKey(Company,on_delete=models.CASCADE)
     visit_reason = models.CharField(max_length=50)
 
+    def _str_(self):
+        return self.company_sponsoring
+
+
 class CheckIns(models.Model):
     visitor_id = models.IntegerField()
     user_id = models.CharField(max_length=30)
