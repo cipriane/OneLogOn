@@ -53,8 +53,15 @@ export default class Settings extends Component {
   addReason = () => {
     const { reason, reasons } = this.state;
     let list = reasons;
-    list.push(reason);
+    let newReason = {
+      id: reasons.length + 1,
+      visit_reason: reason,
+      company_sponsoring: 1,
+    };
+    list.push(newReason);
     this.setState({ reasons: list, reason: '' });
+    console.log(reasons);
+    console.log(reasons.length);
   };
 
   deleteReason = index => {
@@ -67,12 +74,12 @@ export default class Settings extends Component {
   editReason = (index, value) => {
     const { reasons } = this.state;
     let list = reasons;
-    list[index] = value;
+    list[index].visit_reason = value;
     this.setState({ reasons: list });
   };
 
   render() {
-    const { reasons } = this.state;
+    const { reason, reasons } = this.state;
 
     return (
       <div>
