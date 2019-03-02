@@ -81,7 +81,6 @@ export default class ReasonList extends Component {
       <React.Fragment>
         <Form noValidate onSubmit={this.handleSubmit}>
           <Form.Group controlId="formBasicreasonList">
-            <Form.Label>reasonList:</Form.Label>
             <Row>
               <Col>
                 <Form.Control
@@ -95,7 +94,7 @@ export default class ReasonList extends Component {
                 />
               </Col>
               <Col>
-                <Button variant="outline-primary" type="submit">
+                <Button variant="outline-success" type="submit">
                   Add Reason
                 </Button>
               </Col>
