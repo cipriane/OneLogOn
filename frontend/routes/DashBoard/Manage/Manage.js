@@ -17,7 +17,7 @@ export default class ManageUsers extends Component {
         error: null,
         isLoading: true,
       });
-      const data = await myFetch('/api/visitor');
+      const data = await myFetch('/api/visitors');
 
       this.setState({
         visitors: data,
