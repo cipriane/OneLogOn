@@ -8,7 +8,7 @@
             "last_name": "Django",
             "is_employee": "True",
             "waiver_signed": "False",
-            "company_id_id": "2"
+            "company": "2"
 
         }
     },
@@ -21,7 +21,7 @@
           "last_name": "React",
           "is_employee": "False",
           "waiver_signed": "False",
-          "company_id_id": "1"
+          "company": "1"
         }
     }
 ]
