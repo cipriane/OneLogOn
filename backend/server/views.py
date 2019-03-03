@@ -96,12 +96,22 @@ class TimeSheetCreateView(generics.CreateAPIView):
 class VisitorsListView(generics.ListAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
+
+    def get(self, companyID, timeInSec):
+
+        user_serializer = UserSerializer(data=request.data)
+
+        print(request)
+        return # query with time
+        
 class VisitorsDetailView(generics.RetrieveAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
 class VisitorsCreateView(generics.CreateAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
+
+
 
 class VisitorReasonListView(generics.ListAPIView):
     queryset = VisitorReason.objects.all()
