@@ -32,4 +32,5 @@ svg {
 .text {
   padding: 0px 10% 0px 10%;
   font-size: 20px;
+  white-space: pre-line;
 }

@@ -9,7 +9,7 @@ export default class ReasonsPage extends Component {
     next: PropTypes.func.isRequired,
     reasons: PropTypes.arrayOf(
       PropTypes.shape({
-        id: PropTypes.number,
+        id: PropTypes.string,
         desc: PropTypes.string,
       }),
     ).isRequired,
@@ -21,28 +21,24 @@ export default class ReasonsPage extends Component {
 
   handleChange = event => {
     const target = event.target;
-    const name = target.name;
     const id = target.id;
     const isChecked = this.state.selected.includes(id);
-    const currentButton = document.getElementById(id);
 
     if (!isChecked) {
       this.setState(prevState => ({
         selected: [...prevState.selected, id],
       }));
-      currentButton.classList.remove('btn-outline-info');
-      currentButton.classList.add('btn-info');
     } else {
-      currentButton.classList.remove('btn-info');
-      currentButton.classList.add('btn-outline-info');
       this.setState(prevState => ({
-        selected: prevState.selected.filter(el => el != id),
+        selected: prevState.selected.filter(el => el !== id),
       }));
     }
   };
 
   render() {
     const { selected } = this.state;
+    const isSelectedVariant = 'info';
+    const isNotSelectedVariant = 'outline-info';
     return (
       <React.Fragment>
         <Form onSubmit={this.props.next(selected)}>
@@ -53,8 +49,10 @@ export default class ReasonsPage extends Component {
                 <div className={s.checkbox} key={reason.id}>
                   <Button
                     className={s.checkboxInput}
-                    id={`checkbox${reason.id}`}
-                    variant="outline-info"
+                    id={`${reason.id}`}
+                    variant={
+                      selected.includes(reason.id) ? isSelectedVariant : isNotSelectedVariant
+                    }
                     onClick={this.handleChange}
                   >
                     {reason.desc}

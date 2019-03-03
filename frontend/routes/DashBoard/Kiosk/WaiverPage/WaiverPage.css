@@ -5,3 +5,7 @@
 .text {
   font-size: 20px;
 }
+
+.checkboxLabel:hover {
+  cursor: pointer;
+}

@@ -34,13 +34,8 @@ class StudentListCreate(generics.ListCreateAPIView):
     /api/student
     Test student API endpoint
     """
-    permission_classes = (IsAuthenticated,)
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
-    # test get
-    def get(self, request):
-        content = { 'message': 'mitch says hello' }
-        return Response(content)
 
 class CompanyListCreate(generics.ListCreateAPIView):
     queryset = Company.objects.all()
@@ -69,6 +64,7 @@ class CheckInVisitorReasonListCreate(generics.ListCreateAPIView):
 class ListReasonsListCreate(generics.ListCreateAPIView):
     queryset = ListReasons.objects.all()
     serializer_class = ListReasonsSerializer
+
 
 class UserCreate(APIView):
     permission_classes = []
