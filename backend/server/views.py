@@ -1,5 +1,12 @@
 from django.shortcuts import get_object_or_404, render
 from rest_framework import generics
+from rest_framework.generics import (
+    ListAPIView,
+    RetrieveAPIView,
+    CreateAPIView,
+    UpdateAPIView,
+    DestroyAPIView
+)
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
@@ -29,39 +36,100 @@ from backend.server.serializers import UserCompanySerializer
 def index(request):
     return render(request, 'index.html')
 
-class StudentListCreate(generics.ListCreateAPIView):
     """
+    START
     /api/student
     Test student API endpoint
     """
+
+class StudentListView(generics.ListAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+class StudentDetailView(generics.RetrieveAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+class StudentCreateView(generics.CreateAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+class StudentUpdateView(generics.UpdateAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+class StudentDeleteView(generics.DestroyAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+    """
+    /api/student
+    Test student API endpoint
+    END
+    """
 
-class CompanyListCreate(generics.ListCreateAPIView):
+class CompanyListView(generics.ListAPIView):
+    queryset = Company.objects.all()
+    serializer_class = CompanySerializer
+class CompanyDetailView(generics.RetrieveAPIView):
+    queryset = Company.objects.all()
+    serializer_class = CompanySerializer
+class CompanyCreateView(generics.CreateAPIView):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
 
-class CheckInsListCreate(generics.ListCreateAPIView):
+class CheckInsListView(generics.ListAPIView):
+    queryset = CheckIns.objects.all()
+    serializer_class = CheckInsSerializer
+class CheckInsDetailView(generics.RetrieveAPIView):
+    queryset = CheckIns.objects.all()
+    serializer_class = CheckInsSerializer
+class CheckInsCreateView(generics.CreateAPIView):
     queryset = CheckIns.objects.all()
     serializer_class = CheckInsSerializer
 
-class TimeSheetListCreate(generics.ListCreateAPIView):
+class TimeSheetListView(generics.ListAPIView):
+    queryset = TimeSheet.objects.all()
+    serializer_class = CheckInsSerializer
+class TimeSheetDetailView(generics.RetrieveAPIView):
+        queryset = TimeSheet.objects.all()
+        serializer_class = CheckInsSerializer
+class TimeSheetCreateView(generics.CreateAPIView):
     queryset = TimeSheet.objects.all()
     serializer_class = CheckInsSerializer
 
-class VisitorsListCreate(generics.ListCreateAPIView):
+class VisitorsListView(generics.ListAPIView):
+    queryset = Visitors.objects.all()
+    serializer_class = VisitorsSerializer
+class VisitorsDetailView(generics.RetrieveAPIView):
+    queryset = Visitors.objects.all()
+    serializer_class = VisitorsSerializer
+class VisitorsCreateView(generics.CreateAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
 
-class VisitorReasonListCreate(generics.ListCreateAPIView):
+class VisitorReasonListView(generics.ListAPIView):
+    queryset = VisitorReason.objects.all()
+    serializer_class = VisitorReasonSerializer
+class VisitorReasonDetailView(generics.RetrieveAPIView):
+    queryset = VisitorReason.objects.all()
+    serializer_class = VisitorReasonSerializer
+class VisitorReasonCreateView(generics.CreateAPIView):
     queryset = VisitorReason.objects.all()
     serializer_class = VisitorReasonSerializer
 
-class CheckInVisitorReasonListCreate(generics.ListCreateAPIView):
+class CheckInVisitorReasonListView(generics.ListAPIView):
+    queryset = CheckInVisitorReason.objects.all()
+    serializer_class = CheckInVisitorReasonSerializer
+class CheckInVisitorReasonDetailView(generics.RetrieveAPIView):
+    queryset = CheckInVisitorReason.objects.all()
+    serializer_class = CheckInVisitorReasonSerializer
+class CheckInVisitorReasonCreateView(generics.CreateAPIView):
     queryset = CheckInVisitorReason.objects.all()
     serializer_class = CheckInVisitorReasonSerializer
 
-class ListReasonsListCreate(generics.ListCreateAPIView):
+class ListReasonsListView(generics.ListAPIView):
+    queryset = ListReasons.objects.all()
+    serializer_class = ListReasonsSerializer
+class ListReasonsDetailView(generics.RetrieveAPIView):
+    queryset = ListReasons.objects.all()
+    serializer_class = ListReasonsSerializer
+class ListReasonsCreateView(generics.CreateAPIView):
     queryset = ListReasons.objects.all()
     serializer_class = ListReasonsSerializer
 
@@ -114,5 +182,5 @@ class Registration(APIView):
                     message = {'error' : 'problem connecting user and company'}
                     return Response(message, status=status.HTTP_400_BAD_REQUEST)
         else:
-            message = {'error' : 'invalid user data'}
+            message = user_serializer.errors
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
