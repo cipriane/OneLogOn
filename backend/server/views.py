@@ -65,6 +65,7 @@ class ListReasonsListCreate(generics.ListCreateAPIView):
     queryset = ListReasons.objects.all()
     serializer_class = ListReasonsSerializer
 
+
 class UserCreate(APIView):
     permission_classes = []
     """
