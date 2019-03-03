@@ -114,5 +114,5 @@ class Registration(APIView):
                     message = {'error' : 'problem connecting user and company'}
                     return Response(message, status=status.HTTP_400_BAD_REQUEST)
         else:
-            message = {'error' : 'invalid user data'}
+            message = user_serializer.errors
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
