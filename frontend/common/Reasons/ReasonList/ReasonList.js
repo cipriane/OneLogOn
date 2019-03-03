@@ -17,7 +17,7 @@ export default class ReasonList extends Component {
         error: null,
         isLoading: true,
       });
-      const data = await myFetch('/api/listreason');
+      const data = await myFetch('/api/listreasons');
 
       this.setState({
         reasons: data,
