@@ -32,6 +32,13 @@ from backend.server.serializers import VisitorsSerializer
 from backend.server.serializers import VisitorReasonSerializer
 from backend.server.serializers import CheckInVisitorReasonSerializer
 from backend.server.serializers import UserCompanySerializer
+from django.core import serializers
+from django.http import HttpResponse
+from datetime import datetime
+from datetime import date
+import pytz
+from django.http import JsonResponse
+
 
 def index(request):
     return render(request, 'index.html')
@@ -76,12 +83,56 @@ class CompanyCreateView(generics.CreateAPIView):
 class CheckInsListView(generics.ListAPIView):
     queryset = CheckIns.objects.all()
     serializer_class = CheckInsSerializer
+
+    def get(self, request, format = 'json'):
+        # find var in the query, else get the second param
+        start_time = request.GET.get('start_time',None) 
+        end_time =  request.GET.get('end_time',None) 
+
+        if not start_time:
+            return Response({'Start time' : 'invalid'}, status = status.HTTP_400_BAD_REQUEST)
+
+        if not end_time:
+            return Response({'End time' : 'invalid'}, status = status.HTTP_400_BAD_REQUEST)
+
+        tz = pytz.utc
+
+        start_time = tz.localize(datetime.strptime(start_time, '%m/%d/%Y'))#.date()
+        end_time   = tz.localize(datetime.strptime(end_time,   '%m/%d/%Y'))#.date()
+
+        # swap if start time is bigger
+        if start_time > end_time:
+            start_time, end_time = end_time, start_time
+
+        # get all CheckIns 
+        c = CheckIns.objects.all() 
+
+        # filter for dates, 
+        # check_in greater than or equal to start time
+        # check_in less than or equal to end time (may use lt for less than)
+        c = c.filter(check_in__gte = start_time, check_in__lte = end_time)
+          
+        # may need to filter by company :: TO DO
+
+        # format as JSON and send it back
+        # this returns an array of json values per checkin -- probably what we wont
+        data = list(c.values())
+        return JsonResponse(data, safe=False) 
+
+        # this returns an array of objects, that have stuff like primary keys in them and stuff like that -- probably what we dont want
+        qs_json = serializers.serialize('json', c)
+        return HttpResponse(qs_json, content_type='application/json', status = status.HTTP_200_OK)
+
+
 class CheckInsDetailView(generics.RetrieveAPIView):
     queryset = CheckIns.objects.all()
     serializer_class = CheckInsSerializer
+
+
 class CheckInsCreateView(generics.CreateAPIView):
     queryset = CheckIns.objects.all()
     serializer_class = CheckInsSerializer
+
 
 class TimeSheetListView(generics.ListAPIView):
     queryset = TimeSheet.objects.all()
@@ -96,20 +147,16 @@ class TimeSheetCreateView(generics.CreateAPIView):
 class VisitorsListView(generics.ListAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
+    
 
-    def get(self, companyID, timeInSec):
-
-        user_serializer = UserSerializer(data=request.data)
-
-        print(request)
-        return # query with time
-        
 class VisitorsDetailView(generics.RetrieveAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
+
 class VisitorsCreateView(generics.CreateAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
+
 
 
 

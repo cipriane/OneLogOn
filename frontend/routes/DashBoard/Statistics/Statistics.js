@@ -4,6 +4,7 @@ import SimpleHeader from 'common/SimpleHeader/SimpleHeader';
 import s from './Statistics.css';
 import downloadCSV from 'utils/downloadCSV';
 import jsonToCSV from 'utils/jsonToCSV';
+import myFetch from 'utils/fetch';
 
 const dummyData = [
   {
@@ -36,7 +37,19 @@ export default class Statistics extends Component {
   getReport = async () => {
     // TODO: load visitors from API
 
-    const data = dummyData.map(row => ({
+    //temp variables for testing
+    this.state = {};
+    this.state['start_time'] = '03/01/2019';
+    this.state['end_time'] = '03/03/2019';
+    // FRONT END! your turn to implement a way to get get start_time and end_time from the user.
+
+    const visitor_data = await myFetch(
+      `/api/checkins?start_time=${this.state.start_time}&end_time=${this.state.end_time}`,
+    );
+
+    console.log(visitor_data);
+
+    const data = visitor_data.map(row => ({
       id: row.id,
       firstName: row.firstName,
       lastName: row.lastName,
