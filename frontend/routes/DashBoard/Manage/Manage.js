@@ -41,6 +41,13 @@ export default class ManageUsers extends Component {
     this.setState({ selectedVisitor: visitor, modalShow: true });
   };
 
+  deleteVisitor = index => {
+    const { visitors } = this.state;
+    let list = visitors;
+    list.splice(index, 1);
+    this.setState({ visitors: list });
+  };
+
   render() {
     const { visitors } = this.state;
     return (
@@ -100,7 +107,12 @@ export default class ManageUsers extends Component {
                     >
                       Edit User
                     </Button>
-                    <Button className={s.button} variant="danger" size="sm">
+                    <Button
+                      className={s.button}
+                      variant="danger"
+                      size="sm"
+                      onClick={this.deleteVisitor}
+                    >
                       Delete
                     </Button>
                   </td>
