@@ -1,0 +1,36 @@
+[
+    {
+        "model": "server.Checkins",
+        "pk":1,
+        "fields": {
+            "visitor_id": 1,
+            "user_id" : "ALEX",
+            "check_in": "2019-01-22T00:00:00Z",
+            "check_out": "2019-01-22T00:00:00Z",
+            "visit_reason": 1
+        }
+    },
+    {
+        "model": "server.Checkins",
+        "pk":2,
+        "fields": {
+            "visitor_id": 1,
+            "user_id" : "ALEX",
+            "visit_reason": "Computer Science",
+            "check_in": "2019-03-02T00:00:00Z",
+            "check_out": "2019-03-02T00:00:00Z",
+            "visit_reason": 1
+        }
+    },
+        {
+        "model": "server.Checkins",
+        "pk":3,
+        "fields": {
+            "visitor_id": 2,
+            "user_id" : "ALEX",
+            "check_in": "2019-03-03T00:00:00Z",
+            "check_out": "2019-03-03T00:00:00Z",
+            "visit_reason": 1
+        }
+    }
+]
