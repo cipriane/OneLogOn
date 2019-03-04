@@ -35,6 +35,7 @@ export default class Reason extends Component {
                 type="button"
                 variant="outline-success"
                 onClick={this.saveEditReason}
+                disabled={!this.state.value}
               >
                 Save
               </Button>
