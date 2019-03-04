@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 import SimpleHeader from 'common/SimpleHeader/SimpleHeader';
-import { Container, Badge, Button, Table, Modal, Form, InputGroup } from 'react-bootstrap';
+import {
+  Container,
+  Badge,
+  Button,
+  Table,
+  Modal,
+  Form,
+  InputGroup,
+  DropdownButton,
+  Dropdown,
+} from 'react-bootstrap';
 import myFetch from 'utils/fetch';
 import s from './Manage.css';
 
@@ -185,23 +195,33 @@ class MyVerticallyCenteredModal extends Component {
             <InputGroup.Prepend>
               <InputGroup.Text className={s.pre}>Waiver</InputGroup.Text>
             </InputGroup.Prepend>
-            <Button
-              onClick={() => this.setState({ waiver_signed: !this.state.waiver_signed })}
-              variant={this.state.waiver_signed ? 'primary' : 'danger'}
+            <DropdownButton
+              title={this.state.waiver_signed ? 'Waiver Signed' : 'Waiver Not Signed'}
+              variant={this.state.waiver_signed ? 'success' : 'danger'}
             >
-              {this.state.waiver_signed ? 'Waiver Signed' : 'Waiver Not Signed'}
-            </Button>
+              <Dropdown.Item onClick={() => this.setState({ waiver_signed: true })}>
+                Waiver Signed
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => this.setState({ waiver_signed: false })}>
+                Waiver Not Signed
+              </Dropdown.Item>
+            </DropdownButton>
           </InputGroup>
           <InputGroup className={s.inputGroup}>
             <InputGroup.Prepend>
               <InputGroup.Text className={s.pre}>Role</InputGroup.Text>
             </InputGroup.Prepend>
-            <Button
-              onClick={() => this.setState({ is_employee: !this.state.is_employee })}
+            <DropdownButton
+              title={this.state.is_employee ? 'Employee' : 'Visitor'}
               variant={this.state.is_employee ? 'primary' : 'success'}
             >
-              {this.state.is_employee ? 'Employee' : 'Visitor'}
-            </Button>
+              <Dropdown.Item onClick={() => this.setState({ is_employee: true })}>
+                Employee
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => this.setState({ is_employee: false })}>
+                Visitor
+              </Dropdown.Item>
+            </DropdownButton>
           </InputGroup>
         </Modal.Body>
         <Modal.Footer>
