@@ -145,7 +145,7 @@ class MyVerticallyCenteredModal extends Component {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <InputGroup>
+          <InputGroup className={s.inputGroup}>
             <InputGroup.Prepend>
               <InputGroup.Text>First Name</InputGroup.Text>
             </InputGroup.Prepend>
@@ -157,7 +157,7 @@ class MyVerticallyCenteredModal extends Component {
               onChange={this.handleChange}
             />
           </InputGroup>
-          <InputGroup>
+          <InputGroup className={s.inputGroup}>
             <InputGroup.Prepend>
               <InputGroup.Text>Last Name</InputGroup.Text>
             </InputGroup.Prepend>
@@ -169,9 +169,9 @@ class MyVerticallyCenteredModal extends Component {
               onChange={this.handleChange}
             />
           </InputGroup>
-          <InputGroup>
+          <InputGroup className={s.inputGroup}>
             <InputGroup.Prepend>
-              <InputGroup.Text>Waiver</InputGroup.Text>
+              <InputGroup.Text className={s.pre}>Waiver</InputGroup.Text>
             </InputGroup.Prepend>
             <Button
               onClick={() => this.setState({ waiver_signed: !this.state.waiver_signed })}
@@ -179,8 +179,10 @@ class MyVerticallyCenteredModal extends Component {
             >
               {this.state.waiver_signed ? 'Waiver Signed' : 'Waiver Not Signed'}
             </Button>
+          </InputGroup>
+          <InputGroup className={s.inputGroup}>
             <InputGroup.Prepend>
-              <InputGroup.Text>Role</InputGroup.Text>
+              <InputGroup.Text className={s.pre}>Role</InputGroup.Text>
             </InputGroup.Prepend>
             <Button
               onClick={() => this.setState({ is_employee: !this.state.is_employee })}
