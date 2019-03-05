@@ -1,36 +1,36 @@
 [
     {
-        "model": "server.Checkins",
+        "model": "server.checkins",
         "pk":1,
         "fields": {
-            "visitor_id": 1,
-            "user_id" : "ALEX",
-            "check_in": "2019-01-22T00:00:00Z",
-            "check_out": "2019-01-22T00:00:00Z",
-            "visit_reason": 1
+            "visitor_id": "1234567",
+            "user_id": "123",
+            "check_in": "2019-02-04T08:16:59",
+            "check_out": "2019-02-04T08:46:03",
+            "visit_reason_id": "10"
         }
     },
     {
-        "model": "server.Checkins",
-        "pk":2,
-        "fields": {
-            "visitor_id": 1,
-            "user_id" : "ALEX",
-            "visit_reason": "Computer Science",
-            "check_in": "2019-03-02T00:00:00Z",
-            "check_out": "2019-03-02T00:00:00Z",
-            "visit_reason": 1
+      "model": "server.checkins",
+      "pk":2,
+      "fields": {
+          "visitor_id": "0908765",
+          "user_id": "78965",
+          "check_in": "2019-02-05T08:16:59",
+          "check_out": "2019-02-05T18:16:59",
+          "visit_reason_id": "10"
         }
     },
-        {
-        "model": "server.Checkins",
-        "pk":3,
-        "fields": {
-            "visitor_id": 2,
-            "user_id" : "ALEX",
-            "check_in": "2019-03-03T00:00:00Z",
-            "check_out": "2019-03-03T00:00:00Z",
-            "visit_reason": 1
+    {
+      "model": "server.checkins",
+      "pk":3,
+      "fields": {
+          "visitor_id": "9380013",
+          "user_id": "895438",
+          "check_in": "2019-02-04T08:16:59",
+          "check_out": "2019-02-04T08:46:19",
+          "visit_reason_id": "3"
         }
     }
 ]
+
