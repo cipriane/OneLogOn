@@ -1,0 +1,27 @@
+[
+    {
+        "model": "server.visitors",
+        "pk":1,
+        "fields": {
+            "visitor_id": "1042375",
+            "first_name": "Phyton",
+            "last_name": "Django",
+            "is_employee": "True",
+            "waiver_signed": "False",
+            "company": "2"
+
+        }
+    },
+    {
+      "model": "server.visitors",
+      "pk":2,
+      "fields": {
+          "visitor_id": "1042376",
+          "first_name": "JS",
+          "last_name": "React",
+          "is_employee": "False",
+          "waiver_signed": "False",
+          "company": "1"
+        }
+    }
+]

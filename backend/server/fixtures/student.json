@@ -1,0 +1,22 @@
+[
+    {
+        "model": "server.student",
+        "pk":1,
+        "fields": {
+            "name": "Aaron Hartigan",
+            "major": "Computer Science",
+            "created_at": "2019-01-22T00:00:00Z",
+            "updated_at": "2019-01-22T00:00:00Z"
+        }
+    },
+    {
+        "model": "server.student",
+        "pk": 2,
+        "fields": {
+            "name": "Sergey Karchmit",
+            "major": "Computer Science",
+            "created_at": "2019-01-22T00:00:00Z",
+            "updated_at": "2019-01-22T00:00:00Z"
+        }
+    }
+]
