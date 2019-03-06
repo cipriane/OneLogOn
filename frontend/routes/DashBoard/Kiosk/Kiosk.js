@@ -44,19 +44,28 @@ class Kiosk extends Component {
     page: CHECK_IN_PAGE,
     isLoading: false,
     error: null,
-    reasons: [
-      { id: '1', desc: '3D Printing' },
-      { id: '2', desc: 'Audio/Video' },
-      { id: '3', desc: 'CNC/Milling' },
-      { id: '4', desc: 'Fiber Arts' },
-      { id: '5', desc: 'General' },
-      { id: '6', desc: 'Internships' },
-      { id: '7', desc: 'Laser' },
-      { id: '8', desc: 'Meeting' },
-      { id: '9', desc: 'Power/Hand Tools' },
-      { id: '10', desc: 'Vinyl Cutter' },
-    ],
+    reasons: [],
   };
+
+  async componentDidMount() {
+    try {
+      this.setState({
+        error: null,
+        isLoading: true,
+      });
+      const reasons = await myFetch('/api/listreason');
+
+      this.setState({
+        reasons: reasons,
+        isLoading: false,
+      });
+    } catch (err) {
+      this.setState({
+        isLoading: false,
+        error: err.toString(),
+      });
+    }
+  }
 
   handleChange = event => {
     const target = event.target;
