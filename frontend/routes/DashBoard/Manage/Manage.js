@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 import SimpleHeader from 'common/SimpleHeader/SimpleHeader';
-import { Container, Badge, Button, Table } from 'react-bootstrap';
+import {
+  Container,
+  Badge,
+  Button,
+  Table,
+  Modal,
+  Form,
+  InputGroup,
+  DropdownButton,
+  Dropdown,
+} from 'react-bootstrap';
 import myFetch from 'utils/fetch';
 import s from './Manage.css';
 
@@ -9,6 +19,8 @@ export default class ManageUsers extends Component {
     visitors: [],
     isLoading: false,
     error: false,
+    modalShow: false,
+    selectedVisitor: {},
   };
 
   async componentDidMount() {
@@ -23,7 +35,6 @@ export default class ManageUsers extends Component {
         visitors: data,
         isLoading: false,
       });
-      console.log(this.state.visitors);
     } catch (err) {
       this.setState({
         isLoading: false,
@@ -32,11 +43,32 @@ export default class ManageUsers extends Component {
     }
   }
 
+  modalClose = () => {
+    this.setState({ modalShow: false });
+  };
+
+  modalOpen = visitor => {
+    this.setState({ selectedVisitor: visitor, modalShow: true });
+  };
+
+  deleteVisitor = index => {
+    const { visitors } = this.state;
+    let list = visitors;
+    list.splice(index, 1);
+    this.setState({ visitors: list });
+  };
+
   render() {
     const { visitors } = this.state;
     return (
       <div>
         <SimpleHeader title="Manage" />
+
+        <MyVerticallyCenteredModal
+          show={this.state.modalShow}
+          onHide={this.modalClose}
+          visitor={this.state.selectedVisitor}
+        />
 
         <Container fluid>
           <Table striped bordered hover size="sm">
@@ -77,10 +109,20 @@ export default class ManageUsers extends Component {
                     )}
                   </td>
                   <td>
-                    <Button className={s.button} variant="info" size="sm">
+                    <Button
+                      className={s.button}
+                      variant="info"
+                      size="sm"
+                      onClick={() => this.modalOpen(visitor)}
+                    >
                       Edit User
                     </Button>
-                    <Button className={s.button} variant="danger" size="sm">
+                    <Button
+                      className={s.button}
+                      variant="danger"
+                      size="sm"
+                      onClick={this.deleteVisitor}
+                    >
                       Delete
                     </Button>
                   </td>
@@ -90,6 +132,107 @@ export default class ManageUsers extends Component {
           </Table>
         </Container>
       </div>
+    );
+  }
+}
+
+class MyVerticallyCenteredModal extends Component {
+  state = {
+    first_name: '',
+    last_name: '',
+    waiver_signed: false,
+    is_employee: false,
+  };
+
+  handleChange = event => {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  handleClick = () => {};
+
+  handleSave = () => {};
+
+  render() {
+    const { visitor } = this.props;
+    return (
+      <Modal {...this.props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            {visitor.first_name + ' ' + visitor.last_name + ' (' + visitor.visitor_id + ')'}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <InputGroup className={s.inputGroup}>
+            <InputGroup.Prepend>
+              <InputGroup.Text>First Name</InputGroup.Text>
+            </InputGroup.Prepend>
+            <Form.Control
+              type="text"
+              name="first_name"
+              placeholder={visitor.first_name}
+              value={this.state.first_name}
+              onChange={this.handleChange}
+            />
+          </InputGroup>
+          <InputGroup className={s.inputGroup}>
+            <InputGroup.Prepend>
+              <InputGroup.Text>Last Name</InputGroup.Text>
+            </InputGroup.Prepend>
+            <Form.Control
+              type="text"
+              name="last_name"
+              placeholder={visitor.last_name}
+              value={this.state.last_name}
+              onChange={this.handleChange}
+            />
+          </InputGroup>
+          <InputGroup className={s.inputGroup}>
+            <InputGroup.Prepend>
+              <InputGroup.Text className={s.pre}>Waiver</InputGroup.Text>
+            </InputGroup.Prepend>
+            <DropdownButton
+              title={this.state.waiver_signed ? 'Waiver Signed' : 'Waiver Not Signed'}
+              variant={this.state.waiver_signed ? 'success' : 'danger'}
+            >
+              <Dropdown.Item onClick={() => this.setState({ waiver_signed: true })}>
+                Waiver Signed
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => this.setState({ waiver_signed: false })}>
+                Waiver Not Signed
+              </Dropdown.Item>
+            </DropdownButton>
+          </InputGroup>
+          <InputGroup className={s.inputGroup}>
+            <InputGroup.Prepend>
+              <InputGroup.Text className={s.pre}>Role</InputGroup.Text>
+            </InputGroup.Prepend>
+            <DropdownButton
+              title={this.state.is_employee ? 'Employee' : 'Visitor'}
+              variant={this.state.is_employee ? 'primary' : 'success'}
+            >
+              <Dropdown.Item onClick={() => this.setState({ is_employee: true })}>
+                Employee
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => this.setState({ is_employee: false })}>
+                Visitor
+              </Dropdown.Item>
+            </DropdownButton>
+          </InputGroup>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="success" onClick={this.props.onHide}>
+            Save Changes
+          </Button>
+          <Button variant="white" onClick={this.props.onHide}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     );
   }
 }
