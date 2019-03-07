@@ -97,7 +97,7 @@ class CompanyMessageView(APIView):
             id, message = request.user.id, request.data['company_message']
             try:
                 # Get company
-                company_id = UserCompany.objects.get(id=id).company_id
+                company_id = UserCompany.objects.get(user_id=id).company_id
                 company = Company.objects.get(id=company_id)
                 # Update company message and save it
                 company.company_message = message
@@ -123,7 +123,7 @@ class CompanyMessageView(APIView):
             id = request.user.id
             try:
                 # Get company message using UserCompany table and return company message
-                company_id = UserCompany.objects.get(id=id).company_id
+                company_id = UserCompany.objects.get(user_id=id).company_id
                 company = Company.objects.get(id=company_id)
                 message = {'company_message' : company.company_message}
                 return Response(message, status=status.HTTP_200_OK)
