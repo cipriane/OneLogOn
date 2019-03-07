@@ -80,6 +80,62 @@ class CompanyCreateView(generics.CreateAPIView):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
 
+class CompanyMessageView(APIView):
+    """
+    /api/companies/message
+    Handle company check-in messages
+    """
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, format='json'):
+        """
+        POST /api/companies/message
+        Set new company message
+        Required Parameters: company_name, company_message
+        """
+        try:
+            name, message = request.data['company_name'], request.data['company_message']
+
+            # Get all companies with corresponding name
+            companies = Company.objects.all().filter(company_name=name)
+            if(companies):
+                # Update all companies with company message
+                for company in companies:
+                    company.company_message = message
+                    company.save()
+                return Response(companies.first().company_message, status=status.HTTP_200_OK)
+            else:
+                message = {'error' : 'company with that name does not exist!'}
+                return Response(message, status=status.HTTP_400_BAD_REQUEST)
+                
+        except Exception:
+            message = {'missing parameters' : 'company_name or company_message'}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, format='json'):
+        """
+        GET /api/companies/message
+        Returns company message
+        Required Parameters: company_name
+        """
+        try:
+            name = request.data['company_name']
+
+            # Get company message and return it
+            company = Company.objects.all().filter(company_name=name).first()
+            if(company):
+                company_message = company.company_message
+                return Response(company_message, status=status.HTTP_200_OK)
+            else:
+                message = {'error' : 'company with that name does not exist!'}
+                return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception:
+            message = {'missing parameter' : 'company_name'}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+            
+
 class CheckInsListView(generics.ListAPIView):
     queryset = CheckIns.objects.all()
     serializer_class = CheckInsSerializer
@@ -127,12 +183,9 @@ class CheckInsListView(generics.ListAPIView):
 class CheckInsDetailView(generics.RetrieveAPIView):
     queryset = CheckIns.objects.all()
     serializer_class = CheckInsSerializer
-
-
 class CheckInsCreateView(generics.CreateAPIView):
     queryset = CheckIns.objects.all()
     serializer_class = CheckInsSerializer
-
 
 class TimeSheetListView(generics.ListAPIView):
     queryset = TimeSheet.objects.all()
@@ -147,19 +200,12 @@ class TimeSheetCreateView(generics.CreateAPIView):
 class VisitorsListView(generics.ListAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
-    
-
 class VisitorsDetailView(generics.RetrieveAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
-
 class VisitorsCreateView(generics.CreateAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
-
-
-
-
 class VisitorReasonListView(generics.ListAPIView):
     queryset = VisitorReason.objects.all()
     serializer_class = VisitorReasonSerializer
@@ -241,3 +287,4 @@ class Registration(APIView):
         else:
             message = user_serializer.errors
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
+

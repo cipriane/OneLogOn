@@ -7,7 +7,8 @@
             "company_address": "234 MAGA st",
             "company_city": "Tijuana",
             "company_zip": "99999",
-            "company_state": "ME"
+            "company_state": "ME",
+            "company_message": "Hello! From Trump Tower!"
         }
     },
     {
@@ -18,7 +19,8 @@
           "company_address": "600 College way",
           "company_city": "Folsom",
           "company_zip": "95768",
-          "company_state": "CA"
+          "company_state": "CA",
+          "company_message": ""
         }
     },
     {
@@ -29,7 +31,8 @@
           "company_address": "6000 J Street",
           "company_city": "Sacramento",
           "company_zip": "95678",
-          "company_state": "CA"
+          "company_state": "CA",
+          "company_message": "Yuan Bit Off"
         }
     }
 ]
