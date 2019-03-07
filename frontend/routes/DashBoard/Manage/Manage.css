@@ -1,3 +1,11 @@
 .button {
   margin-right: 5px;
 }
+
+.inputGroup {
+  margin-bottom: 10px;
+}
+
+.pre {
+  width: 100px;
+}

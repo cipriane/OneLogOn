@@ -94,7 +94,7 @@ export default class ReasonList extends Component {
                 />
               </Col>
               <Col>
-                <Button variant="outline-success" type="submit">
+                <Button variant="outline-success" type="submit" disabled={!input}>
                   Add Reason
                 </Button>
               </Col>
