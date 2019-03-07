@@ -91,47 +91,49 @@ class CompanyMessageView(APIView):
         """
         POST /api/companies/message
         Set new company message
-        Required Parameters: company_name, company_message
+        Required Parameters: company_message
         """
         try:
-            name, message = request.data['company_name'], request.data['company_message']
+            id, message = request.user.id, request.data['company_message']
+            try:
+                # Get company
+                company_id = UserCompany.objects.get(id=id).company_id
+                company = Company.objects.get(id=company_id)
+                # Update company message and save it
+                company.company_message = message
+                company.save()
+                message = {'company_message' : company.company_message}
+                return Response(message, status=status.HTTP_200_OK)
 
-            # Get all companies with corresponding name
-            companies = Company.objects.all().filter(company_name=name)
-            if(companies):
-                # Update all companies with company message
-                for company in companies:
-                    company.company_message = message
-                    company.save()
-                return Response(companies.first().company_message, status=status.HTTP_200_OK)
-            else:
-                message = {'error' : 'company with that name does not exist!'}
+            except Exception:
+                message = {'error' : 'company does not exist'}
                 return Response(message, status=status.HTTP_400_BAD_REQUEST)
                 
         except Exception:
-            message = {'missing parameters' : 'company_name or company_message'}
+            message = {'missing parameter' : 'company_message'}
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request, format='json'):
         """
         GET /api/companies/message
         Returns company message
-        Required Parameters: company_name
+        Required Parameters: None
         """
         try:
-            name = request.data['company_name']
+            id = request.user.id
+            try:
+                # Get company message using UserCompany table and return company message
+                company_id = UserCompany.objects.get(id=id).company_id
+                company = Company.objects.get(id=company_id)
+                message = {'company_message' : company.company_message}
+                return Response(message, status=status.HTTP_200_OK)
 
-            # Get company message and return it
-            company = Company.objects.all().filter(company_name=name).first()
-            if(company):
-                company_message = company.company_message
-                return Response(company_message, status=status.HTTP_200_OK)
-            else:
-                message = {'error' : 'company with that name does not exist!'}
+            except Exception:
+                message = {'error' : 'company does not exist'}
                 return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
         except Exception:
-            message = {'missing parameter' : 'company_name'}
+            message = {'error' : 'user is not logged in'}
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
             
