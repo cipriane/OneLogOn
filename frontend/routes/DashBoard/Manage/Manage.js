@@ -5,7 +5,6 @@ import {
   Badge,
   Button,
   Table,
-  Modal,
   Form,
   InputGroup,
   DropdownButton,
@@ -19,8 +18,6 @@ export default class ManageUsers extends Component {
     visitors: [],
     isLoading: false,
     error: false,
-    modalShow: false,
-    selectedVisitor: {},
   };
 
   async componentDidMount() {
@@ -43,14 +40,6 @@ export default class ManageUsers extends Component {
     }
   }
 
-  modalClose = () => {
-    this.setState({ modalShow: false });
-  };
-
-  modalOpen = visitor => {
-    this.setState({ selectedVisitor: visitor, modalShow: true });
-  };
-
   deleteVisitor = index => {
     const { visitors } = this.state;
     let list = visitors;
@@ -62,16 +51,9 @@ export default class ManageUsers extends Component {
     const { visitors } = this.state;
     return (
       <div>
-        <SimpleHeader title="Manage" />
-
-        <MyVerticallyCenteredModal
-          show={this.state.modalShow}
-          onHide={this.modalClose}
-          visitor={this.state.selectedVisitor}
-        />
-
+        <SimpleHeader title="Manage Visitors" />
         <Container fluid>
-          <Table striped bordered hover size="sm">
+          <Table responsive striped bordered hover size="sm">
             <thead>
               <tr>
                 <th>ID</th>
@@ -82,51 +64,8 @@ export default class ManageUsers extends Component {
               </tr>
             </thead>
             <tbody>
-              {visitors.map(visitor => (
-                <tr key={visitor.visitor_id}>
-                  <td>{visitor.visitor_id}</td>
-                  <td>{visitor.first_name + ' ' + visitor.last_name}</td>
-                  <td>
-                    {visitor.is_employee == true ? (
-                      <Badge className={s.badge} variant="primary">
-                        Employee
-                      </Badge>
-                    ) : (
-                      <Badge className={s.badge} variant="success">
-                        visitor
-                      </Badge>
-                    )}
-                  </td>
-                  <td>
-                    {visitor.waiver_signed == true ? (
-                      <Badge className={s.badge} variant="success">
-                        Waiver signed
-                      </Badge>
-                    ) : (
-                      <Badge className={s.badge} variant="danger">
-                        Waiver not signed
-                      </Badge>
-                    )}
-                  </td>
-                  <td>
-                    <Button
-                      className={s.button}
-                      variant="info"
-                      size="sm"
-                      onClick={() => this.modalOpen(visitor)}
-                    >
-                      Edit User
-                    </Button>
-                    <Button
-                      className={s.button}
-                      variant="danger"
-                      size="sm"
-                      onClick={this.deleteVisitor}
-                    >
-                      Delete
-                    </Button>
-                  </td>
-                </tr>
+              {visitors.map((visitor, id) => (
+                <TableRowVisitor key={id} visitor={visitor} deleteVisitor={this.deleteVisitor} />
               ))}
             </tbody>
           </Table>
@@ -136,84 +75,59 @@ export default class ManageUsers extends Component {
   }
 }
 
-class MyVerticallyCenteredModal extends Component {
+class TableRowVisitor extends Component {
   state = {
-    first_name: '',
-    last_name: '',
-    waiver_signed: false,
-    is_employee: false,
+    first_name: this.props.visitor.first_name,
+    last_name: this.props.visitor.last_name,
+    is_employee: this.props.visitor.is_employee,
+    waiver_signed: this.props.visitor.waiver_signed,
+    editMode: false,
   };
 
   handleChange = event => {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
+
     this.setState({
       [name]: value,
     });
   };
 
-  handleClick = () => {};
-
-  handleSave = () => {};
-
   render() {
-    const { visitor } = this.props;
-    return (
-      <Modal {...this.props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            {visitor.first_name + ' ' + visitor.last_name + ' (' + visitor.visitor_id + ')'}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <InputGroup className={s.inputGroup}>
-            <InputGroup.Prepend>
-              <InputGroup.Text>First Name</InputGroup.Text>
-            </InputGroup.Prepend>
-            <Form.Control
-              type="text"
-              name="first_name"
-              placeholder={visitor.first_name}
-              value={this.state.first_name}
-              onChange={this.handleChange}
-            />
-          </InputGroup>
-          <InputGroup className={s.inputGroup}>
-            <InputGroup.Prepend>
-              <InputGroup.Text>Last Name</InputGroup.Text>
-            </InputGroup.Prepend>
-            <Form.Control
-              type="text"
-              name="last_name"
-              placeholder={visitor.last_name}
-              value={this.state.last_name}
-              onChange={this.handleChange}
-            />
-          </InputGroup>
-          <InputGroup className={s.inputGroup}>
-            <InputGroup.Prepend>
-              <InputGroup.Text className={s.pre}>Waiver</InputGroup.Text>
-            </InputGroup.Prepend>
+    const { visitor, deleteVisitor } = this.props;
+    const { first_name, last_name, is_employee, waiver_signed, editMode } = this.state;
+
+    if (editMode) {
+      return (
+        <tr>
+          <td>{visitor.visitor_id}</td>
+          <td>
+            <InputGroup size="sm">
+              <InputGroup.Prepend>
+                <InputGroup.Text>First Name</InputGroup.Text>
+              </InputGroup.Prepend>
+              <Form.Control
+                type="text"
+                name="first_name"
+                placeholder={visitor.first_name}
+                value={first_name}
+                onChange={this.handleChange}
+              />
+              <Form.Control
+                type="text"
+                name="last_name"
+                placeholder={visitor.last_name}
+                value={last_name}
+                onChange={this.handleChange}
+              />
+            </InputGroup>
+          </td>
+          <td>
             <DropdownButton
-              title={this.state.waiver_signed ? 'Waiver Signed' : 'Waiver Not Signed'}
-              variant={this.state.waiver_signed ? 'success' : 'danger'}
-            >
-              <Dropdown.Item onClick={() => this.setState({ waiver_signed: true })}>
-                Waiver Signed
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => this.setState({ waiver_signed: false })}>
-                Waiver Not Signed
-              </Dropdown.Item>
-            </DropdownButton>
-          </InputGroup>
-          <InputGroup className={s.inputGroup}>
-            <InputGroup.Prepend>
-              <InputGroup.Text className={s.pre}>Role</InputGroup.Text>
-            </InputGroup.Prepend>
-            <DropdownButton
-              title={this.state.is_employee ? 'Employee' : 'Visitor'}
-              variant={this.state.is_employee ? 'primary' : 'success'}
+              title={is_employee ? 'Employee' : 'Visitor'}
+              variant={is_employee ? 'primary' : 'success'}
+              size="sm"
             >
               <Dropdown.Item onClick={() => this.setState({ is_employee: true })}>
                 Employee
@@ -222,17 +136,61 @@ class MyVerticallyCenteredModal extends Component {
                 Visitor
               </Dropdown.Item>
             </DropdownButton>
-          </InputGroup>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="success" onClick={this.props.onHide}>
-            Save Changes
+          </td>
+          <td>
+            <DropdownButton
+              title={waiver_signed ? 'Waiver Signed' : 'Waiver Not Signed'}
+              variant={waiver_signed ? 'success' : 'danger'}
+              size="sm"
+            >
+              <Dropdown.Item onClick={() => this.setState({ waiver_signed: true })}>
+                Waiver Signed
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => this.setState({ waiver_signed: false })}>
+                Waiver Not Signed
+              </Dropdown.Item>
+            </DropdownButton>
+          </td>
+          <td>
+            <Button variant="success" size="sm" onClick={() => this.setState({ editMode: false })}>
+              Save Changes
+            </Button>
+          </td>
+        </tr>
+      );
+    }
+    return (
+      <tr>
+        <td>{visitor.visitor_id}</td>
+        <td>{first_name + ' ' + last_name}</td>
+        <td>
+          {is_employee == true ? (
+            <Badge variant="primary">Employee</Badge>
+          ) : (
+            <Badge variant="success">visitor</Badge>
+          )}
+        </td>
+        <td>
+          {waiver_signed == true ? (
+            <Badge variant="success">Waiver signed</Badge>
+          ) : (
+            <Badge variant="danger">Waiver not signed</Badge>
+          )}
+        </td>
+        <td>
+          <Button
+            className={s.button}
+            variant="info"
+            size="sm"
+            onClick={() => this.setState({ editMode: true })}
+          >
+            Edit
           </Button>
-          <Button variant="white" onClick={this.props.onHide}>
-            Close
+          <Button variant="danger" size="sm" onClick={deleteVisitor}>
+            Delete
           </Button>
-        </Modal.Footer>
-      </Modal>
+        </td>
+      </tr>
     );
   }
 }
