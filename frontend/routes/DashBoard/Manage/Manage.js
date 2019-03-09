@@ -65,7 +65,7 @@ export default class ManageUsers extends Component {
             </thead>
             <tbody>
               {visitors.map((visitor, id) => (
-                <TableRowVisitor key={id} visitor={visitor} />
+                <TableRowVisitor key={id} visitor={visitor} deleteVisitor={this.deleteVisitor} />
               ))}
             </tbody>
           </Table>
@@ -95,7 +95,7 @@ class TableRowVisitor extends Component {
   };
 
   render() {
-    const { visitor } = this.props;
+    const { visitor, deleteVisitor } = this.props;
     const { first_name, last_name, is_employee, waiver_signed, editMode } = this.state;
 
     if (editMode) {
@@ -186,7 +186,7 @@ class TableRowVisitor extends Component {
           >
             Edit
           </Button>
-          <Button variant="danger" size="sm" onClick={this.deleteVisitor}>
+          <Button variant="danger" size="sm" onClick={deleteVisitor}>
             Delete
           </Button>
         </td>
