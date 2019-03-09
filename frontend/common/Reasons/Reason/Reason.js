@@ -33,8 +33,9 @@ export default class Reason extends Component {
               <Button
                 className={s.save}
                 type="button"
-                variant="success"
+                variant="outline-success"
                 onClick={this.saveEditReason}
+                disabled={!this.state.value}
               >
                 Save
               </Button>
@@ -49,12 +50,17 @@ export default class Reason extends Component {
         <Button
           className={s.delete}
           type="button"
-          variant="danger"
+          variant="outline-danger"
           onClick={() => deleteReason(index)}
         >
           Delete
         </Button>
-        <Button className={s.edit} type="button" variant="primary" onClick={this.startEditReason}>
+        <Button
+          className={s.edit}
+          type="button"
+          variant="outline-primary"
+          onClick={this.startEditReason}
+        >
           Edit
         </Button>
       </ListGroup.Item>

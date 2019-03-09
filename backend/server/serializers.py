@@ -14,42 +14,46 @@ from backend.server.models import UserCompany
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
-        fields = '__all__'
+        fields = ('name', 'major', 'created_at', 'updated_at')
+
 
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
-        fields = '__all__'
+        fields = ('company_name', 'company_address','company_city',
+        'company_zip','company_state')
 
 class CheckInsSerializer(serializers.ModelSerializer):
     class Meta:
         model = CheckIns
-        fields = '__all__'
+        fields = ('visitor_id', 'user_id', 'check_in',
+        'check_out', 'visit_reason')
 
 class TimeSheetSerializer(serializers.ModelSerializer):
     class Meta:
         model = TimeSheet
-        fields = '__all__'
+        fields = ('user', 'time_in', 'time_out')
 
 class VisitorsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Visitors
-        fields = '__all__'
+        fields = ('company', 'visitor_id', 'first_name',
+        'last_name', 'is_employee', 'waiver_signed')
 
 class VisitorReasonSerializer(serializers.ModelSerializer):
     class Meta:
         model = VisitorReason
-        fields = '__all__'
+        fields = ('company_id', 'visit_reason', 'is_active')
 
 class CheckInVisitorReasonSerializer(serializers.ModelSerializer):
     class Meta:
         model = CheckInVisitorReason
-        fields = '__all__'
+        fields = ('CheckIn_id', 'visitor_reason_id')
 
 class ListReasonsSerializer(serializers.ModelSerializer):
     class Meta:
         model = ListReasons
-        fields = '__all__'
+        fields = ('company_sponsoring', 'visit_reason')
 
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(
@@ -57,7 +61,7 @@ class UserSerializer(serializers.ModelSerializer):
     )
     password = serializers.CharField(min_length=8, write_only=True)
     email = serializers.EmailField()
-    
+
     def create(self, validated_data):
         user = User.objects.create_user(validated_data['username'], password=validated_data['password'])
         user.email = validated_data['email']
