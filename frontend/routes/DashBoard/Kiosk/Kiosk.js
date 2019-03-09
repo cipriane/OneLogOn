@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { login } from 'actions';
+import PropTypes from 'prop-types';
 import Fullscreen from 'react-full-screen';
 import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import FullScreenLayout from 'common/FullScreenLayout/FullScreenLayout';
+import FancyTextField from 'common/FancyTextField/FancyTextField';
 import FancyButton from 'common/FancyButton/FancyButton';
 import FancyFormHeader from 'common/FancyFormHeader/FancyFormHeader';
 import fullscreenIcon from 'assets/fullscreen.svg';
-import { Alert } from 'react-bootstrap';
-import fetch from 'utils/fetch';
+import { Alert, Form } from 'react-bootstrap';
+import myFetch from 'utils/fetch';
+import me from 'utils/me';
 import s from './Kiosk.css';
 
 import CheckInPage from './CheckInPage/CheckInPage';
@@ -27,38 +32,59 @@ const PAGES = [
   { id: FINISH_PAGE, name: 'Finish', component: FinishPage },
 ];
 
-export default class Kiosk extends Component {
+class Kiosk extends Component {
+  static propTypes = {
+    jwt: PropTypes.string.isRequired,
+  };
+
   state = {
-    isKioskModeActivated: false,
+    password: '',
+    invalidPassword: false,
     isFullscreen: false,
     page: CHECK_IN_PAGE,
-    loading: false,
+    isLoading: false,
     error: null,
-    reasons: [
-      { id: 1, desc: '3D Printing' },
-      { id: 2, desc: 'Audio/Video' },
-      { id: 3, desc: 'CNC/Milling' },
-      { id: 4, desc: 'Fiber Arts' },
-      { id: 5, desc: 'General' },
-      { id: 6, desc: 'Internships' },
-      { id: 7, desc: 'Laser' },
-      { id: 8, desc: 'Meeting' },
-      { id: 9, desc: 'Power/Hand Tools' },
-      { id: 10, desc: 'Vinyl Cutter' },
-    ],
+    reasons: [],
+  };
+
+  async componentDidMount() {
+    try {
+      this.setState({
+        error: null,
+        isLoading: true,
+      });
+      const reasons = await myFetch('/api/listreason');
+
+      this.setState({
+        reasons: reasons,
+        isLoading: false,
+      });
+    } catch (err) {
+      this.setState({
+        isLoading: false,
+        error: err.toString(),
+      });
+    }
+  }
+
+  handleChange = event => {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value,
+    });
   };
 
   checkInLogic = async param => {
     /*
-    const resp = await fetch('api/visitor', {
+    const data  = await myFetch('/api/visitor', {
       body: JSON.stringify({
         id: param,
       }),
     });
 
-    if (!resp.ok) {
-      throw Error(resp.statusText);
-    }
     const data = await resp.json();
     if (data.is_checked_in) {
       this.setState({
@@ -76,16 +102,13 @@ export default class Kiosk extends Component {
 
   reasonsLogic = async param => {
     /*
-    const resp = await fetch('api/checkin', {
+    const data = await myFetch('/api/checkin', {
       method: 'POST',
       body: JSON.stringify({
         reasons: param,
       }),
     });
 
-    if (!resp.ok) {
-      throw Error(resp.statusText);
-    }
     const data = await resp.json();
     */
     // TODO: delete this with above comment
@@ -121,44 +144,81 @@ export default class Kiosk extends Component {
   };
 
   cancel = event => {
-    event.preventDefault();
+    event && event.preventDefault();
     this.setState({
       page: CHECK_IN_PAGE,
       error: null,
     });
   };
 
-  activateKioskMode = () => {
-    // TODO: change user's role so user is not logged in anymore
-    // Trigger an API call, and then call the redux login() function
-    this.setState({
-      isKioskModeActivated: true,
-      isFullscreen: true,
-    });
+  activateKioskMode = async event => {
+    event && event.preventDefault();
+    try {
+      this.setState({ invalidPassword: false, isLoading: true, error: null, isFullscreen: false });
+
+      const data = await myFetch('/api/kioskmode', {
+        method: 'POST',
+        body: {
+          username: me(this.props.jwt).username,
+          password: this.state.password,
+        },
+      });
+
+      this.setState({ password: '', isLoading: false, isFullscreen: true }, () => {
+        this.props.login(data);
+      });
+    } catch (err) {
+      return this.setState({
+        invalidPassword: true,
+        password: '',
+        isLoading: false,
+        isFullscreen: false,
+      });
+    }
+  };
+
+  goFullscreen = event => {
+    event && event.preventDefault();
+    this.setState({ isFullscreen: true });
   };
 
   render() {
-    const { page, isKioskModeActivated, error } = this.state;
+    const { page, error, isLoading, isFullscreen, invalidPassword } = this.state;
+    const user = me(this.props.jwt);
 
-    if (!isKioskModeActivated) {
+    if (!user.is_kiosk_mode) {
       return (
-        <Fullscreen
-          enabled={isFullscreen}
-          onChange={isFullscreen => this.setState({ isFullscreen })}
-        >
-          <FullScreenLayout>
-            <MainFormLayout>
-              <FancyFormHeader />
-              <div className={s.text}>
-                <Alert variant="danger">
-                  Activating Kiosk mode will activate fullscreen mode and log you out.
-                </Alert>
-                <p>To escape Kiosk mode, press shift + ESC.</p>
-              </div>
-              <FancyButton label="Activate Kiosk Mode" onClick={this.activateKioskMode} />
-            </MainFormLayout>
-          </FullScreenLayout>
-        </Fullscreen>
+        <FullScreenLayout>
+          <MainFormLayout>
+            <FancyFormHeader />
+            <div className={s.text}>
+              <Alert variant="danger">
+                Activating Kiosk mode will log you out.
+                {'\n'}
+                To escape Kiosk mode, press ESC.
+              </Alert>
+            </div>
+            {invalidPassword && <Alert variant="danger">Invalid password</Alert>}
+            <Form.Group>
+              <FancyTextField
+                required
+                type="password"
+                placeholder="password"
+                name="password"
+                onChange={this.handleChange}
+              />
+            </Form.Group>
+            <Form.Text className="text-muted">
+              You must enter your password to activate kiosk mode
+            </Form.Text>
+            <FancyButton
+              label="Activate Kiosk Mode"
+              onClick={this.activateKioskMode}
+              loading={isLoading ? 1 : 0}
+              disabled={!this.state.password}
+            />
+          </MainFormLayout>
+        </FullScreenLayout>
       );
     }
     let PageToDisplay;
@@ -168,13 +228,12 @@ export default class Kiosk extends Component {
       PageToDisplay = PAGES[page].component;
     }
 
-    const { reasons, isFullscreen } = this.state;
+    const { reasons } = this.state;
     const fullscreenButton = isFullscreen ? null : (
-      <div className={s.icon} onClick={this.activateKioskMode}>
+      <div className={s.icon} onClick={this.goFullscreen}>
         <img src={fullscreenIcon} alt="Fullscreen" />
       </div>
     );
-
     return (
       <Fullscreen enabled={isFullscreen} onChange={isFullscreen => this.setState({ isFullscreen })}>
         <FullScreenLayout>
@@ -187,3 +246,23 @@ export default class Kiosk extends Component {
     );
   }
 }
+
+const mapStateToProps = store => {
+  return {
+    jwt: store.jwt,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    login: data => dispatch(login(data)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Kiosk);
+
+// Named unconnected export for testing
+export { Kiosk as KioskTest };

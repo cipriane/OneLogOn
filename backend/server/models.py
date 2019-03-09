@@ -8,6 +8,9 @@ class Student(models.Model):
     major = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+         return self.name
+
 
 class Company(models.Model):
     company_name = models.CharField(max_length=30)
@@ -27,6 +30,10 @@ class Visitors(models.Model):
 class ListReasons(models.Model):
     company_sponsoring = models.ForeignKey(Company,on_delete=models.CASCADE)
     visit_reason = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.company_sponsoring
+
 
 class CheckIns(models.Model):
     visitor_id = models.IntegerField()
