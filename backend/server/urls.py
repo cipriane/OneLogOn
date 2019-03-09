@@ -16,6 +16,7 @@ urlpatterns = [
     path('api/companies', views.CompanyListView.as_view()),
     path('api/companies/create/', views.CompanyCreateView.as_view()),
     path('api/companies/<pk>', views.CompanyDetailView.as_view()),
+    path('api/companies/message/', views.CompanyMessageView.as_view()),
     path('api/visitors', views.VisitorsListView.as_view()),
     path('api/visitors/create/', views.VisitorsCreateView.as_view()),
     path('api/visitors/<pk>', views.VisitorsDetailView.as_view()),
