@@ -80,6 +80,64 @@ class CompanyCreateView(generics.CreateAPIView):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
 
+class CompanyMessageView(APIView):
+    """
+    /api/companies/message
+    Handle company check-in messages
+    """
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, format='json'):
+        """
+        POST /api/companies/message
+        Set new company message
+        Required Parameters: company_message
+        """
+        try:
+            id, message = request.user.id, request.data['company_message']
+            try:
+                # Get company
+                company_id = UserCompany.objects.get(user_id=id).company_id
+                company = Company.objects.get(id=company_id)
+                # Update company message and save it
+                company.company_message = message
+                company.save()
+                message = {'company_message' : company.company_message}
+                return Response(message, status=status.HTTP_200_OK)
+
+            except Exception:
+                message = {'error' : 'company does not exist'}
+                return Response(message, status=status.HTTP_400_BAD_REQUEST)
+                
+        except Exception:
+            message = {'missing parameter' : 'company_message'}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, format='json'):
+        """
+        GET /api/companies/message
+        Returns company message
+        Required Parameters: None
+        """
+        try:
+            id = request.user.id
+            try:
+                # Get company message using UserCompany table and return company message
+                company_id = UserCompany.objects.get(user_id=id).company_id
+                company = Company.objects.get(id=company_id)
+                message = {'company_message' : company.company_message}
+                return Response(message, status=status.HTTP_200_OK)
+
+            except Exception:
+                message = {'error' : 'company does not exist'}
+                return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception:
+            message = {'error' : 'user is not logged in'}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+            
+
 class CheckInsListView(generics.ListAPIView):
     queryset = CheckIns.objects.all()
     serializer_class = CheckInsSerializer
@@ -127,12 +185,9 @@ class CheckInsListView(generics.ListAPIView):
 class CheckInsDetailView(generics.RetrieveAPIView):
     queryset = CheckIns.objects.all()
     serializer_class = CheckInsSerializer
-
-
 class CheckInsCreateView(generics.CreateAPIView):
     queryset = CheckIns.objects.all()
     serializer_class = CheckInsSerializer
-
 
 class TimeSheetListView(generics.ListAPIView):
     queryset = TimeSheet.objects.all()
@@ -147,19 +202,12 @@ class TimeSheetCreateView(generics.CreateAPIView):
 class VisitorsListView(generics.ListAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
-    
-
 class VisitorsDetailView(generics.RetrieveAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
-
 class VisitorsCreateView(generics.CreateAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
-
-
-
-
 class VisitorReasonListView(generics.ListAPIView):
     queryset = VisitorReason.objects.all()
     serializer_class = VisitorReasonSerializer
@@ -241,3 +289,4 @@ class Registration(APIView):
         else:
             message = user_serializer.errors
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
