@@ -1,7 +1,7 @@
 [
     {
         "model": "server.company",
-        "pk":1,
+        "pk": 1,
         "fields": {
             "company_name": "Trump Tower",
             "company_address": "234 MAGA st",
@@ -11,25 +11,1092 @@
         }
     },
     {
-      "model": "server.company",
-      "pk":2,
-      "fields": {
-          "company_name": "Folsom Inovative Center",
-          "company_address": "600 College way",
-          "company_city": "Folsom",
-          "company_zip": "95768",
-          "company_state": "CA"
+        "model": "server.company",
+        "pk": 2,
+        "fields": {
+            "company_name": "Folsom Inovative Center",
+            "company_address": "600 College way",
+            "company_city": "Folsom",
+            "company_zip": "95768",
+            "company_state": "CA"
         }
     },
     {
-      "model": "server.company",
-      "pk":3,
-      "fields": {
-          "company_name": "One Bit Off",
-          "company_address": "6000 J Street",
-          "company_city": "Sacramento",
-          "company_zip": "95678",
-          "company_state": "CA"
+        "model": "server.company",
+        "pk": 3,
+        "fields": {
+            "company_name": "One Bit Off",
+            "company_address": "6000 J Street",
+            "company_city": "Sacramento",
+            "company_zip": "95678",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 4,
+        "fields": {
+            "company_name": "Billy Inc",
+            "company_address": "666 J Street",
+            "company_city": "Roseville",
+            "company_zip": "95555",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 5,
+        "fields": {
+            "company_name": "Billy's Pool Supplies",
+            "company_address": "1212 P Street",
+            "company_city": "Reno",
+            "company_zip": "59312",
+            "company_state": "NV"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 6,
+        "fields": {
+            "company_name": "Rob's Knitting Store",
+            "company_address": "5000 N Street",
+            "company_city": "Citrus Heights",
+            "company_zip": "95842",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 7,
+        "fields": {
+            "company_name": "Company Company Inc",
+            "company_address": "1211 F Street",
+            "company_city": "Antelope",
+            "company_zip": "95841",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 8,
+        "fields": {
+            "company_name": "0ybOAtlTPKaRIvi05m9",
+            "company_address": "1941 B Street",
+            "company_city": "Sacramento",
+            "company_zip": "00355",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 9,
+        "fields": {
+            "company_name": "BaFrl3BMNwiSJXVx8se",
+            "company_address": "8278 i Street",
+            "company_city": "Sacramento",
+            "company_zip": "99632",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 10,
+        "fields": {
+            "company_name": "Q1n5F30UhgAGPJucKts",
+            "company_address": "9715 9 Street",
+            "company_city": "Sacramento",
+            "company_zip": "37653",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 11,
+        "fields": {
+            "company_name": "dqNwZKlaEu3Hv9W8UGi",
+            "company_address": "4096 b Street",
+            "company_city": "Sacramento",
+            "company_zip": "18851",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 12,
+        "fields": {
+            "company_name": "Ot9vJphzGKIt7mP2wFq",
+            "company_address": "1995 s Street",
+            "company_city": "Sacramento",
+            "company_zip": "34383",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 13,
+        "fields": {
+            "company_name": "gYiJzcLQovT1Zz3wcQC",
+            "company_address": "6181 k Street",
+            "company_city": "Sacramento",
+            "company_zip": "17392",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 14,
+        "fields": {
+            "company_name": "8JPHBKf803NQd7y07sK",
+            "company_address": "6504 z Street",
+            "company_city": "Sacramento",
+            "company_zip": "26242",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 15,
+        "fields": {
+            "company_name": "xC9vXHVbkbZsZ6C5rV3",
+            "company_address": "8227 s Street",
+            "company_city": "Sacramento",
+            "company_zip": "42664",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 16,
+        "fields": {
+            "company_name": "BDQPCIznbJyUfbBHAlu",
+            "company_address": "0766 U Street",
+            "company_city": "Sacramento",
+            "company_zip": "68158",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 17,
+        "fields": {
+            "company_name": "CJ2FYjzia6RQK9k44DO",
+            "company_address": "5442 j Street",
+            "company_city": "Sacramento",
+            "company_zip": "45137",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 18,
+        "fields": {
+            "company_name": "PXSIiW74MwBX4SEj6ve",
+            "company_address": "2956 v Street",
+            "company_city": "Sacramento",
+            "company_zip": "14347",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 19,
+        "fields": {
+            "company_name": "nGwBo0H6CRuKunMymXD",
+            "company_address": "1317 D Street",
+            "company_city": "Sacramento",
+            "company_zip": "96030",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 20,
+        "fields": {
+            "company_name": "8QRBIQ07HCd4aCljmEN",
+            "company_address": "8567 8 Street",
+            "company_city": "Sacramento",
+            "company_zip": "91642",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 21,
+        "fields": {
+            "company_name": "R4qzixdj6O8hMTMKCmR",
+            "company_address": "2822 q Street",
+            "company_city": "Sacramento",
+            "company_zip": "59005",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 22,
+        "fields": {
+            "company_name": "5gTe97V423kUoqWPxQG",
+            "company_address": "3205 G Street",
+            "company_city": "Sacramento",
+            "company_zip": "93252",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 23,
+        "fields": {
+            "company_name": "WrT0WBMz8dn0p5ER4OF",
+            "company_address": "6856 R Street",
+            "company_city": "Sacramento",
+            "company_zip": "16770",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 24,
+        "fields": {
+            "company_name": "DH5yW3h9YCiVmHd9ewT",
+            "company_address": "1940 d Street",
+            "company_city": "Sacramento",
+            "company_zip": "71978",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 25,
+        "fields": {
+            "company_name": "s0K7pjZ2fbf9CSWcMEE",
+            "company_address": "9496 x Street",
+            "company_city": "Sacramento",
+            "company_zip": "16549",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 26,
+        "fields": {
+            "company_name": "zxfol2Nc4oA4c9DsBHr",
+            "company_address": "6385 b Street",
+            "company_city": "Sacramento",
+            "company_zip": "19839",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 27,
+        "fields": {
+            "company_name": "TzrCH3hgpTIJTooUjoz",
+            "company_address": "3777 U Street",
+            "company_city": "Sacramento",
+            "company_zip": "71226",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 28,
+        "fields": {
+            "company_name": "mw6UcwErG5441mjH8o4",
+            "company_address": "6716 3 Street",
+            "company_city": "Sacramento",
+            "company_zip": "66505",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 29,
+        "fields": {
+            "company_name": "YsYJwGGno3Oa3jMdju0",
+            "company_address": "4567 Z Street",
+            "company_city": "Sacramento",
+            "company_zip": "43896",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 30,
+        "fields": {
+            "company_name": "3yRnih1Bo11sRWoJBOS",
+            "company_address": "5507 F Street",
+            "company_city": "Sacramento",
+            "company_zip": "45558",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 31,
+        "fields": {
+            "company_name": "l0gleLnR7ICTbxTMXcT",
+            "company_address": "7988 J Street",
+            "company_city": "Sacramento",
+            "company_zip": "61622",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 32,
+        "fields": {
+            "company_name": "MaIt5OR7jztLbJZ0EGa",
+            "company_address": "0268 e Street",
+            "company_city": "Sacramento",
+            "company_zip": "53726",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 33,
+        "fields": {
+            "company_name": "cYh1L920lDlpp5xHkES",
+            "company_address": "5504 z Street",
+            "company_city": "Sacramento",
+            "company_zip": "24840",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 34,
+        "fields": {
+            "company_name": "HMRQiRDKPLSUUwr6lPq",
+            "company_address": "1067 9 Street",
+            "company_city": "Sacramento",
+            "company_zip": "00368",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 35,
+        "fields": {
+            "company_name": "83l1YE3UDq1foEM1P8D",
+            "company_address": "5942 6 Street",
+            "company_city": "Sacramento",
+            "company_zip": "37346",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 36,
+        "fields": {
+            "company_name": "ZK9sIZMDCWGhzixIfxu",
+            "company_address": "9676 D Street",
+            "company_city": "Sacramento",
+            "company_zip": "47792",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 37,
+        "fields": {
+            "company_name": "UAUvurTWbfcJWC2D2yx",
+            "company_address": "4091 j Street",
+            "company_city": "Sacramento",
+            "company_zip": "60163",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 38,
+        "fields": {
+            "company_name": "EpqdGauvNq0ln7PJTDE",
+            "company_address": "5779 s Street",
+            "company_city": "Sacramento",
+            "company_zip": "43198",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 39,
+        "fields": {
+            "company_name": "6RL2pW4ad7A7CzGJUFi",
+            "company_address": "8397 c Street",
+            "company_city": "Sacramento",
+            "company_zip": "21315",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 40,
+        "fields": {
+            "company_name": "Xbni7c2LLS0rqNsuKey",
+            "company_address": "0988 f Street",
+            "company_city": "Sacramento",
+            "company_zip": "04677",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 41,
+        "fields": {
+            "company_name": "UNcy3wNH1JyUSNiot3E",
+            "company_address": "0772 H Street",
+            "company_city": "Sacramento",
+            "company_zip": "10603",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 42,
+        "fields": {
+            "company_name": "NrYDitS4688UjnO2OeT",
+            "company_address": "2222 2 Street",
+            "company_city": "Sacramento",
+            "company_zip": "88886",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 43,
+        "fields": {
+            "company_name": "abmrbTCxUwJZYRQ9nha",
+            "company_address": "9770 I Street",
+            "company_city": "Sacramento",
+            "company_zip": "68781",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 44,
+        "fields": {
+            "company_name": "nEUT1Lr0ep9UvfKUd1L",
+            "company_address": "2588 e Street",
+            "company_city": "Sacramento",
+            "company_zip": "35986",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 45,
+        "fields": {
+            "company_name": "Onm2yo7kTcW7QTrdDyC",
+            "company_address": "4081 B Street",
+            "company_city": "Sacramento",
+            "company_zip": "22659",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 46,
+        "fields": {
+            "company_name": "MqOJ8w10KkTsL3D1GYv",
+            "company_address": "7286 l Street",
+            "company_city": "Sacramento",
+            "company_zip": "52847",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 47,
+        "fields": {
+            "company_name": "0tCpn1hBSqVnx0YRrHk",
+            "company_address": "6450 B Street",
+            "company_city": "Sacramento",
+            "company_zip": "32989",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 48,
+        "fields": {
+            "company_name": "A4piu4SiMVAdhySfiJR",
+            "company_address": "2148 f Street",
+            "company_city": "Sacramento",
+            "company_zip": "50906",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 49,
+        "fields": {
+            "company_name": "a7euX34khvupVBitoWx",
+            "company_address": "8785 I Street",
+            "company_city": "Sacramento",
+            "company_zip": "83929",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 50,
+        "fields": {
+            "company_name": "7Mta12sR80dONMEiMVQ",
+            "company_address": "2400 i Street",
+            "company_city": "Sacramento",
+            "company_zip": "03741",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 51,
+        "fields": {
+            "company_name": "bK83wmO9T81bOfzlxFR",
+            "company_address": "9911 O Street",
+            "company_city": "Sacramento",
+            "company_zip": "58808",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 52,
+        "fields": {
+            "company_name": "oyFrhWYJAg8cBumetGW",
+            "company_address": "6925 z Street",
+            "company_city": "Sacramento",
+            "company_zip": "28435",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 53,
+        "fields": {
+            "company_name": "klahdVJOEGgL3IRl2u1",
+            "company_address": "8656 R Street",
+            "company_city": "Sacramento",
+            "company_zip": "57667",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 54,
+        "fields": {
+            "company_name": "9qM1r2vg4fYvC4mXRke",
+            "company_address": "2091 5 Street",
+            "company_city": "Sacramento",
+            "company_zip": "02376",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 55,
+        "fields": {
+            "company_name": "g8dybD6sLk3hHSzR5NZ",
+            "company_address": "6655 f Street",
+            "company_city": "Sacramento",
+            "company_zip": "19202",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 56,
+        "fields": {
+            "company_name": "pNgTnJc3BlmFYdTlXFc",
+            "company_address": "2352 F Street",
+            "company_city": "Sacramento",
+            "company_zip": "20178",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 57,
+        "fields": {
+            "company_name": "O0uBViBKSUPBiM9xGoZ",
+            "company_address": "1406 L Street",
+            "company_city": "Sacramento",
+            "company_zip": "21218",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 58,
+        "fields": {
+            "company_name": "2t3X5zXzSpopEPWh0C3",
+            "company_address": "6496 0 Street",
+            "company_city": "Sacramento",
+            "company_zip": "24368",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 59,
+        "fields": {
+            "company_name": "6ohjPQjcztZqmpnzSko",
+            "company_address": "9546 j Street",
+            "company_city": "Sacramento",
+            "company_zip": "70120",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 60,
+        "fields": {
+            "company_name": "tDk4C8hPrZd6wg0zL6Y",
+            "company_address": "3952 Q Street",
+            "company_city": "Sacramento",
+            "company_zip": "34347",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 61,
+        "fields": {
+            "company_name": "oqIJ55KQDmt5pblUej9",
+            "company_address": "3122 O Street",
+            "company_city": "Sacramento",
+            "company_zip": "13059",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 62,
+        "fields": {
+            "company_name": "rUbttHfWhiOODN0ghXR",
+            "company_address": "5729 n Street",
+            "company_city": "Sacramento",
+            "company_zip": "40802",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 63,
+        "fields": {
+            "company_name": "Dvq8Y40UpKb6qGwPPgu",
+            "company_address": "8195 c Street",
+            "company_city": "Sacramento",
+            "company_zip": "20211",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 64,
+        "fields": {
+            "company_name": "XAJiGMVVQg63U9TmXnk",
+            "company_address": "6834 N Street",
+            "company_city": "Sacramento",
+            "company_zip": "62458",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 65,
+        "fields": {
+            "company_name": "KuPyhl3ULmhdk3Sfp8S",
+            "company_address": "6714 k Street",
+            "company_city": "Sacramento",
+            "company_zip": "74681",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 66,
+        "fields": {
+            "company_name": "XHcR2K285yzxd4i3p8f",
+            "company_address": "8529 i Street",
+            "company_city": "Sacramento",
+            "company_zip": "91274",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 67,
+        "fields": {
+            "company_name": "lwOw4Py6vWItrUymSE7",
+            "company_address": "5125 m Street",
+            "company_city": "Sacramento",
+            "company_zip": "73874",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 68,
+        "fields": {
+            "company_name": "rAnDytPb062dfpHr8xR",
+            "company_address": "8293 n Street",
+            "company_city": "Sacramento",
+            "company_zip": "16095",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 69,
+        "fields": {
+            "company_name": "0eSA91xUEdpX6ovkkCf",
+            "company_address": "2584 V Street",
+            "company_city": "Sacramento",
+            "company_zip": "36454",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 70,
+        "fields": {
+            "company_name": "7F9f66GPusEpD6PmSwX",
+            "company_address": "3763 e Street",
+            "company_city": "Sacramento",
+            "company_zip": "88073",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 71,
+        "fields": {
+            "company_name": "OMgya7KphaxejdEHFD3",
+            "company_address": "3933 g Street",
+            "company_city": "Sacramento",
+            "company_zip": "13292",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 72,
+        "fields": {
+            "company_name": "CKAgIkI1HD7InwRAu1F",
+            "company_address": "5357 N Street",
+            "company_city": "Sacramento",
+            "company_zip": "00572",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 73,
+        "fields": {
+            "company_name": "PIixp6o5FaGFJTKzg6g",
+            "company_address": "7942 n Street",
+            "company_city": "Sacramento",
+            "company_zip": "86349",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 74,
+        "fields": {
+            "company_name": "WdDz9VsD3EK6EceJZKT",
+            "company_address": "5886 p Street",
+            "company_city": "Sacramento",
+            "company_zip": "77171",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 75,
+        "fields": {
+            "company_name": "CIPS3oBurLzkAmK55Z2",
+            "company_address": "3144 T Street",
+            "company_city": "Sacramento",
+            "company_zip": "24226",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 76,
+        "fields": {
+            "company_name": "SrpeXJlIBCTGe6wIz0v",
+            "company_address": "4987 3 Street",
+            "company_city": "Sacramento",
+            "company_zip": "21246",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 77,
+        "fields": {
+            "company_name": "n7ZJ20GXHK8GBFY4URC",
+            "company_address": "8518 F Street",
+            "company_city": "Sacramento",
+            "company_zip": "52168",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 78,
+        "fields": {
+            "company_name": "RrYEH3OKYPj7ciWQfdR",
+            "company_address": "4297 J Street",
+            "company_city": "Sacramento",
+            "company_zip": "33569",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 79,
+        "fields": {
+            "company_name": "JoyYCkqCHuFg648sbER",
+            "company_address": "2869 6 Street",
+            "company_city": "Sacramento",
+            "company_zip": "12477",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 80,
+        "fields": {
+            "company_name": "ntX6s5wkNPJy3bZqDIT",
+            "company_address": "8944 m Street",
+            "company_city": "Sacramento",
+            "company_zip": "77372",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 81,
+        "fields": {
+            "company_name": "1OKqd5gCLkfuKylHXog",
+            "company_address": "8563 D Street",
+            "company_city": "Sacramento",
+            "company_zip": "88840",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 82,
+        "fields": {
+            "company_name": "YGubzeRhZOojoEVUhLw",
+            "company_address": "9960 l Street",
+            "company_city": "Sacramento",
+            "company_zip": "22722",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 83,
+        "fields": {
+            "company_name": "UOfjeXfVO6zenbMTj3K",
+            "company_address": "7553 j Street",
+            "company_city": "Sacramento",
+            "company_zip": "10703",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 84,
+        "fields": {
+            "company_name": "8wkJBzVEIA4i0LZzit8",
+            "company_address": "5153 7 Street",
+            "company_city": "Sacramento",
+            "company_zip": "56776",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 85,
+        "fields": {
+            "company_name": "XJ3eu8YsMBMBQhZRk96",
+            "company_address": "9951 N Street",
+            "company_city": "Sacramento",
+            "company_zip": "03347",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 86,
+        "fields": {
+            "company_name": "ASyUcebrjdPMRorW2Mi",
+            "company_address": "5262 A Street",
+            "company_city": "Sacramento",
+            "company_zip": "18489",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 87,
+        "fields": {
+            "company_name": "9rGOYXv53zRABzhMoS7",
+            "company_address": "9043 u Street",
+            "company_city": "Sacramento",
+            "company_zip": "30327",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 88,
+        "fields": {
+            "company_name": "3TozrHzABcnMUyONWLc",
+            "company_address": "6588 Y Street",
+            "company_city": "Sacramento",
+            "company_zip": "76638",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 89,
+        "fields": {
+            "company_name": "xfBGDWygvcSa9IGyCZZ",
+            "company_address": "5550 V Street",
+            "company_city": "Sacramento",
+            "company_zip": "88520",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 90,
+        "fields": {
+            "company_name": "O68QnL4k14m0ezKlr7P",
+            "company_address": "3395 e Street",
+            "company_city": "Sacramento",
+            "company_zip": "58523",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 91,
+        "fields": {
+            "company_name": "CEELuvaqtZS145ojVPz",
+            "company_address": "4395 e Street",
+            "company_city": "Sacramento",
+            "company_zip": "18479",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 92,
+        "fields": {
+            "company_name": "1s7mlW1WMMMKC23yH8h",
+            "company_address": "7335 W Street",
+            "company_city": "Sacramento",
+            "company_zip": "99985",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 93,
+        "fields": {
+            "company_name": "GjZqWBuaI3kvd09xiQx",
+            "company_address": "3012 N Street",
+            "company_city": "Sacramento",
+            "company_zip": "50709",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 94,
+        "fields": {
+            "company_name": "cnrMSUxDfCDIXz8lRMJ",
+            "company_address": "9811 c Street",
+            "company_city": "Sacramento",
+            "company_zip": "09426",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 95,
+        "fields": {
+            "company_name": "kLEX9Dbq4oKLPGpuD5h",
+            "company_address": "1260 z Street",
+            "company_city": "Sacramento",
+            "company_zip": "93950",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 96,
+        "fields": {
+            "company_name": "p8o9id3gARkAVJ1MD56",
+            "company_address": "5540 O Street",
+            "company_city": "Sacramento",
+            "company_zip": "69403",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 97,
+        "fields": {
+            "company_name": "6UAIbC2hyCDPxDzXk3E",
+            "company_address": "2782 J Street",
+            "company_city": "Sacramento",
+            "company_zip": "84570",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 98,
+        "fields": {
+            "company_name": "shqE5V1dKxk0UHgL3df",
+            "company_address": "5015 9 Street",
+            "company_city": "Sacramento",
+            "company_zip": "34804",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 99,
+        "fields": {
+            "company_name": "Jmn9mujnyHsncZ9msdP",
+            "company_address": "8747 q Street",
+            "company_city": "Sacramento",
+            "company_zip": "24143",
+            "company_state": "CA"
+        }
+    },
+    {
+        "model": "server.company",
+        "pk": 100,
+        "fields": {
+            "company_name": "1rik1yQLCyFYtVGEJUy",
+            "company_address": "3371 4 Street",
+            "company_city": "Sacramento",
+            "company_zip": "20334",
+            "company_state": "CA"
         }
     }
 ]
