@@ -20,6 +20,7 @@ urlpatterns = [
     path('api/visitors', views.VisitorsListView.as_view()),
     path('api/visitors/create/', views.VisitorsCreateView.as_view()),
     path('api/visitors/<pk>', views.VisitorsDetailView.as_view()),
+    path('api/visitors/<pk>/waiver/', views.VisitorsUpdateWaiverView.as_view()),
     path('api/listreasons', views.ListReasonsListView.as_view()),
     path('api/listreasons/create/', views.ListReasonsCreateView.as_view()),
     path('api/listreasons/<pk>', views.ListReasonsDetailView.as_view()),
