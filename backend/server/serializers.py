@@ -1,21 +1,13 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.models import User
-from backend.server.models import Student
 from backend.server.models import Company
 from backend.server.models import CheckIns
-from backend.server.models import TimeSheet
+from backend.server.models import Timesheet
 from backend.server.models import Visitors
-from backend.server.models import ListReasons
-from backend.server.models import VisitorReason
-from backend.server.models import CheckInVisitorReason
+from backend.server.models import VisitReason
+from backend.server.models import CheckInVisitReason
 from backend.server.models import UserCompany
-
-class StudentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Student
-        fields = ('name', 'major', 'created_at', 'updated_at')
-
 
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,34 +18,28 @@ class CompanySerializer(serializers.ModelSerializer):
 class CheckInsSerializer(serializers.ModelSerializer):
     class Meta:
         model = CheckIns
-        fields = ('visitor_id', 'user_id', 'check_in',
-        'check_out', 'visit_reason')
+        fields = ('visitor', 'check_in', 'check_out')
 
-class TimeSheetSerializer(serializers.ModelSerializer):
+class TimesheetSerializer(serializers.ModelSerializer):
     class Meta:
-        model = TimeSheet
+        model = Timesheet
         fields = ('user', 'time_in', 'time_out')
 
 class VisitorsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Visitors
-        fields = ('company', 'visitor_id', 'first_name',
+        fields = ('id', 'company', 'visitor_id', 'first_name',
         'last_name', 'is_employee', 'waiver_signed')
 
-class VisitorReasonSerializer(serializers.ModelSerializer):
+class VisitReasonSerializer(serializers.ModelSerializer):
     class Meta:
-        model = VisitorReason
-        fields = ('company_id', 'visit_reason', 'is_active')
+        model = VisitReason
+        fields = ('id', 'description', 'is_active')
 
-class CheckInVisitorReasonSerializer(serializers.ModelSerializer):
+class CheckInVisitReasonSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CheckInVisitorReason
+        model = CheckInVisitReason
         fields = ('CheckIn_id', 'visitor_reason_id')
-
-class ListReasonsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ListReasons
-        fields = ('company_sponsoring', 'visit_reason')
 
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(
