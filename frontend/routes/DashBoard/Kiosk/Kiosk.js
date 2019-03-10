@@ -42,30 +42,15 @@ class Kiosk extends Component {
     invalidPassword: false,
     isFullscreen: false,
     page: CHECK_IN_PAGE,
+    reasons: [],
+    selectedReasons: [],
+    isCheckedIn: false,
+    waiverSigned: false,
+    isEmployee: false,
+    visitorId: '',
     isLoading: false,
     error: null,
-    reasons: [],
   };
-
-  async componentDidMount() {
-    try {
-      this.setState({
-        error: null,
-        isLoading: true,
-      });
-      const reasons = await myFetch('/api/listreason');
-
-      this.setState({
-        reasons: reasons,
-        isLoading: false,
-      });
-    } catch (err) {
-      this.setState({
-        isLoading: false,
-        error: err.toString(),
-      });
-    }
-  }
 
   handleChange = event => {
     const target = event.target;
@@ -77,68 +62,124 @@ class Kiosk extends Component {
     });
   };
 
-  checkInLogic = async param => {
-    /*
-    const data  = await myFetch('/api/visitor', {
-      body: JSON.stringify({
-        id: param,
-      }),
-    });
-
-    const data = await resp.json();
-    if (data.is_checked_in) {
-      this.setState({
-        page: FINISH_PAGE,
-      });
-      return;
-    }
-    */
-
-    // TODO: delete this with above comment
-    this.setState(prevState => ({
-      page: (prevState.page + 1) % PAGES.length,
-    }));
-  };
-
-  reasonsLogic = async param => {
-    /*
-    const data = await myFetch('/api/checkin', {
-      method: 'POST',
-      body: JSON.stringify({
-        reasons: param,
-      }),
-    });
-
-    const data = await resp.json();
-    */
-    // TODO: delete this with above comment
-    this.setState(prevState => ({
-      page: (prevState.page + 1) % PAGES.length,
-    }));
-  };
-
   next = param => event => {
     event && event.preventDefault();
     try {
-      // ALright, so some crazy logic is going to have to go in here.
       if (this.state.error) {
-        return this.setState({
+        this.setState({
           page: CHECK_IN_PAGE,
           error: null,
         });
+        return;
       } else if (this.state.page === CHECK_IN_PAGE) {
-        return this.checkInLogic(param);
+        this.checkInNext(param);
+        return;
       } else if (this.state.page === REAONS_PAGE) {
-        return this.reasonsLogic(param);
+        this.reasonsNext(param);
+        return;
+      } else if (this.state.page === WAIVER_PAGE) {
+        this.waiverNext(param);
+        return;
       } else {
         this.setState(prevState => ({
-          page: (prevState.page + 1) % PAGES.length,
+          page: (prevState.page + 1) % PAGES.length, // TODO: replace?
         }));
       }
     } catch (err) {
-      console.error(err);
       this.setState({
-        error: err.toString(),
+        error: err.message,
+      });
+    }
+  };
+
+  checkInNext = async param => {
+    if (!param) {
+      this.setState({
+        error: 'No id given',
+      });
+      return;
+    }
+
+    try {
+      this.setState({
+        error: null,
+        isLoading: true,
+      });
+      let [reasons, visitor] = await Promise.all([
+        myFetch('/api/visitreasons'),
+        this.findOrCreateVisitor(param),
+      ]);
+
+      this.setState({
+        reasons: reasons,
+        visitorId: visitor.id,
+        waiverSigned: visitor.waiver_signed,
+        isLoading: false,
+        page: (this.state.page + 1) % PAGES.length,
+      });
+    } catch (err) {
+      this.setState({
+        isLoading: false,
+        error: err.message,
+      });
+    }
+  };
+
+  findOrCreateVisitor = async studentId => {
+    try {
+      let visitor = await myFetch(`/api/visitors/${studentId}`);
+      return visitor;
+    } catch (err) {
+      if (err.message.indexOf('Not found.') !== -1) {
+        return await myFetch(`/api/visitors/create`, {
+          method: 'POST',
+          body: {
+            visitor_id: studentId,
+          },
+        });
+      } else {
+        throw new Error(err.message);
+      }
+    }
+  };
+
+  reasonsNext = async param => {
+    this.setState(prevState => ({
+      page: (prevState.page + 1) % PAGES.length,
+      selectedReasons: param,
+    }));
+  };
+
+  waiverNext = async param => {
+    if (!param) {
+      this.setState(prevState => ({
+        page: (prevState.page + 1) % PAGES.length,
+      }));
+      return;
+    }
+
+    try {
+      this.setState({
+        error: null,
+        isLoading: true,
+      });
+      let visitor = (myFetch(`/api/visitors/${this.state.visitorId}/update`),
+      {
+        method: 'PUT',
+        body: {
+          waiver_signed: !!param,
+        },
+      });
+
+      this.setState({
+        waiverSigned: visitor.waiver_signed,
+        isLoading: false,
+        page: (this.state.page + 1) % PAGES.length,
+      });
+    } catch (err) {
+      this.setState({
+        isLoading: false,
+        error: err.message,
       });
     }
   };
@@ -148,6 +189,9 @@ class Kiosk extends Component {
     this.setState({
       page: CHECK_IN_PAGE,
       error: null,
+      reasons: [],
+      hasSigned: false,
+      is_employee: false,
     });
   };
 
@@ -238,7 +282,7 @@ class Kiosk extends Component {
       <Fullscreen enabled={isFullscreen} onChange={isFullscreen => this.setState({ isFullscreen })}>
         <FullScreenLayout>
           <MainFormLayout>
-            <PageToDisplay cancel={this.cancel} next={this.next} reasons={reasons} />
+            <PageToDisplay cancel={this.cancel} next={this.next} reasons={reasons} error={error} />
           </MainFormLayout>
           {fullscreenButton}
         </FullScreenLayout>
