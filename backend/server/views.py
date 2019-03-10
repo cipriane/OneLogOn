@@ -239,8 +239,64 @@ class VisitorReasonDetailView(generics.RetrieveAPIView):
     queryset = VisitorReason.objects.all()
     serializer_class = VisitorReasonSerializer
 class VisitorReasonCreateView(generics.CreateAPIView):
+    """
+    api/visitorreasons/create
+    """
     queryset = VisitorReason.objects.all()
     serializer_class = VisitorReasonSerializer
+
+    def post(self,request,format= 'json'):
+        """
+        POST api/visitorreasons/create
+        Add new visit reason
+        Required Parameters: company_id, visit_reason
+        """
+        serializer = VisitorReasonSerializer(data=request.data)
+
+        # check if this reason already exists in the database
+        vr = request.data['visit_reason']
+        try:
+            y = self.queryset.get(visit_reason=vr)
+        except VisitorReason.DoesNotExist:
+            y = None
+
+        # if the reason doesn't already exist
+        if y is None:          
+            #grab provided company_id
+            cid = request.data['company_id']
+
+            #check if company_id only contains digits
+            if cid.isdigit():
+                pass
+            else:
+                message = {'error' : 'Visit reason cannot be created, invalid company_id provided'}
+                return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+            #check if company (company_id) exists
+            try:
+                y = Company.objects.all().get(id=cid)
+            except Company.DoesNotExist:
+                #company doesn't exist
+                message = {'error' : 'Visit reason cannot be created, company_id provided doesn\'t exist'}
+                return Response(message, status=status.HTTP_400_BAD_REQUEST) 
+
+            if serializer.is_valid():
+                # save new reason to database, and set is_active field to True
+                reason = serializer.save(is_active = True)
+                if reason:
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                else:
+                    message = {'error' : 'Visit reason cannot be created'}
+                    return Response(message, status=status.HTTP_400_BAD_REQUEST) 
+            else:
+                message = {'error' : 'Visit reason cannot be created, invalid information provided'}
+                return Response(message, status=status.HTTP_400_BAD_REQUEST)            
+        
+        # else, if the reason already exists
+        else:
+            message = {'error' : 'Visit reason already exists'}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+            
 
 class CheckInVisitorReasonListView(generics.ListAPIView):
     queryset = CheckInVisitorReason.objects.all()
