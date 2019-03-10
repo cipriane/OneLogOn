@@ -5,18 +5,19 @@ import FancyButton from 'common/FancyButton/FancyButton';
 export default class ErrorPage extends Component {
   static propTypes = {
     next: PropTypes.func.isRequired,
+    error: PropTypes.string.isRequired,
   };
-
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     return (
       <React.Fragment>
         <h1>Error Page</h1>
-        <div>There was an error</div>
-        <FancyButton label="Start Over" onClick={this.props.next(null)} />
+        <div>{this.props.error}</div>
+        <FancyButton
+          label="Start Over"
+          loading={this.props.isLoading}
+          onClick={this.props.next(null)}
+        />
       </React.Fragment>
     );
   }
