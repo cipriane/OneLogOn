@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { increaseCount } from 'actions';
 import Layout from 'common/Layout/Layout';
-import ListStudents from 'common/ListStudents/ListStudents';
 import s from './ReduxExample.css';
 
 class ReduxExample extends Component {
@@ -25,7 +24,6 @@ class ReduxExample extends Component {
             <button onClick={increaseCount}>Increase</button>
           </div>
         </div>
-        <ListStudents />
       </Layout>
     );
   }
