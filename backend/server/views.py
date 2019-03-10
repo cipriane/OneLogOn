@@ -31,6 +31,8 @@ from backend.server.serializers import UserCompanySerializer
 from django.core import serializers
 from django.http import HttpResponse
 from datetime import datetime
+from django.utils.timezone import now
+from django.utils.timezone import is_aware
 from datetime import date
 import pytz
 from django.http import JsonResponse
@@ -149,12 +151,13 @@ class CheckInsListView(generics.ListAPIView):
         # this returns an array of objects, that have stuff like primary keys in them and stuff like that -- probably what we dont want
         qs_json = serializers.serialize('json', c)
         return HttpResponse(qs_json, content_type='application/json', status = status.HTTP_200_OK)
-
-
 class CheckInsDetailView(generics.RetrieveAPIView):
     queryset = CheckIns.objects.all()
     serializer_class = CheckInsSerializer
 class CheckInsCreateView(generics.CreateAPIView):
+    queryset = CheckIns.objects.all()
+    serializer_class = CheckInsSerializer
+class CheckInsUpdateView(generics.UpdateAPIView):
     queryset = CheckIns.objects.all()
     serializer_class = CheckInsSerializer
 
@@ -172,19 +175,33 @@ class VisitorsListView(generics.ListAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
 class VisitorsDetailView(generics.RetrieveAPIView):
-    lookup_field = ('company', 'visitor_id')
+    lookup_field = 'visitor_id'
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
     def get(self, request, *args, **kwargs):
-        request.data['company'] = UserCompany.objects.get(user_id=request.user.id).company_id
-        return self.retrieve(request, *args, **kwargs)
+        company_id = UserCompany.objects.get(user_id=request.user.id).company_id
+        visitor = Visitors.objects.filter(visitor_id=self.kwargs[self.lookup_field], company=company_id)
+        if not visitor:
+            return Response({'visitor': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+        visitor = visitor.values()[0]
+        try:
+            lastCheckIn = CheckIns.objects.filter(visitor=visitor['id'],check_out__isnull=True).latest('check_in')
+        except CheckIns.DoesNotExist:
+            lastCheckIn = None;
+        if lastCheckIn is None:
+            visitor['is_checked_in'] = False
+            visitor['check_in_id'] = False
+        else:
+            visitor['is_checked_in'] = lastCheckIn.check_in.date() == now().today().date()
+            visitor['check_in_id'] = lastCheckIn.id
+        return JsonResponse(visitor)
 class VisitorsCreateView(generics.CreateAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
     def post(self, request, *args, **kwargs):
         request.data['company'] = UserCompany.objects.get(user_id=request.user.id).company_id
         return self.create(request, *args, **kwargs)
-class VisitorsUpdateView(generics.RetrieveAPIView):
+class VisitorsUpdateView(generics.UpdateAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
 class VisitReasonListView(generics.ListAPIView):

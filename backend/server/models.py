@@ -14,7 +14,7 @@ class Company(models.Model):
 class Visitors(models.Model):
     company = models.ForeignKey(Company,on_delete=models.CASCADE,verbose_name="company_id")
     visitor_id = models.CharField(max_length=10)
-    first_name = models.CharField(max_length=30, null=True)
+    first_name = models.CharField(max_length=30,null=True)
     last_name = models.CharField(max_length=30,null=True)
     is_employee = models.BooleanField(default=False)
     waiver_signed = models.BooleanField(default=False)
@@ -24,7 +24,7 @@ class Visitors(models.Model):
 class CheckIns(models.Model):
     visitor = models.ForeignKey(Visitors,on_delete=models.CASCADE,verbose_name="visitor_id")
     check_in = models.DateTimeField()
-    check_out = models.DateTimeField()
+    check_out = models.DateTimeField(null=True)
 
 class UserCompany(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)

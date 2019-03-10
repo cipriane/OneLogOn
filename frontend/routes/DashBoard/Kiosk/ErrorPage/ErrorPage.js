@@ -9,12 +9,15 @@ export default class ErrorPage extends Component {
   };
 
   render() {
-    console.log(this.props.error);
     return (
       <React.Fragment>
         <h1>Error Page</h1>
         <div>{this.props.error}</div>
-        <FancyButton label="Start Over" onClick={this.props.next(null)} />
+        <FancyButton
+          label="Start Over"
+          loading={this.props.isLoading}
+          onClick={this.props.next(null)}
+        />
       </React.Fragment>
     );
   }
