@@ -21,13 +21,13 @@ import ReasonsPage from './ReasonsPage/ReasonsPage';
 import WaiverPage from './WaiverPage/WaiverPage';
 
 const CHECK_IN_PAGE = 0;
-const REAONS_PAGE = 1;
+const REASONS_PAGE = 1;
 const WAIVER_PAGE = 2;
 const FINISH_PAGE = 3;
 
 const PAGES = [
   { id: CHECK_IN_PAGE, name: 'Check In', component: CheckInPage },
-  { id: REAONS_PAGE, name: 'Reasons', component: ReasonsPage },
+  { id: REASONS_PAGE, name: 'Reasons', component: ReasonsPage },
   { id: WAIVER_PAGE, name: 'Waiver', component: WaiverPage },
   { id: FINISH_PAGE, name: 'Finish', component: FinishPage },
 ];
@@ -45,6 +45,9 @@ class Kiosk extends Component {
     reasons: [],
     selectedReasons: [],
     isCheckedIn: false,
+    checkInID: null,
+    checkInTime: '',
+    checkOutTime: '',
     waiverSigned: false,
     isEmployee: false,
     visitorId: '',
@@ -74,16 +77,14 @@ class Kiosk extends Component {
       } else if (this.state.page === CHECK_IN_PAGE) {
         this.checkInNext(param);
         return;
-      } else if (this.state.page === REAONS_PAGE) {
+      } else if (this.state.page === REASONS_PAGE) {
         this.reasonsNext(param);
         return;
       } else if (this.state.page === WAIVER_PAGE) {
         this.waiverNext(param);
         return;
       } else {
-        this.setState(prevState => ({
-          page: (prevState.page + 1) % PAGES.length, // TODO: replace?
-        }));
+        this.determineNextPage();
       }
     } catch (err) {
       this.setState({
@@ -109,14 +110,17 @@ class Kiosk extends Component {
         myFetch('/api/visitreasons'),
         this.findOrCreateVisitor(param),
       ]);
-
-      this.setState({
-        reasons: reasons,
-        visitorId: visitor.id,
-        waiverSigned: visitor.waiver_signed,
-        isLoading: false,
-        page: (this.state.page + 1) % PAGES.length,
-      });
+      this.setState(
+        {
+          reasons: reasons,
+          visitorId: visitor.id,
+          waiverSigned: visitor.waiver_signed,
+          isCheckedIn: visitor.is_checked_in || false,
+          checkInID: visitor.check_in_id,
+          isLoading: false,
+        },
+        this.determineNextPage,
+      );
     } catch (err) {
       this.setState({
         isLoading: false,
@@ -144,17 +148,17 @@ class Kiosk extends Component {
   };
 
   reasonsNext = async param => {
-    this.setState(prevState => ({
-      page: (prevState.page + 1) % PAGES.length,
-      selectedReasons: param,
-    }));
+    this.setState(
+      prevState => ({
+        selectedReasons: param,
+      }),
+      this.determineNextPage,
+    );
   };
 
   waiverNext = async param => {
     if (!param) {
-      this.setState(prevState => ({
-        page: (prevState.page + 1) % PAGES.length,
-      }));
+      this.determineNextPage();
       return;
     }
 
@@ -163,24 +167,109 @@ class Kiosk extends Component {
         error: null,
         isLoading: true,
       });
-      let visitor = (myFetch(`/api/visitors/${this.state.visitorId}/update`),
-      {
-        method: 'PUT',
+      let visitor = await myFetch(`/api/visitors/${this.state.visitorId}/update`, {
+        method: 'PATCH',
         body: {
           waiver_signed: !!param,
         },
       });
 
-      this.setState({
-        waiverSigned: visitor.waiver_signed,
-        isLoading: false,
-        page: (this.state.page + 1) % PAGES.length,
-      });
+      this.setState(
+        {
+          waiverSigned: visitor.waiver_signed,
+          isLoading: false,
+        },
+        this.determineNextPage,
+      );
     } catch (err) {
       this.setState({
         isLoading: false,
         error: err.message,
       });
+    }
+  };
+
+  determineNextPage = () => {
+    const { page, visitorId, reasons, isCheckedIn, selected, waiverSigned, error } = this.state;
+    let nextPage = page;
+    switch (page) {
+      case CHECK_IN_PAGE:
+        if (visitorId && isCheckedIn) {
+          nextPage = FINISH_PAGE;
+          break;
+        } else if (visitorId && !isCheckedIn && reasons) {
+          nextPage = REASONS_PAGE;
+          break;
+        } else if (visitorId && !isCheckedIn && !reasons && !waiverSigned) {
+          nextPage = WAIVER_PAGE;
+          break;
+        } else if (visitorId && !isCheckedIn && !reasons && waiverSigned) {
+          nextPage = FINISH_PAGE;
+          break;
+        }
+      case REASONS_PAGE:
+        if (!waiverSigned) {
+          nextPage = WAIVER_PAGE;
+          break;
+        } else if (waiverSigned) {
+          nextPage = FINISH_PAGE;
+          break;
+        }
+      case WAIVER_PAGE:
+        nextPage = FINISH_PAGE;
+        break;
+      case FINISH_PAGE:
+        nextPage = CHECK_IN_PAGE;
+        break;
+      default:
+        nextPage = (page + 1) % PAGES.length;
+        break;
+    }
+    this.setState({
+      page: nextPage,
+    });
+  };
+
+  checkIn = async () => {
+    try {
+      this.setState({ error: null, isLoading: true });
+
+      const checkInResp = await myFetch('/api/checkins/create', {
+        method: 'POST',
+        body: {
+          visitor: this.state.visitorId,
+          check_in: new Date(),
+        },
+      });
+
+      this.setState({
+        isCheckedIn: true,
+        isLoading: false,
+      });
+    } catch (err) {
+      this.setState({ isLoading: false, error: err.message });
+    }
+  };
+
+  checkOut = async () => {
+    try {
+      this.setState({ error: null, isLoading: true });
+
+      const checkOutResp = await myFetch(`/api/checkins/${this.state.checkInID}/update`, {
+        method: 'PATCH',
+        body: {
+          check_out: new Date(),
+        },
+      });
+
+      this.setState({
+        checkInTime: checkOutResp.check_in,
+        checkOutTime: checkOutResp.check_out,
+        isCheckedIn: false,
+        isLoading: false,
+      });
+    } catch (err) {
+      this.setState({ isLoading: false, error: err.message });
     }
   };
 
@@ -227,7 +316,7 @@ class Kiosk extends Component {
   };
 
   render() {
-    const { page, error, isLoading, isFullscreen, invalidPassword } = this.state;
+    const { page, error, isLoading, isFullscreen, invalidPassword, isCheckedIn } = this.state;
     const user = me(this.props.jwt);
 
     if (!user.is_kiosk_mode) {
@@ -278,11 +367,23 @@ class Kiosk extends Component {
         <img src={fullscreenIcon} alt="Fullscreen" />
       </div>
     );
+    const { checkInTime, checkOutTime } = this.state;
     return (
       <Fullscreen enabled={isFullscreen} onChange={isFullscreen => this.setState({ isFullscreen })}>
         <FullScreenLayout>
           <MainFormLayout>
-            <PageToDisplay cancel={this.cancel} next={this.next} reasons={reasons} error={error} />
+            <PageToDisplay
+              cancel={this.cancel}
+              next={this.next}
+              reasons={reasons}
+              checkIn={this.checkIn}
+              checkOut={this.checkOut}
+              checkInTime={checkInTime}
+              checkOutTime={checkOutTime}
+              isCheckedIn={isCheckedIn}
+              isLoading={isLoading ? 1 : 0}
+              error={error}
+            />
           </MainFormLayout>
           {fullscreenButton}
         </FullScreenLayout>

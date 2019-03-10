@@ -19,6 +19,7 @@ urlpatterns = [
     path('api/checkins', views.CheckInsListView.as_view()),
     path('api/checkins/create', views.CheckInsCreateView.as_view()),
     path('api/checkins/<pk>', views.CheckInsDetailView.as_view()),
+    path('api/checkins/<pk>/update', views.CheckInsUpdateView.as_view()),
     path('api/timesheets', views.TimesheetListView.as_view()),
     path('api/timesheets/create', views.TimesheetCreateView.as_view()),
     path('api/timesheets/<pk>', views.TimesheetDetailView.as_view()),
