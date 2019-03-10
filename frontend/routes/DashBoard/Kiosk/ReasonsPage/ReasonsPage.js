@@ -10,7 +10,7 @@ export default class ReasonsPage extends Component {
     reasons: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number,
-        desc: PropTypes.string,
+        description: PropTypes.string,
       }),
     ).isRequired,
   };
@@ -55,7 +55,7 @@ export default class ReasonsPage extends Component {
                     }
                     onClick={this.handleChange}
                   >
-                    {reason.visit_reason}
+                    {reason.description}
                   </Button>
                 </div>
               );
