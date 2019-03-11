@@ -220,6 +220,9 @@ class VisitReasonCreateView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         request.data['company'] = UserCompany.objects.get(user_id=request.user.id).company_id
         return self.create(request, *args, **kwargs)
+class VisitReasonUpdateView(generics.UpdateAPIView):
+    queryset = VisitReason.objects.all()
+    serializer_class = VisitReasonSerializer
 class VisitReasonDestroyView(generics.DestroyAPIView):
     queryset = VisitReason.objects.all()
     serializer_class = VisitReasonSerializer

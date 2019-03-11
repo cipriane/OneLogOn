@@ -26,7 +26,7 @@ export default class Reason extends Component {
   };
 
   saveEditReason = (e, index) => {
-    this.props.editReason(this.props.index, this.state.value);
+    this.props.editReason(this.props.reasonId, this.props.index, this.state.value);
     this.setState({ isEdit: false });
   };
 
