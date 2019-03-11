@@ -54,7 +54,7 @@
   },
   "scripts": {
     "test": "jest",
-    "prestart": "python manage.py makemigrations && python manage.py migrate",
+    "prestart": "python manage.py makemigrations && python manage.py migrate && yarn loaddata",
     "start": "parallelshell --kill-others \"yarn dev\" \"python manage.py runserver\"",
     "start-prod": "yarn build && python manage.py runserver",
     "clean": "rimraf ./backend/server/static/*",

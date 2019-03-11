@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import FancyButton from 'common/FancyButton/FancyButton';
+import s from './ErrorPage.css';
 
 export default class ErrorPage extends Component {
   static propTypes = {
@@ -12,7 +13,7 @@ export default class ErrorPage extends Component {
     return (
       <React.Fragment>
         <h1>Error Page</h1>
-        <div>{this.props.error}</div>
+        <div className={s.errorText}>{this.props.error}</div>
         <FancyButton
           label="Start Over"
           loading={this.props.isLoading}

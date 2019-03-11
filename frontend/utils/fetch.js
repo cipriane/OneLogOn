@@ -22,6 +22,9 @@ async function myFetch(url, options) {
       ...(options && options.headers),
     },
   });
+  if (resp.status === 204) {
+    return;
+  }
 
   const data = await resp.json();
 
