@@ -52,7 +52,7 @@ export default class CheckInPage extends Component {
           <FancyButton
             label="Check In"
             loading={this.props.isLoading}
-            disabled={!this.isValid(id)}
+            disabled={!this.isValid(id) || this.props.isLoading}
             type="submit"
           />
         </Form>
