@@ -83,25 +83,12 @@ export default class Statistics extends Component {
     }
   };
 
-  getReport = async () => {
-    const visitor_data = await myFetch(
-      `/api/checkins?start_time=${this.state.start_time}&end_time=${this.state.end_time}`,
-    );
-
-    const data = visitor_data.map(row => ({
-      id: row.id,
-      firstName: row.firstName,
-      lastName: row.lastName,
-    }));
-
-    const csvData = jsonToCSV(data);
-    downloadCSV(csvData);
-  };
-
   render() {
     const { selectedDate } = this.state;
     let statistics;
-    if (this.state.isLoading) {
+    if (this.state.error) {
+      statistics = <div className={s.largeMessage}>{this.state.error}</div>;
+    } else if (this.state.isLoading) {
       statistics = <div className={s.largeMessage}>Loading...</div>;
     } else if (this.state.visitors.length) {
       statistics = (
@@ -134,7 +121,7 @@ export default class Statistics extends Component {
         <div className={s.root}>
           <div className={s.flex}>
             <Calendar setDate={this.setDate} date={this.state.selectedDate} />
-            <Button className={s.right} variant="success" onClick={this.getReport}>
+            <Button className={s.right} variant="success">
               Export
             </Button>
           </div>
