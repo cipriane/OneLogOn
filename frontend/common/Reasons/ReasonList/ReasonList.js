@@ -17,7 +17,7 @@ export default class ReasonList extends Component {
         error: null,
         isLoading: true,
       });
-      const data = await myFetch('/api/listreasons');
+      const data = await myFetch('/api/visitreasons');
 
       this.setState({
         reasons: data,
@@ -40,23 +40,56 @@ export default class ReasonList extends Component {
     });
   };
 
-  addReason = () => {
-    const { input, reasons } = this.state;
-    let list = reasons;
-    let newReason = {
-      id: reasons.length + 1,
-      visit_reason: input,
-      company_sponsoring: 1,
-    };
-    list.push(newReason);
-    this.setState({ reasons: list, input: '' });
+  addReason = async () => {
+    try {
+      const { input, reasons } = this.state;
+      this.setState({
+        error: null,
+        isLoading: true,
+      });
+      const reason = await myFetch('/api/visitreason/create', {
+        method: 'POST',
+        body: {
+          description: input,
+        },
+      });
+
+      this.setState({
+        reasons: [reason, ...reasons],
+        isLoading: false,
+        input: '',
+      });
+    } catch (err) {
+      this.setState({
+        isLoading: false,
+        error: err.toString(),
+      });
+    }
   };
 
-  deleteReason = index => {
-    const { reasons } = this.state;
-    let list = reasons;
-    list.splice(index, 1);
-    this.setState({ reasons: list });
+  deleteReason = async id => {
+    try {
+      const { input, reasons } = this.state;
+      this.setState({
+        error: null,
+        isLoading: true,
+      });
+      await myFetch(`/api/visitreason/${id}/delete`, {
+        method: 'DELETE',
+      });
+      this.setState({
+        reasons: reasons.filter(reason => {
+          return reason.id !== id;
+        }),
+        isLoading: false,
+      });
+    } catch (err) {
+      console.error(err);
+      this.setState({
+        isLoading: false,
+        error: err.toString(),
+      });
+    }
   };
 
   editReason = (index, value) => {
@@ -107,7 +140,8 @@ export default class ReasonList extends Component {
             <Reason
               key={index}
               index={index}
-              reason={reason.visit_reason}
+              reason={reason.description}
+              reasonId={reason.id}
               deleteReason={this.deleteReason}
               editReason={this.editReason}
             />

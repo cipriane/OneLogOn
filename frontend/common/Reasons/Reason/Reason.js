@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Row, Col, ListGroup, Button, Form } from 'react-bootstrap';
 import s from './Reason.css';
 
 export default class Reason extends Component {
+  static propTypes = {
+    index: PropTypes.number.isRequired,
+    reason: PropTypes.string.isRequired,
+    reasonId: PropTypes.number.isRequired,
+    deleteReason: PropTypes.func.isRequired,
+    editReason: PropTypes.func.isRequired,
+  };
+
   state = {
     value: this.props.reason,
+    isEdit: false,
   };
 
   changeValue = event => {
@@ -21,7 +31,7 @@ export default class Reason extends Component {
   };
 
   render() {
-    const { index, reason, deleteReason } = this.props;
+    const { index, reason, reasonId, deleteReason } = this.props;
     if (this.state.isEdit) {
       return (
         <ListGroup.Item key={index}>
@@ -51,7 +61,7 @@ export default class Reason extends Component {
           className={s.delete}
           type="button"
           variant="outline-danger"
-          onClick={() => deleteReason(index)}
+          onClick={() => deleteReason(reasonId)}
         >
           Delete
         </Button>
