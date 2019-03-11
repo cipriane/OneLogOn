@@ -30,6 +30,7 @@ urlpatterns = [
     path('api/visitreasons', views.VisitReasonListView.as_view()),
     path('api/visitreason/create', views.VisitReasonCreateView.as_view()),
     path('api/visitreason/<pk>', views.VisitReasonDetailView.as_view()),
+    path('api/visitreason/<pk>/update', views.VisitReasonUpdateView.as_view()),
     path('api/visitreason/<pk>/delete', views.VisitReasonDestroyView.as_view()),
 
     path('api/checkinvisitreason', views.CheckInVisitReasonListView.as_view()),

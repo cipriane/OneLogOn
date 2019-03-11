@@ -55,6 +55,7 @@ export default class FinishPage extends Component {
         <FancyButton
           label="Finish"
           loading={this.props.isLoading}
+          disabled={this.props.isLoading}
           onClick={this.props.next(null)}
         />
       </React.Fragment>

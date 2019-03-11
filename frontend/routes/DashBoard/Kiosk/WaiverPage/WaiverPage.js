@@ -50,6 +50,7 @@ export default class WaiverPage extends Component {
         <FancyButton
           label="Ok"
           loading={this.props.isLoading}
+          disabled={this.props.isLoading}
           onClick={this.props.next(this.state.hasSigned)}
         />
       </React.Fragment>

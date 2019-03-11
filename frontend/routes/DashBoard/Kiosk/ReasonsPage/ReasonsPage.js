@@ -67,7 +67,7 @@ export default class ReasonsPage extends Component {
             </div>
             <div className={s.alignRight}>
               <FancyButton
-                disabled={!selected.length}
+                disabled={!selected.length || this.props.isLoading}
                 loading={this.props.isLoading}
                 label="Next"
                 type="submit"
