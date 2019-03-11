@@ -36,10 +36,10 @@ class Timesheet(models.Model):
     time_out = models.DateTimeField()
 
 class VisitReason(models.Model):
-    company= models.ForeignKey(Company, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company,on_delete=models.CASCADE,verbose_name="company_id")
     description = models.CharField(max_length=30)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
 
 class CheckInVisitReason(models.Model):
-    CheckIn_id = models.ForeignKey(CheckIns, on_delete=models.CASCADE)
-    visitor_reason_id = models.ForeignKey(VisitReason, on_delete=models.CASCADE)
+    check_in = models.ForeignKey(CheckIns, on_delete=models.CASCADE,verbose_name="check_in_id")
+    visit_reason = models.ForeignKey(VisitReason, on_delete=models.CASCADE,verbose_name="visit_reason_id")
