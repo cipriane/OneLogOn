@@ -113,8 +113,8 @@ class CheckInsListView(generics.ListAPIView):
 
     def get(self, request, format = 'json'):
         # find var in the query, else get the second param
-        start_time = request.GET.get('start_time',None)
-        end_time =  request.GET.get('end_time',None)
+        start_time = request.query_params.get('start_time')
+        end_time = request.query_params.get('end_time')
 
         if not start_time:
             return Response({'Start time' : 'invalid'}, status = status.HTTP_400_BAD_REQUEST)
@@ -132,7 +132,7 @@ class CheckInsListView(generics.ListAPIView):
             start_time, end_time = end_time, start_time
 
         # get all CheckIns
-        c = CheckIns.objects.all()
+        c = CheckIns.objects.all().select_related('visitor')
 
         # filter for dates,
         # check_in greater than or equal to start time
@@ -143,7 +143,7 @@ class CheckInsListView(generics.ListAPIView):
 
         # format as JSON and send it back
         # this returns an array of json values per checkin -- probably what we wont
-        data = list(c.values())
+        data = list(c.values('visitor_id', 'check_in', 'check_out', 'visitor__visitor_id', 'visitor__first_name', 'visitor__last_name', 'visitor__is_employee', 'visitor__waiver_signed'))
         return JsonResponse(data, safe=False)
 
         # this returns an array of objects, that have stuff like primary keys in them and stuff like that -- probably what we dont want
