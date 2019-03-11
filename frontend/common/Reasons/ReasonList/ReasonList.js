@@ -26,7 +26,7 @@ export default class ReasonList extends Component {
     } catch (err) {
       this.setState({
         isLoading: false,
-        error: err.toString(),
+        error: err.message,
       });
     }
   }
@@ -62,14 +62,14 @@ export default class ReasonList extends Component {
     } catch (err) {
       this.setState({
         isLoading: false,
-        error: err.toString(),
+        error: err.message,
       });
     }
   };
 
   deleteReason = async id => {
     try {
-      const { input, reasons } = this.state;
+      const { reasons } = this.state;
       this.setState({
         error: null,
         isLoading: true,
@@ -84,19 +84,40 @@ export default class ReasonList extends Component {
         isLoading: false,
       });
     } catch (err) {
-      console.error(err);
       this.setState({
         isLoading: false,
-        error: err.toString(),
+        error: err.message,
       });
     }
   };
 
-  editReason = (index, value) => {
-    const { reasons } = this.state;
-    let list = reasons;
-    list[index].visit_reason = value;
-    this.setState({ reasons: list });
+  editReason = async (id, index, value) => {
+    try {
+      const { input, reasons } = this.state;
+      this.setState({
+        error: null,
+        isLoading: true,
+      });
+      const updatedReason = await myFetch(`/api/visitreason/${id}/update`, {
+        method: 'PATCH',
+        body: {
+          description: value,
+        },
+      });
+      this.setState(prevState => {
+        // Update description of edited reason
+        prevState.reasons[index].description = value;
+        return {
+          reasons: prevState.reasons,
+          isLoading: false,
+        };
+      });
+    } catch (err) {
+      this.setState({
+        isLoading: false,
+        error: err.message,
+      });
+    }
   };
 
   handleSubmit = event => {

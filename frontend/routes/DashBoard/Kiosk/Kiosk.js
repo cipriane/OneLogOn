@@ -226,9 +226,13 @@ class Kiosk extends Component {
         nextPage = (page + 1) % PAGES.length;
         break;
     }
-    this.setState({
-      page: nextPage,
-    });
+    if (nextPage === CHECK_IN_PAGE) {
+      this.cancel(); // reset all inputs
+    } else {
+      this.setState({
+        page: nextPage,
+      });
+    }
   };
 
   checkIn = async () => {
@@ -251,12 +255,10 @@ class Kiosk extends Component {
             visit_reason: reason.id,
           };
         });
-        console.log(checkInVisitReasonsResp);
         const checkInVisitReasonsResp = await myFetch('/api/checkinvisitreason/create', {
           method: 'POST',
           body: checkInVisitReasons,
         });
-        console.log(checkInVisitReasonsResp);
       }
 
       this.setState({
@@ -293,11 +295,20 @@ class Kiosk extends Component {
   cancel = event => {
     event && event.preventDefault();
     this.setState({
+      password: '',
+      invalidPassword: false,
       page: CHECK_IN_PAGE,
-      error: null,
       reasons: [],
-      hasSigned: false,
-      is_employee: false,
+      selectedReasons: [],
+      isCheckedIn: false,
+      checkInID: null,
+      checkInTime: '',
+      checkOutTime: '',
+      waiverSigned: false,
+      isEmployee: false,
+      visitorId: '',
+      isLoading: false,
+      error: null,
     });
   };
 
