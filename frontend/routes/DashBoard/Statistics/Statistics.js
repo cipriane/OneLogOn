@@ -1,149 +1,133 @@
 import React, { Component } from 'react';
-import { Table, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import SimpleHeader from 'common/SimpleHeader/SimpleHeader';
 import s from './Statistics.css';
 import downloadCSV from 'utils/downloadCSV';
 import jsonToCSV from 'utils/jsonToCSV';
 import myFetch from 'utils/fetch';
+import Calendar from './Calendar/Calendar';
+import MyTable from './MyTable/MyTable';
+import formatDate from 'utils/formatDate';
 
-const dummyData = [
-  {
-    id: 1234567,
-    firstName: 'Student1',
-    lastName: 's-lastname',
-    isEmployee: false,
-  },
-  {
-    id: 1234567,
-    firstName: 'Student2',
-    lastName: 's-lastname',
-    isEmployee: false,
-  },
-  {
-    id: 1234567,
-    firstName: 'Employee1',
-    lastName: 'e-lastname',
-    isEmployee: true,
-  },
-  {
-    id: 1234567,
-    firstName: 'Employee2',
-    lastName: 'e-lastname',
-    isEmployee: true,
-  },
-];
+const formatDateForAPI = date => {
+  if (!(date instanceof Date)) {
+    return '';
+  }
+  return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+};
+
+const countUniqueVisitors = visitors => {
+  return new Set(visitors.map(visitor => visitor.visitor_id)).size;
+};
+
+const calculateAverageDuration = visitors => {
+  let count = 0;
+  let minutes = 0;
+  visitors.forEach(visitor => {
+    if (!visitor.check_out || !visitor.check_in) {
+      return 'continue';
+    }
+    count += 1;
+    let visitTime = new Date(visitor.check_out) - new Date(visitor.check_in);
+    minutes += visitTime / (60 * 1000);
+  });
+  if (count === 0) {
+    return 0;
+  }
+  return Math.round(minutes / count);
+};
 
 export default class Statistics extends Component {
-  getReport = async () => {
-    // TODO: load visitors from API
+  state = {
+    visitors: [],
+    selectedDate: new Date(),
+    isLoading: false,
+    error: null,
+  };
 
-    //temp variables for testing
-    this.state = {};
-    this.state['start_time'] = '03/01/2019';
-    this.state['end_time'] = '03/03/2019';
-    // FRONT END! your turn to implement a way to get get start_time and end_time from the user.
+  setDate = async date => {
+    const visitors = await this.getVisitors(date);
+    this.setState({
+      selectedDate: date,
+      visitors: visitors || [],
+    });
+  };
 
-    const visitor_data = await myFetch(
-      `/api/checkins?start_time=${this.state.start_time}&end_time=${this.state.end_time}`,
-    );
+  componentDidMount = async () => {
+    const visitors = await this.getVisitors(new Date());
+    this.setState({
+      visitors: visitors || [],
+    });
+  };
 
-    console.log(visitor_data);
-
-    const data = visitor_data.map(row => ({
-      id: row.id,
-      firstName: row.firstName,
-      lastName: row.lastName,
-    }));
-
-    const csvData = jsonToCSV(data);
-    downloadCSV(csvData);
+  getVisitors = async date => {
+    try {
+      this.setState({ isLoading: true, error: null });
+      let selectedDate = date;
+      let nextDate = new Date(selectedDate);
+      nextDate.setDate(selectedDate.getDate() + 1);
+      selectedDate = formatDateForAPI(selectedDate);
+      nextDate = formatDateForAPI(nextDate);
+      const visitor_data = await myFetch(
+        `/api/checkins?start_time=${selectedDate}&end_time=${nextDate}`,
+      );
+      this.setState({
+        isLoading: false,
+      });
+      return visitor_data;
+    } catch (err) {
+      this.setState({
+        isLoading: false,
+        error: err.message,
+      });
+    }
   };
 
   render() {
+    const { selectedDate } = this.state;
+    let statistics;
+    if (this.state.error) {
+      statistics = <div className={s.largeMessage}>{this.state.error}</div>;
+    } else if (this.state.isLoading) {
+      statistics = <div className={s.largeMessage}>Loading...</div>;
+    } else if (this.state.visitors.length) {
+      statistics = (
+        <React.Fragment>
+          <div className={s.statisticContainer}>
+            <div className={s.statistic}>
+              <div className={s.description}>Unique Visitors</div>
+              <div className={s.number}>{countUniqueVisitors(this.state.visitors)}</div>
+            </div>
+            <div className={s.statistic}>
+              <div className={s.description}>Total Visits</div>
+              <div className={s.number}>{this.state.visitors.length}</div>
+            </div>
+            <div className={s.statistic}>
+              <div className={s.description}>Avg Duration</div>
+              <div className={s.number}>
+                {calculateAverageDuration(this.state.visitors)} minutes
+              </div>
+            </div>
+          </div>
+          <MyTable visitors={this.state.visitors} />
+        </React.Fragment>
+      );
+    } else {
+      statistics = <div className={s.largeMessage}>No visitors on {formatDate(selectedDate)}.</div>;
+    }
     return (
-      <div>
+      <React.Fragment>
         <SimpleHeader title="Statistics" />
         <div className={s.root}>
-          <div className={s.section}>
-            <h3 className={s.tableHeader}>Visitors</h3>
-            <VisitorTable visitors={dummyData} />
-            <Button variant="success" onClick={this.getReport}>
+          <div className={s.flex}>
+            <Calendar setDate={this.setDate} date={this.state.selectedDate} />
+            <Button className={s.right} variant="success">
               Export
             </Button>
           </div>
-          <div className={s.section}>
-            <h3 className={s.tableHeader}>Visitors (Employees)</h3>
-            <EmployeeVisitorTable visitors={dummyData} />
-            <Button variant="success" onClick={this.getReport}>
-              Export
-            </Button>
-          </div>
+          {statistics}
         </div>
-      </div>
-    );
-  }
-}
-
-class VisitorTable extends Component {
-  render() {
-    let headers = Object.keys(this.props.visitors[0]);
-    headers = headers.filter(e => e !== 'isEmployee');
-
-    return (
-      <div>
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              {headers.map((category, id) => (
-                <th key={id}>{category}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {this.props.visitors.map((visitor, id) =>
-              !visitor.isEmployee ? (
-                <tr key={id}>
-                  <td>{visitor.id}</td>
-                  <td>{visitor.firstName}</td>
-                  <td>{visitor.lastName}</td>
-                </tr>
-              ) : null,
-            )}
-          </tbody>
-        </Table>
-      </div>
-    );
-  }
-}
-
-class EmployeeVisitorTable extends Component {
-  render() {
-    let headers = Object.keys(this.props.visitors[0]);
-    headers = headers.filter(e => e !== 'isEmployee');
-
-    return (
-      <div>
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              {headers.map((category, id) => (
-                <th key={id}>{category}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {this.props.visitors.map((visitor, id) =>
-              visitor.isEmployee ? (
-                <tr key={id}>
-                  <td>{visitor.id}</td>
-                  <td>{visitor.firstName}</td>
-                  <td>{visitor.lastName}</td>
-                </tr>
-              ) : null,
-            )}
-          </tbody>
-        </Table>
-      </div>
+      </React.Fragment>
     );
   }
 }
