@@ -1,10 +1,3 @@
-.flex {
-  position: relative;
-  align-items: center;
-  display: flex;
-  padding-bottom: 1rem;
-}
-
 .calendarDate {
   width: 135px;
 }

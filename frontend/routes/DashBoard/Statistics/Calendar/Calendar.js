@@ -1,37 +1,17 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import s from './Calendar.css';
-
-function formatDate(date) {
-  if (!(date instanceof Date)) {
-    return '';
-  }
-  const monthNames = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
-
-  let day = date.getDate();
-  let month = monthNames[date.getMonth()];
-  let year = date.getFullYear();
-
-  return `${month} ${day}, ${year}`;
-}
+import formatDate from 'utils/formatDate';
 
 export default class Calendar extends Component {
+  static propTypes = {
+    setDate: PropTypes.func.isRequired,
+    date: PropTypes.instanceOf(Date),
+  };
+
   state = {
-    date: new Date(),
     displayCalendar: false,
   };
 
@@ -65,25 +45,15 @@ export default class Calendar extends Component {
   };
 
   increaseDate = () => {
-    this.setState(prevState => {
-      let curDate = prevState.date;
-      curDate.setDate(curDate.getDate() + 1);
-      return { date: curDate };
-    });
+    let newDate = this.props.date;
+    newDate.setDate(newDate.getDate() + 1);
+    this.props.setDate(newDate);
   };
 
   decreaseDate = () => {
-    this.setState(prevState => {
-      let curDate = prevState.date;
-      curDate.setDate(curDate.getDate() - 1);
-      return { date: curDate };
-    });
-  };
-
-  setDate = date => {
-    this.setState({
-      date,
-    });
+    let newDate = this.props.date;
+    newDate.setDate(newDate.getDate() - 1);
+    this.props.setDate(newDate);
   };
 
   toggleDisplayCalendar = () => {
@@ -96,14 +66,14 @@ export default class Calendar extends Component {
     let calendar = this.state.displayCalendar ? (
       <div className={s.calendar} ref={this.setWrapperRef}>
         <DayPicker
-          selectedDays={this.state.date}
-          month={this.state.date}
-          onDayClick={this.setDate}
+          selectedDays={this.props.date}
+          month={this.props.date}
+          onDayClick={this.props.setDate}
         />
       </div>
     ) : null;
     return (
-      <div className={s.flex}>
+      <React.Fragment>
         <div
           className={[s.calendarSideButton, s.calendarButton].join(' ')}
           onClick={this.decreaseDate}
@@ -115,7 +85,7 @@ export default class Calendar extends Component {
           onClick={this.toggleDisplayCalendar}
           ref={this.setDisplayCalendarRef}
         >
-          {formatDate(this.state.date)}
+          {formatDate(this.props.date)}
         </div>
         {calendar}
         <div
@@ -124,7 +94,7 @@ export default class Calendar extends Component {
         >
           ›
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }
