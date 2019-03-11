@@ -10,6 +10,9 @@ import MyTable from './MyTable/MyTable';
 import formatDate from 'utils/formatDate';
 
 const formatDateForAPI = date => {
+  if (!(date instanceof Date)) {
+    return '';
+  }
   return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
 };
 
@@ -46,27 +49,27 @@ export default class Statistics extends Component {
     const visitors = await this.getVisitors(date);
     this.setState({
       selectedDate: date,
-      visitors,
+      visitors: visitors || [],
     });
   };
 
   componentDidMount = async () => {
-    const visitors = await this.getVisitors();
+    const visitors = await this.getVisitors(new Date());
     this.setState({
-      visitors,
+      visitors: visitors || [],
     });
   };
 
-  getVisitors = async () => {
+  getVisitors = async date => {
     try {
       this.setState({ isLoading: true, error: null });
-      const selectedDate = this.state.selectedDate;
-      const nextDate = new Date(selectedDate);
+      let selectedDate = date;
+      let nextDate = new Date(selectedDate);
       nextDate.setDate(selectedDate.getDate() + 1);
+      selectedDate = formatDateForAPI(selectedDate);
+      nextDate = formatDateForAPI(nextDate);
       const visitor_data = await myFetch(
-        `/api/checkins?start_time=${formatDateForAPI(selectedDate)}&end_time=${formatDateForAPI(
-          nextDate,
-        )}`,
+        `/api/checkins?start_time=${selectedDate}&end_time=${nextDate}`,
       );
       this.setState({
         isLoading: false,
