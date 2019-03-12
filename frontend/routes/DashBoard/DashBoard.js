@@ -16,9 +16,9 @@ import Statistics from 'routes/DashBoard/Statistics/Statistics';
 import Kiosk from 'routes/DashBoard/Kiosk/Kiosk';
 
 const dashboardRoutes = [
-  { id: 0, name: 'Settings', path: 'settings', component: Settings },
+  { id: 0, name: 'Statistics', path: 'statistics', component: Statistics },
   { id: 1, name: 'Manage', path: 'manage', component: Manage },
-  { id: 2, name: 'Statistics', path: 'statistics', component: Statistics },
+  { id: 2, name: 'Settings', path: 'settings', component: Settings },
   { id: 3, name: 'Kiosk Mode', path: 'kiosk', component: Kiosk },
 ];
 
