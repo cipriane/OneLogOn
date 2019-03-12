@@ -10,7 +10,7 @@ export default class ReasonsPage extends Component {
     reasons: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number,
-        desc: PropTypes.string,
+        description: PropTypes.string,
       }),
     ).isRequired,
   };
@@ -55,7 +55,7 @@ export default class ReasonsPage extends Component {
                     }
                     onClick={this.handleChange}
                   >
-                    {reason.visit_reason}
+                    {reason.description}
                   </Button>
                 </div>
               );
@@ -66,7 +66,12 @@ export default class ReasonsPage extends Component {
               <FancyButton muted label="Cancel" type="button" onClick={this.props.cancel} />
             </div>
             <div className={s.alignRight}>
-              <FancyButton disabled={!selected.length} label="Next" type="submit" />
+              <FancyButton
+                disabled={!selected.length || this.props.isLoading}
+                loading={this.props.isLoading}
+                label="Next"
+                type="submit"
+              />
             </div>
           </div>
         </Form>
