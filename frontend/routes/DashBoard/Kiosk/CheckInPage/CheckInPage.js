@@ -49,7 +49,12 @@ export default class CheckInPage extends Component {
             />
             <Form.Text className="text-muted">Enter your ID without the W</Form.Text>
           </Form.Group>
-          <FancyButton label="Check In" disabled={!this.isValid(id)} type="submit" />
+          <FancyButton
+            label="Check In"
+            loading={this.props.isLoading}
+            disabled={!this.isValid(id) || this.props.isLoading}
+            type="submit"
+          />
         </Form>
       </React.Fragment>
     );
