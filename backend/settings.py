@@ -103,9 +103,6 @@ DATABASES = {
     }
 }
 
-FIXTURE_DIRS = (
-   '/server/fixtures/',
-)
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
