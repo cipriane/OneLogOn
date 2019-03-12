@@ -18,6 +18,7 @@ class Company(models.Model):
     company_city = models.CharField(max_length=30, null=True)
     company_zip = models.CharField(max_length=15, null=True)
     company_state = models.CharField(max_length=2, null=True)
+    company_message = models.TextField()
 
 class Visitors(models.Model):
     company = models.ForeignKey(Company,on_delete=models.CASCADE,verbose_name="company_ID")
