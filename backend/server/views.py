@@ -33,6 +33,7 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from datetime import datetime
 from django.utils.timezone import now
+from django.utils.timezone import is_aware
 from pytz import timezone
 from datetime import date
 import pytz
@@ -122,24 +123,21 @@ class CheckInsListView(generics.ListAPIView):
         if not end_time:
             return Response({'End time' : 'invalid'}, status = status.HTTP_400_BAD_REQUEST)
 
-        tz = pytz.utc
-
-        start_time = tz.localize(datetime.strptime(start_time, '%m/%d/%Y'))#.date()
-        end_time   = tz.localize(datetime.strptime(end_time,   '%m/%d/%Y'))#.date()
-
-        # swap if start time is bigger
-        if start_time > end_time:
-            start_time, end_time = end_time, start_time
+        california_tz = pytz.timezone('US/Pacific')
+        start_time = california_tz.localize(datetime.strptime(start_time, '%m/%d/%Y'))
+        end_time   = california_tz.localize(datetime.strptime(end_time,   '%m/%d/%Y'))
 
         # get all CheckIns
-        c = CheckIns.objects.all().select_related('visitor')
+        c = CheckIns.objects.all().select_related('visitor').order_by('-check_in')
 
         # filter for dates,
         # check_in greater than or equal to start time
         # check_in less than or equal to end time (may use lt for less than)
         c = c.filter(check_in__gte = start_time, check_in__lte = end_time)
 
-        # may need to filter by company :: TO DO
+        # Filter by company
+        company_id = UserCompany.objects.get(user_id=request.user.id).company_id
+        c = c.filter(visitor__company=company_id)
 
         # format as JSON and send it back
         # this returns an array of json values per checkin -- probably what we wont
