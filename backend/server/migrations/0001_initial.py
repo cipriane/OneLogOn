@@ -71,9 +71,6 @@ class Migration(migrations.Migration):
                 ('last_name', models.CharField(max_length=30, null=True)),
                 ('is_employee', models.BooleanField(default=False)),
                 ('waiver_signed', models.BooleanField(default=False)),
-<<<<<<< HEAD
-                ('company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='server.Company', verbose_name='company_ID')),
-=======
                 ('company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='server.Company', verbose_name='company_id')),
             ],
         ),
@@ -84,7 +81,6 @@ class Migration(migrations.Migration):
                 ('description', models.CharField(max_length=30)),
                 ('is_active', models.BooleanField(default=True)),
                 ('company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='server.Company', verbose_name='company_id')),
->>>>>>> upstream/master
             ],
         ),
         migrations.AddField(
