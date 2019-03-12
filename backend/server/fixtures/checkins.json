@@ -1,0 +1,29 @@
+[
+    {
+        "model": "server.checkins",
+        "pk":1,
+        "fields": {
+            "visitor_id": "1",
+            "check_in": "2019-03-11 02:42:25.960000-08:00",
+            "check_out": "2019-03-11 02:42:41.798000-08:00"
+        }
+    },
+    {
+      "model": "server.checkins",
+      "pk":2,
+      "fields": {
+          "visitor_id": "1",
+          "check_in": "2019-03-11 02:42:25.960000-08:00",
+          "check_out": "2019-03-11 02:42:41.798000-08:00"
+        }
+    },
+    {
+      "model": "server.checkins",
+      "pk":3,
+      "fields": {
+          "visitor_id": "2",
+          "check_in": "2019-03-11 02:42:25.960000-08:00",
+          "check_out": "2019-03-11 02:42:41.798000-08:00"
+        }
+    }
+]
