@@ -32,6 +32,13 @@ from backend.server.serializers import VisitorsSerializer
 from backend.server.serializers import VisitorReasonSerializer
 from backend.server.serializers import CheckInVisitorReasonSerializer
 from backend.server.serializers import UserCompanySerializer
+from django.core import serializers
+from django.http import HttpResponse
+from datetime import datetime
+from datetime import date
+import pytz
+from django.http import JsonResponse
+
 
 def index(request):
     return render(request, 'index.html')
@@ -73,9 +80,108 @@ class CompanyCreateView(generics.CreateAPIView):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
 
+class CompanyMessageView(APIView):
+    """
+    /api/companies/message
+    Handle company check-in messages
+    """
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, format='json'):
+        """
+        POST /api/companies/message
+        Set new company message
+        Required Parameters: company_message
+        """
+        try:
+            id, message = request.user.id, request.data['company_message']
+            try:
+                # Get company
+                company_id = UserCompany.objects.get(user_id=id).company_id
+                company = Company.objects.get(id=company_id)
+                # Update company message and save it
+                company.company_message = message
+                company.save()
+                message = {'company_message' : company.company_message}
+                return Response(message, status=status.HTTP_200_OK)
+
+            except Exception:
+                message = {'error' : 'company does not exist'}
+                return Response(message, status=status.HTTP_400_BAD_REQUEST)
+                
+        except Exception:
+            message = {'missing parameter' : 'company_message'}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, format='json'):
+        """
+        GET /api/companies/message
+        Returns company message
+        Required Parameters: None
+        """
+        try:
+            id = request.user.id
+            try:
+                # Get company message using UserCompany table and return company message
+                company_id = UserCompany.objects.get(user_id=id).company_id
+                company = Company.objects.get(id=company_id)
+                message = {'company_message' : company.company_message}
+                return Response(message, status=status.HTTP_200_OK)
+
+            except Exception:
+                message = {'error' : 'company does not exist'}
+                return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception:
+            message = {'error' : 'user is not logged in'}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+            
+
 class CheckInsListView(generics.ListAPIView):
     queryset = CheckIns.objects.all()
     serializer_class = CheckInsSerializer
+
+    def get(self, request, format = 'json'):
+        # find var in the query, else get the second param
+        start_time = request.GET.get('start_time',None) 
+        end_time =  request.GET.get('end_time',None) 
+
+        if not start_time:
+            return Response({'Start time' : 'invalid'}, status = status.HTTP_400_BAD_REQUEST)
+
+        if not end_time:
+            return Response({'End time' : 'invalid'}, status = status.HTTP_400_BAD_REQUEST)
+
+        tz = pytz.utc
+
+        start_time = tz.localize(datetime.strptime(start_time, '%m/%d/%Y'))#.date()
+        end_time   = tz.localize(datetime.strptime(end_time,   '%m/%d/%Y'))#.date()
+
+        # swap if start time is bigger
+        if start_time > end_time:
+            start_time, end_time = end_time, start_time
+
+        # get all CheckIns 
+        c = CheckIns.objects.all() 
+
+        # filter for dates, 
+        # check_in greater than or equal to start time
+        # check_in less than or equal to end time (may use lt for less than)
+        c = c.filter(check_in__gte = start_time, check_in__lte = end_time)
+          
+        # may need to filter by company :: TO DO
+
+        # format as JSON and send it back
+        # this returns an array of json values per checkin -- probably what we wont
+        data = list(c.values())
+        return JsonResponse(data, safe=False) 
+
+        # this returns an array of objects, that have stuff like primary keys in them and stuff like that -- probably what we dont want
+        qs_json = serializers.serialize('json', c)
+        return HttpResponse(qs_json, content_type='application/json', status = status.HTTP_200_OK)
+
+
 class CheckInsDetailView(generics.RetrieveAPIView):
     queryset = CheckIns.objects.all()
     serializer_class = CheckInsSerializer
@@ -87,8 +193,8 @@ class TimeSheetListView(generics.ListAPIView):
     queryset = TimeSheet.objects.all()
     serializer_class = CheckInsSerializer
 class TimeSheetDetailView(generics.RetrieveAPIView):
-        queryset = TimeSheet.objects.all()
-        serializer_class = CheckInsSerializer
+    queryset = TimeSheet.objects.all()
+    serializer_class = CheckInsSerializer
 class TimeSheetCreateView(generics.CreateAPIView):
     queryset = TimeSheet.objects.all()
     serializer_class = CheckInsSerializer
@@ -102,7 +208,30 @@ class VisitorsDetailView(generics.RetrieveAPIView):
 class VisitorsCreateView(generics.CreateAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
+class VisitorsUpdateWaiverView(generics.UpdateAPIView):
+    """
+    /api/visitors/<pk>/waiver/
+    """
+    queryset = Visitors.objects.all()
+    serializer_class = VisitorsSerializer
+    permission_classes = (IsAuthenticated,)
 
+    def post(self, request,pk, format = 'json'):
+        """
+        POST /api/visitors/<pk>/waiver/
+        Set visitor's waiver_signed field to True
+        """
+        try:
+            #get visitor object with specified pk
+            visitor = self.queryset.get(id=pk)
+
+            visitor.waiver_signed = True
+            visitor.save()
+            return Response(status=status.HTTP_200_OK)
+        except Exception: 
+            message = {'error' : 'Visitor doesn\'t exist'}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        
 class VisitorReasonListView(generics.ListAPIView):
     queryset = VisitorReason.objects.all()
     serializer_class = VisitorReasonSerializer
@@ -110,8 +239,64 @@ class VisitorReasonDetailView(generics.RetrieveAPIView):
     queryset = VisitorReason.objects.all()
     serializer_class = VisitorReasonSerializer
 class VisitorReasonCreateView(generics.CreateAPIView):
+    """
+    api/visitorreasons/create
+    """
     queryset = VisitorReason.objects.all()
     serializer_class = VisitorReasonSerializer
+
+    def post(self,request,format= 'json'):
+        """
+        POST api/visitorreasons/create
+        Add new visit reason
+        Required Parameters: company_id, visit_reason
+        """
+        serializer = VisitorReasonSerializer(data=request.data)
+
+        # check if this reason already exists in the database
+        vr = request.data['visit_reason']
+        try:
+            y = self.queryset.get(visit_reason=vr)
+        except VisitorReason.DoesNotExist:
+            y = None
+
+        # if the reason doesn't already exist
+        if y is None:          
+            #grab provided company_id
+            cid = request.data['company_id']
+
+            #check if company_id only contains digits
+            if cid.isdigit():
+                pass
+            else:
+                message = {'error' : 'Visit reason cannot be created, invalid company_id provided'}
+                return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+            #check if company (company_id) exists
+            try:
+                y = Company.objects.all().get(id=cid)
+            except Company.DoesNotExist:
+                #company doesn't exist
+                message = {'error' : 'Visit reason cannot be created, company_id provided doesn\'t exist'}
+                return Response(message, status=status.HTTP_400_BAD_REQUEST) 
+
+            if serializer.is_valid():
+                # save new reason to database, and set is_active field to True
+                reason = serializer.save(is_active = True)
+                if reason:
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                else:
+                    message = {'error' : 'Visit reason cannot be created'}
+                    return Response(message, status=status.HTTP_400_BAD_REQUEST) 
+            else:
+                message = {'error' : 'Visit reason cannot be created, invalid information provided'}
+                return Response(message, status=status.HTTP_400_BAD_REQUEST)            
+        
+        # else, if the reason already exists
+        else:
+            message = {'error' : 'Visit reason already exists'}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+            
 
 class CheckInVisitorReasonListView(generics.ListAPIView):
     queryset = CheckInVisitorReason.objects.all()
@@ -184,3 +369,4 @@ class Registration(APIView):
         else:
             message = user_serializer.errors
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
