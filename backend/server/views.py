@@ -33,7 +33,6 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from datetime import datetime
 from django.utils.timezone import now
-from django.utils.timezone import is_aware
 from pytz import timezone
 from datetime import date
 import pytz
@@ -141,8 +140,45 @@ class CheckInsListView(generics.ListAPIView):
 
         # format as JSON and send it back
         # this returns an array of json values per checkin -- probably what we wont
-        data = list(c.values('visitor_id', 'check_in', 'check_out', 'visitor__visitor_id', 'visitor__first_name', 'visitor__last_name', 'visitor__is_employee', 'visitor__waiver_signed'))
-        return JsonResponse(data, safe=False)
+        check_ins = list(c.values(
+            'visitor_id',
+            'id',
+            'check_in',
+            'check_out',
+            'visitor__visitor_id',
+            'visitor__first_name',
+            'visitor__last_name',
+            'visitor__is_employee',
+            'visitor__waiver_signed',
+        ))
+
+        check_in_ids = [c['id'] for c in check_ins]
+
+        # Get visit reasons
+        check_in_visit_reasons = CheckInVisitReason.objects.all().select_related('visit_reason').filter(check_in__in=check_in_ids)
+
+        check_in_visit_reasons = list(check_in_visit_reasons.values(
+            'check_in',
+            'visit_reason__description',
+        ))
+
+        # normalize check_in_visit_reasons to be in the form:
+        # {
+        #   check_in_id: [reason_descriptions],
+        # }
+        normalized = {}
+        for item in check_in_visit_reasons:
+            if not item['check_in'] in normalized:
+                normalized[item['check_in']] = []
+            normalized[item['check_in']].append(item['visit_reason__description'])
+
+        for check_in in check_ins:
+            if check_in['id'] in normalized:
+                check_in['reasons'] = normalized[check_in['id']]
+            else:
+                check_in['reasons'] = []
+
+        return JsonResponse(check_ins, safe=False)
 
         # this returns an array of objects, that have stuff like primary keys in them and stuff like that -- probably what we dont want
         qs_json = serializers.serialize('json', c)
@@ -220,7 +256,7 @@ class VisitorsUpdateWaiverView(generics.UpdateAPIView):
             visitor.waiver_signed = True
             visitor.save()
             return Response(status=status.HTTP_200_OK)
-        except Exception: 
+        except Exception:
             message = {'error' : 'Visitor doesn\'t exist'}
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
 

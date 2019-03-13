@@ -77,6 +77,7 @@ class Login extends Component {
                 <FancyTextField
                   autoFocus
                   required
+                  autoComplete="username"
                   type="text"
                   placeholder="username"
                   name="username"
@@ -86,6 +87,7 @@ class Login extends Component {
               <Form.Group>
                 <FancyTextField
                   required
+                  autoComplete="current-password"
                   type="password"
                   placeholder="password"
                   name="password"
