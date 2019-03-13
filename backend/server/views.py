@@ -305,7 +305,8 @@ class Registration(APIView):
     """
     /api/register
     Register new User and new Company.
-    Required Parameters: username, email, password, company_name
+    Required Parameters: username, email, password, company_name,
+        company_address, company_city, company_zip, company_state
     """
     permission_classes = (AllowAny,)
     def post(self, request, format='json'):
@@ -339,11 +340,13 @@ class Registration(APIView):
             message = user_serializer.errors
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
-class ResetPassword(APIView):
+class ChangePassword(APIView):
     """
+    /api/password
+    Changes user password
+    Required Parameters: old_password, new_password
     """
     permission_classes = (IsAuthenticated,)
-
     def post(self, request, format='json'):
         try:
             old_password, new_password = request.data['old_password'], request.data['new_password']
