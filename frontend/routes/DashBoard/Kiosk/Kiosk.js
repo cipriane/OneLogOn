@@ -247,12 +247,12 @@ class Kiosk extends Component {
         },
       });
 
-      const { reasons } = this.state;
-      if (reasons && reasons.length) {
-        let checkInVisitReasons = reasons.map(reason => {
+      const { selectedReasons } = this.state;
+      if (selectedReasons && selectedReasons.length) {
+        let checkInVisitReasons = selectedReasons.map(reasonId => {
           return {
             check_in: checkInResp.id,
-            visit_reason: reason.id,
+            visit_reason: reasonId,
           };
         });
         const checkInVisitReasonsResp = await myFetch('/api/checkinvisitreason/create', {
@@ -353,16 +353,13 @@ class Kiosk extends Component {
           <MainFormLayout>
             <FancyFormHeader />
             <div className={s.text}>
-              <Alert variant="danger">
-                Activating Kiosk mode will log you out.
-                {'\n'}
-                To escape Kiosk mode, press ESC.
-              </Alert>
+              <Alert variant="danger">Activating Kiosk mode will log you out.</Alert>
             </div>
             {invalidPassword && <Alert variant="danger">Invalid password</Alert>}
             <Form.Group>
               <FancyTextField
                 required
+                autoComplete="current-password"
                 type="password"
                 placeholder="password"
                 name="password"

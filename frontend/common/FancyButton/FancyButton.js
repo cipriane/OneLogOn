@@ -3,7 +3,7 @@ import s from './FancyButton.css';
 
 export default class FancyButton extends Component {
   render() {
-    const { muted, loading } = this.props;
+    const { muted, loading, disabled } = this.props;
     let classes = [s.root];
     if (muted) {
       classes.push(s.muted);
@@ -13,11 +13,7 @@ export default class FancyButton extends Component {
     let label = loading ? 'Loading...' : this.props.label;
 
     return (
-      <button
-        className={classes.join(' ')}
-        disabled={this.props.disabled || loading}
-        {...this.props}
-      >
+      <button className={classes.join(' ')} disabled={disabled || loading} {...this.props}>
         {label}
       </button>
     );

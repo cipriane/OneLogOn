@@ -5,6 +5,7 @@ import s from './Statistics.css';
 import downloadCSV from 'utils/downloadCSV';
 import jsonToCSV from 'utils/jsonToCSV';
 import myFetch from 'utils/fetch';
+import ExportModal from './ExportModal/ExportModal';
 import Calendar from './Calendar/Calendar';
 import MyTable from './MyTable/MyTable';
 import formatDate from 'utils/formatDate';
@@ -41,21 +42,22 @@ export default class Statistics extends Component {
   state = {
     visitors: [],
     selectedDate: new Date(),
+    showExportModal: false,
     isLoading: false,
     error: null,
+  };
+
+  componentDidMount = async () => {
+    const visitors = await this.getVisitors(new Date());
+    this.setState({
+      visitors: visitors || [],
+    });
   };
 
   setDate = async date => {
     const visitors = await this.getVisitors(date);
     this.setState({
       selectedDate: date,
-      visitors: visitors || [],
-    });
-  };
-
-  componentDidMount = async () => {
-    const visitors = await this.getVisitors(new Date());
-    this.setState({
       visitors: visitors || [],
     });
   };
@@ -81,6 +83,18 @@ export default class Statistics extends Component {
         error: err.message,
       });
     }
+  };
+
+  showExportModal = () => {
+    this.setState({
+      showExportModal: true,
+    });
+  };
+
+  hideExportModal = () => {
+    this.setState({
+      showExportModal: false,
+    });
   };
 
   render() {
@@ -121,9 +135,10 @@ export default class Statistics extends Component {
         <div className={s.root}>
           <div className={s.flex}>
             <Calendar setDate={this.setDate} date={this.state.selectedDate} />
-            <Button className={s.right} variant="success">
+            <Button className={s.right} onClick={this.showExportModal} variant="success">
               Export
             </Button>
+            <ExportModal show={this.state.showExportModal} onHide={this.hideExportModal} />
           </div>
           {statistics}
         </div>
