@@ -200,6 +200,29 @@ class VisitorsCreateView(generics.CreateAPIView):
 class VisitorsUpdateView(generics.UpdateAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
+class VisitorsUpdateWaiverView(generics.UpdateAPIView):
+    """
+    /api/visitors/<pk>/waiver/
+    """
+    queryset = Visitors.objects.all()
+    serializer_class = VisitorsSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request,pk, format = 'json'):
+        """
+        POST /api/visitors/<pk>/waiver/
+        Set visitor's waiver_signed field to True
+        """
+        try:
+            #get visitor object with specified pk
+            visitor = self.queryset.get(id=pk)
+
+            visitor.waiver_signed = True
+            visitor.save()
+            return Response(status=status.HTTP_200_OK)
+        except Exception: 
+            message = {'error' : 'Visitor doesn\'t exist'}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 class VisitReasonListView(generics.ListAPIView):
     queryset = VisitReason.objects.all()
