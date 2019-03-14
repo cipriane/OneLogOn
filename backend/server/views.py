@@ -179,10 +179,6 @@ class CheckInsListView(generics.ListAPIView):
                 check_in['reasons'] = []
 
         return JsonResponse(check_ins, safe=False)
-
-        # this returns an array of objects, that have stuff like primary keys in them and stuff like that -- probably what we dont want
-        qs_json = serializers.serialize('json', c)
-        return HttpResponse(qs_json, content_type='application/json', status = status.HTTP_200_OK)
 class CheckInsDetailView(generics.RetrieveAPIView):
     queryset = CheckIns.objects.all()
     serializer_class = CheckInsSerializer
