@@ -5,6 +5,12 @@ import Form from 'react-bootstrap/Form';
 
 export default class FancyTextField extends React.Component {
   render() {
-    return <Form.Control className={s.textfield} {...this.props} />;
+    let label = this.props.label ? <Form.Label>{this.props.label}</Form.Label> : null;
+    return (
+      <React.Fragment>
+        {label}
+        <Form.Control className={s.textfield} {...this.props} />
+      </React.Fragment>
+    );
   }
 }

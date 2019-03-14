@@ -8,7 +8,7 @@ import formatDate from 'utils/formatDate';
 export default class Calendar extends Component {
   static propTypes = {
     setDate: PropTypes.func.isRequired,
-    date: PropTypes.instanceOf(Date),
+    date: PropTypes.instanceOf(Date).isRequired,
   };
 
   state = {
