@@ -12,11 +12,13 @@ urlpatterns = [
     path('api/companies/create', views.CompanyCreateView.as_view()),
     path('api/companies/<pk>', views.CompanyDetailView.as_view()),
     path('api/companies/message', views.CompanyMessageView.as_view()),
+
     path('api/visitors', views.VisitorsListView.as_view()),
     path('api/visitors/create', views.VisitorsCreateView.as_view()),
     path('api/visitors/<visitor_id>', views.VisitorsDetailView.as_view()),
     path('api/visitors/<pk>/update', views.VisitorsUpdateView.as_view()),
     path('api/visitors/<pk>/waiver/', views.VisitorsUpdateWaiverView.as_view()),
+
     path('api/checkins', views.CheckInsListView.as_view()),
     path('api/checkins/create', views.CheckInsCreateView.as_view()),
     path('api/checkins/<pk>', views.CheckInsDetailView.as_view()),
@@ -40,5 +42,6 @@ urlpatterns = [
     path('api/kioskmode', MyKioskTokenObtainPairView.as_view()),
     path('api/refresh', TokenRefreshView.as_view()),
     path('api/register', views.Registration.as_view()),
+    path('api/password', views.ChangePassword.as_view()),
     re_path(r'', views.index, name='index'),
 ]
