@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
@@ -9,7 +10,7 @@ import s from './ExportModal.css';
 import Calendar from '../Calendar/Calendar';
 import FancyTextField from 'common/FancyTextField/FancyTextField';
 import formatDate from 'utils/formatDate';
-import myFetch from 'utils/fetch';
+import fetchVisitors from '../fetchVisitors';
 import downloadCSV from 'utils/downloadCSV';
 import jsonToCSV from 'utils/jsonToCSV';
 
@@ -47,16 +48,18 @@ export default class ExportModal extends Component {
   };
 
   state = {
+    isLoading: false,
     startDate: new Date(),
     endDate: new Date(),
     year: new Date().getFullYear(),
     quarter: 0,
+    error: null,
   };
 
   componentDidMount() {
     // Find and set current Quarter
     const date = new Date();
-    const quarter = Math.floor(date.getMonth() / 3) + 2;
+    const quarter = Math.floor(date.getMonth() / 3) + 1;
     this.setQuarter(quarter);
   }
 
@@ -131,7 +134,42 @@ export default class ExportModal extends Component {
     );
   };
 
+  downloadVisitors = async () => {
+    try {
+      this.setState({ isLoading: true, error: null });
+      const { startDate, endDate, quarter, year } = this.state;
+      const newEndDate = new Date(endDate);
+      newEndDate.setDate(newEndDate.getDate() + 1);
+      const visitorData = await fetchVisitors(startDate, newEndDate);
+      // Create filename in format 'Report_2019_Q1'
+      let filename = `report_${year}`;
+      filename += quarter ? `_Q${quarter}` : '';
+
+      const json = jsonToCSV(visitorData);
+
+      if (!json) {
+        throw new Error('No data to export in that timeframe');
+      }
+
+      downloadCSV(json, filename);
+      this.setState({
+        isLoading: false,
+      });
+    } catch (err) {
+      this.setState({
+        isLoading: false,
+        error: err.message,
+      });
+    }
+  };
+
   render() {
+    const { error } = this.state;
+    let errorMessage = null;
+    if (error) {
+      errorMessage = <Alert variant="danger">{error}</Alert>;
+    }
+
     return (
       <Modal
         show={this.props.show}
@@ -143,6 +181,7 @@ export default class ExportModal extends Component {
         <Modal.Header closeButton>
           <div>Export Statistics</div>
         </Modal.Header>
+        {errorMessage}
         <Modal.Body>
           <div className={s.flex}>
             From:
@@ -182,7 +221,9 @@ export default class ExportModal extends Component {
           <Button onClick={this.props.onHide} variant="secondary">
             Cancel
           </Button>
-          <Button variant="success">Download</Button>
+          <Button variant="success" onClick={this.downloadVisitors}>
+            Download
+          </Button>
         </Modal.Footer>
       </Modal>
     );

@@ -2,20 +2,11 @@ import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 import SimpleHeader from 'common/SimpleHeader/SimpleHeader';
 import s from './Statistics.css';
-import downloadCSV from 'utils/downloadCSV';
-import jsonToCSV from 'utils/jsonToCSV';
-import myFetch from 'utils/fetch';
 import ExportModal from './ExportModal/ExportModal';
 import Calendar from './Calendar/Calendar';
 import MyTable from './MyTable/MyTable';
+import fetchVisitors from './fetchVisitors';
 import formatDate from 'utils/formatDate';
-
-const formatDateForAPI = date => {
-  if (!(date instanceof Date)) {
-    return '';
-  }
-  return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
-};
 
 const countUniqueVisitors = visitors => {
   return new Set(visitors.map(visitor => visitor.visitor_id)).size;
@@ -65,14 +56,10 @@ export default class Statistics extends Component {
   getVisitors = async date => {
     try {
       this.setState({ isLoading: true, error: null });
-      let selectedDate = date;
-      let nextDate = new Date(selectedDate);
-      nextDate.setDate(selectedDate.getDate() + 1);
-      selectedDate = formatDateForAPI(selectedDate);
-      nextDate = formatDateForAPI(nextDate);
-      const visitor_data = await myFetch(
-        `/api/checkins?start_time=${selectedDate}&end_time=${nextDate}`,
-      );
+      let nextDate = new Date(date);
+      nextDate.setDate(date.getDate() + 1);
+
+      const visitor_data = await fetchVisitors(date, nextDate);
       this.setState({
         isLoading: false,
       });
