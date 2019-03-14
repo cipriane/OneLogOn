@@ -16,7 +16,7 @@ export default class MyTable extends Component {
     if (this.props.visitors.length === 0) {
       return <div>No visitors</div>;
     }
-    let headers = ['Visitor ID', 'Check In Time', 'Check Out Time', 'Waiver Signed'];
+    let headers = ['Visitor ID', 'Check In Time', 'Check Out Time', 'Waiver Signed', 'Reasons'];
 
     return (
       <div>
@@ -36,6 +36,7 @@ export default class MyTable extends Component {
                   <td>{formatDateToTime(visitor.check_in)}</td>
                   <td>{formatDateToTime(visitor.check_out)}</td>
                   <td>{visitor.visitor__waiver_signed ? 'Yes' : 'No'}</td>
+                  <td>{visitor.reasons && visitor.reasons.join(', ')}</td>
                 </tr>
               ) : null,
             )}

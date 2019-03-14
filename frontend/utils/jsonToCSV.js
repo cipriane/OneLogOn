@@ -1,4 +1,8 @@
 function jsonToCSV(data) {
+  if (!data || !data.length) {
+    return null;
+  }
+
   const csvRows = [];
 
   // get the headers
