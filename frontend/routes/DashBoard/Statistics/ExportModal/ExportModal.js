@@ -5,6 +5,7 @@ import Alert from 'react-bootstrap/Alert';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
+import InputGroup from 'react-bootstrap/InputGroup';
 import PropTypes from 'prop-types';
 import s from './ExportModal.css';
 import Calendar from '../Calendar/Calendar';
@@ -179,20 +180,29 @@ export default class ExportModal extends Component {
         centered
       >
         <Modal.Header closeButton>
-          <div>Export Statistics</div>
+          <div className={s.title}>Export Statistics</div>
         </Modal.Header>
         {errorMessage}
         <Modal.Body>
           <div className={s.flex}>
-            From:
+            {/* <p className={s.label}>From:</p> */}
+            <InputGroup.Prepend className={s.paddingRight}>
+              <InputGroup.Text className={s.whiteBg}>From:</InputGroup.Text>
+            </InputGroup.Prepend>
             <Calendar setDate={this.setStartDate} date={this.state.startDate} />
           </div>
           <div className={s.flex}>
-            Until:
+            {/* <p className={s.label}>Until:</p> */}
+            <InputGroup.Prepend className={s.paddingRight}>
+              <InputGroup.Text className={s.whiteBg}>Until:</InputGroup.Text>
+            </InputGroup.Prepend>
             <Calendar setDate={this.setEndDate} date={this.state.endDate} />
           </div>
           <ButtonToolbar>
-            Set Quarter:
+            {/* <p className={s.label}>Set Quarter:</p> */}
+            <InputGroup.Prepend className={s.paddingRight}>
+              <InputGroup.Text className={s.whiteBg}>Set Quarter:</InputGroup.Text>
+            </InputGroup.Prepend>
             <ToggleButtonGroup
               type="radio"
               name="options"
@@ -200,22 +210,34 @@ export default class ExportModal extends Component {
               value={this.state.quarter}
               onChange={this.setQuarter}
             >
-              <ToggleButton value={1}>Q1</ToggleButton>
-              <ToggleButton value={2}>Q2</ToggleButton>
-              <ToggleButton value={3}>Q3</ToggleButton>
-              <ToggleButton value={4}>Q4</ToggleButton>
+              <ToggleButton className={s.marginRight} value={1}>
+                Q1
+              </ToggleButton>
+              <ToggleButton className={s.marginRight} value={2}>
+                Q2
+              </ToggleButton>
+              <ToggleButton className={s.marginRight} value={3}>
+                Q3
+              </ToggleButton>
+              <ToggleButton className={s.marginRight} value={4}>
+                Q4
+              </ToggleButton>
             </ToggleButtonGroup>
           </ButtonToolbar>
-          <div>
-            Set year:
+
+          <InputGroup className={s.marginTop}>
+            <InputGroup.Prepend>
+              <InputGroup.Text className={s.whiteBg}>Set year:</InputGroup.Text>
+            </InputGroup.Prepend>
             <FancyTextField
+              className={s.yearPicker}
               type="number"
               placeholder="year"
               name="year"
               value={this.state.year}
               onChange={this.setYear}
             />
-          </div>
+          </InputGroup>
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={this.props.onHide} variant="secondary">
