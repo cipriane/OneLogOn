@@ -24,6 +24,8 @@ async function myFetch(url, options) {
   });
   if (resp.status === 204) {
     return;
+  } else if (resp.status === 500) {
+    throw new Error('Internal server error.');
   }
 
   const data = await resp.json();
