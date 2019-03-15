@@ -1,0 +1,6 @@
+.flex {
+  position: relative;
+  align-items: center;
+  display: flex;
+  padding-bottom: 1rem;
+}

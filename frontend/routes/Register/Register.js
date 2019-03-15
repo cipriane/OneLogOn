@@ -114,6 +114,7 @@ class Register extends Component {
                 <FancyTextField
                   required
                   autoFocus
+                  autoComplete="username"
                   type="text"
                   placeholder="username"
                   name="username"
@@ -126,6 +127,7 @@ class Register extends Component {
               <Form.Group>
                 <FancyTextField
                   required
+                  autoComplete="organization"
                   type="text"
                   placeholder="company"
                   name="company"
@@ -138,6 +140,7 @@ class Register extends Component {
               <Form.Group>
                 <FancyTextField
                   required
+                  autoComplete="email"
                   type="email"
                   placeholder="email"
                   name="email"
@@ -150,6 +153,7 @@ class Register extends Component {
               <Form.Group>
                 <FancyTextField
                   required
+                  autoComplete="new-password"
                   type="password"
                   placeholder="password"
                   name="password"
