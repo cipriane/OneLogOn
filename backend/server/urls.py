@@ -43,5 +43,8 @@ urlpatterns = [
     path('api/refresh', TokenRefreshView.as_view()),
     path('api/register', views.Registration.as_view()),
     path('api/password', views.ChangePassword.as_view()),
+
+    path('api/sendInvite', views.SendInvite.as_view()),
+ 
     re_path(r'', views.index, name='index'),
 ]
