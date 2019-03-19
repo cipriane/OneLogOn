@@ -65,6 +65,20 @@ class Register extends Component {
     try {
       this.setState({ isLoading: true, error: null, key: 'aaa' });
 
+      // get url to process the key
+      const url = window.location.href;
+
+      var regex = /[?&]([^=#]+)=([^&#]*)/g,
+        params = {},
+        match;
+      while ((match = regex.exec(url))) {
+        params[match[1]] = match[2];
+      }
+      // console.log(params);
+
+      // save the key
+      this.key = params['key'];
+
       await myFetch('/api/register', {
         method: 'POST',
         body: {
