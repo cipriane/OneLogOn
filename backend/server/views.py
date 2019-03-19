@@ -412,7 +412,7 @@ class SendInvite(APIView):
         recipient = 'skarchmit@gmail.com'
         creator = 'onebitoffteam@gmail.com'
         link = '127.0.0.1/regsiter/{invite_code}'.format(invite_code=invite_code)
-        msg = 'Click this <a href = \"{link}\">{link}</a> to join'.format(link=link)
+        msg = 'Click this <a href = \"{link}\">link</a> to join'.format(link=link)
         subject = 'Invite to Join OneLogOn'
 
     
@@ -420,11 +420,11 @@ class SendInvite(APIView):
             subject,
             '',
             creator,
-            recipient,
+            [recipient],
             html_message=msg,
             fail_silently=False,
         )
-        '''
+        
 
         return Response({'errors': 'None'}, status=status.HTTP_200_OK)
 
