@@ -36,6 +36,7 @@ from django.utils.timezone import now
 from pytz import timezone
 from datetime import date
 import pytz
+from django.core.mail import send_mail, EmailMultiAlternatives
 
 
 def index(request):
@@ -243,6 +244,7 @@ class VisitorsCreateView(generics.CreateAPIView):
 class VisitorsUpdateView(generics.UpdateAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
+
 class VisitorsUpdateWaiverView(generics.UpdateAPIView):
     """
     /api/visitors/<pk>/waiver/
@@ -398,3 +400,34 @@ class ChangePassword(APIView):
 
         except Exception:
             return Response({'error' : 'required parameters: old_password, new_password'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SendInvite(APIView):
+    def post(self, request, format = 'json'):
+        
+        # to do: get a specific invite code
+        invite_code = 'aaa'
+
+        # to do: get get email from request
+        recipient = 'skarchmit@gmail.com'
+        creator = 'onebitoffteam@gmail.com'
+        link = '127.0.0.1/regsiter/{invite_code}'.format(invite_code=invite_code)
+        msg = 'Click this <a href = \"{link}\">{link}</a> to join'.format(link=link)
+        subject = 'Invite to Join OneLogOn'
+
+    
+        send_mail(
+            subject,
+            '',
+            creator,
+            recipient,
+            html_message=msg,
+            fail_silently=False,
+        )
+        '''
+
+        return Response({'errors': 'None'}, status=status.HTTP_200_OK)
+
+
+
+
