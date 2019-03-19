@@ -345,6 +345,10 @@ class Registration(APIView):
     def post(self, request, format='json'):
         user_serializer = UserSerializer(data=request.data)
 
+        # to do; check if key is valid
+        # for now, assume key is valid
+        # add to company
+
         if user_serializer.is_valid():
 
             # check to make sure company data is valid
