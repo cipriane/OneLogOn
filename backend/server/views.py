@@ -411,7 +411,7 @@ class SendInvite(APIView):
         # to do: get get email from request
         recipient = 'skarchmit@gmail.com'
         creator = 'onebitoffteam@gmail.com'
-        link = 'http://127.0.0.1:8000/register/{invite_code}'.format(invite_code=invite_code)
+        link = 'http://127.0.0.1:8000/register/?key={invite_code}'.format(invite_code=invite_code)
         msg = 'Click this <a href = \"{link}\">link</a> to join'.format(link=link)
         subject = 'Invite to Join OneLogOn'
 
