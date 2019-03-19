@@ -21,6 +21,7 @@ class Register extends Component {
     company: '',
     error: null,
     isLoading: false,
+    key: null,
   };
 
   isValidUsername = input => {
@@ -62,7 +63,7 @@ class Register extends Component {
   handleSubmit = async event => {
     event.preventDefault();
     try {
-      this.setState({ isLoading: true, error: null });
+      this.setState({ isLoading: true, error: null, key: 'aaa' });
 
       await myFetch('/api/register', {
         method: 'POST',
@@ -71,6 +72,7 @@ class Register extends Component {
           company_name: this.state.company,
           email: this.state.email,
           password: this.state.password,
+          key: this.key,
         },
       });
     } catch (err) {
