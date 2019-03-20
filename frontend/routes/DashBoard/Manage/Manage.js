@@ -50,7 +50,9 @@ export default class ManageUsers extends Component {
   invite_api_call = async () => {
     await myFetch('/api/sendInvite', {
       method: 'POST',
-      body: {},
+      body: {
+        recipient: 'skarchmit@gmail.com',
+      },
     });
   };
 
@@ -59,7 +61,7 @@ export default class ManageUsers extends Component {
     return (
       <div>
         <SimpleHeader title="Manage Visitors" />
-        <button onClick={this.invite_api_call}>Invite</button>
+        <button onClick={this.invite_api_call}>Invite skarchmit@gmail.com</button>
         <Container fluid>
           <Table responsive striped bordered hover size="sm">
             <thead>

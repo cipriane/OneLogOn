@@ -74,10 +74,12 @@ class Register extends Component {
       while ((match = regex.exec(url))) {
         params[match[1]] = match[2];
       }
-      // console.log(params);
+
+      //console.log(params);
 
       // save the key
       this.key = params['key'];
+      //console.log(this.key);
 
       await myFetch('/api/register', {
         method: 'POST',
@@ -85,8 +87,8 @@ class Register extends Component {
           username: this.state.username,
           company_name: this.state.company,
           email: this.state.email,
-          password: this.state.password,
           key: this.key,
+          password: this.state.password,
         },
       });
     } catch (err) {
