@@ -460,6 +460,8 @@ class SendInvite(APIView):
             'expires_on'    : california_tz.localize(datetime.now() + timedelta(days=365*10))
         }
 
+        attempts = 0
+
         # generate invite code
         while True:
             # attempt to find a random string that has not been used before
@@ -467,13 +469,15 @@ class SendInvite(APIView):
             # generate len 32 random key
             data['invite_key'] = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(32)])
 
+
             # attempt to save it, if it already exits, try again in the loop
-            company_serializer = CompanyInviteSerializer(data=request.data)
+            invite_serializer = CompanyInviteSerializer(data=data)
 
             # if it is valid, you will get a key, break
-            if company_serializer.is_valid():
-                key = company_serializer().save().invite_key
+            if invite_serializer.is_valid():
+                key = invite_serializer.save().invite_key
                 break
+
 
 
 
@@ -495,7 +499,6 @@ class SendInvite(APIView):
             html_message=msg,
             fail_silently=False,
         )
-        
 
         return Response(status=status.HTTP_200_OK)
 
