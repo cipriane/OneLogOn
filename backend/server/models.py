@@ -11,6 +11,13 @@ class Company(models.Model):
     company_state = models.CharField(max_length=2, null=True)
     company_message = models.TextField()
 
+class CompanyInvite(models.Model):
+    company = models.ForeignKey(Company,on_delete=models.CASCADE,verbose_name="company_id")
+    invite_key = models.CharField(max_length=256, null=False, unique = True)
+    expires_on = models.DateTimeField(null = True)
+
+
+
 class Visitors(models.Model):
     company = models.ForeignKey(Company,on_delete=models.CASCADE,verbose_name="company_id")
     visitor_id = models.CharField(max_length=10)
