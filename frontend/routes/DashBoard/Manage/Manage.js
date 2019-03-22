@@ -47,11 +47,21 @@ export default class ManageUsers extends Component {
     this.setState({ visitors: list });
   };
 
+  invite_api_call = async () => {
+    await myFetch('/api/sendInvite', {
+      method: 'POST',
+      body: {
+        recipient: 'skarchmit@gmail.com',
+      },
+    });
+  };
+
   render() {
     const { visitors } = this.state;
     return (
       <div>
         <SimpleHeader title="Manage Visitors" />
+        <button onClick={this.invite_api_call}>Invite skarchmit@gmail.com</button>
         <Container fluid>
           <Table responsive striped bordered hover size="sm">
             <thead>
