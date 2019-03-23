@@ -78,7 +78,7 @@ export default class ReasonList extends Component {
 
       addReasonForm = (
         <Form noValidate onSubmit={this.handleSubmit}>
-          <Form.Group controlId="formBasicreasonList">
+          <Form.Group>
             <Row>
               <Col>
                 <Form.Label className={s.label}>{labelText}</Form.Label>
