@@ -66,9 +66,17 @@ class Profile extends Component {
     const { currentPassword, newPassword, error, changeSuccess } = this.state;
     let alertMessage = null;
     if (error) {
-      alertMessage = <Alert variant="danger">{error}</Alert>;
+      alertMessage = (
+        <Alert variant="danger" dismissible>
+          {error}
+        </Alert>
+      );
     } else if (changeSuccess) {
-      alertMessage = <Alert variant="success">Password changed successfully</Alert>;
+      alertMessage = (
+        <Alert variant="success" dismissible>
+          Password changed successfully
+        </Alert>
+      );
     }
 
     return (
