@@ -14,3 +14,7 @@
   position: absolute;
   bottom: 0;
 }
+
+.addMargin {
+  margin: 20px 0;
+}
