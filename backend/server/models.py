@@ -16,8 +16,6 @@ class CompanyInvite(models.Model):
     invite_key = models.CharField(max_length=256, null=False, unique = True)
     expires_on = models.DateTimeField(null = True)
 
-
-
 class Visitors(models.Model):
     company = models.ForeignKey(Company,on_delete=models.CASCADE,verbose_name="company_id")
     visitor_id = models.CharField(max_length=10)
