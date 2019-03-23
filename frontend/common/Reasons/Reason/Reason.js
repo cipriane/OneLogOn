@@ -14,7 +14,7 @@ export default class Reason extends Component {
   };
 
   state = {
-    value: this.props.reason,
+    value: this.props.description,
     isEdit: false,
   };
 
@@ -24,6 +24,10 @@ export default class Reason extends Component {
 
   startEditReason = () => {
     this.setState({ isEdit: true });
+  };
+
+  cancelEdit = () => {
+    this.setState({ isEdit: false });
   };
 
   saveEditReason = e => {
@@ -42,8 +46,18 @@ export default class Reason extends Component {
       return (
         <ListGroup.Item key={index}>
           <Row>
-            <Col>
+            <Col xs={6}>
               <Form.Control type="text" onChange={this.changeValue} value={this.state.value} />
+            </Col>
+            <Col>
+              <Button
+                className={s.save}
+                type="button"
+                variant="outline-secondary"
+                onClick={this.cancelEdit}
+              >
+                Cancel
+              </Button>
             </Col>
             <Col>
               <Button
@@ -60,6 +74,7 @@ export default class Reason extends Component {
         </ListGroup.Item>
       );
     }
+
     let archiveButtonText = isArchived ? 'Unarchive' : 'Archive';
     let archiveButton = (
       <Button

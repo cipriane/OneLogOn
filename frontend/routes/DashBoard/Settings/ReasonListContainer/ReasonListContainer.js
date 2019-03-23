@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import SettingsContainer from '../SettingsContainer/SettingsContainer';
 import ReasonList from 'common/Reasons/ReasonList/ReasonList';
+import DeleteConfirmationModal from '../DeleteConfirmationModal/DeleteConfirmationModal';
 import myFetch from 'utils/fetch';
 import s from './ReasonListContainer.css';
 
 export default class ReasonListContainer extends Component {
   state = {
     reasons: [],
+    idToDelete: null,
+    showDeleteConfirmation: false,
     isLoading: false,
     error: null,
   };
@@ -30,6 +33,20 @@ export default class ReasonListContainer extends Component {
       });
     }
   }
+
+  showDeleteConfirmation = id => {
+    this.setState({
+      showDeleteConfirmation: true,
+      idToDelete: id,
+    });
+  };
+
+  hideDeleteConfirmation = () => {
+    this.setState({
+      showDeleteConfirmation: false,
+      idToDelete: null,
+    });
+  };
 
   addReason = async (input, isMain) => {
     try {
@@ -58,21 +75,23 @@ export default class ReasonListContainer extends Component {
     }
   };
 
-  deleteReason = async id => {
+  deleteReason = async () => {
     try {
-      const { reasons } = this.state;
+      const { reasons, idToDelete } = this.state;
       this.setState({
         error: null,
         isLoading: true,
       });
-      await myFetch(`/api/visitreason/${id}/delete`, {
+      await myFetch(`/api/visitreason/${idToDelete}/delete`, {
         method: 'DELETE',
       });
       this.setState(prevState => ({
         reasons: prevState.reasons.filter(reason => {
-          return reason.id !== id;
+          return reason.id !== idToDelete;
         }),
         isLoading: false,
+        showDeleteConfirmation: false,
+        idToDelete: null,
       }));
     } catch (err) {
       this.setState({
@@ -130,7 +149,7 @@ export default class ReasonListContainer extends Component {
             reasons={mainReasons}
             addReason={this.addReason}
             editReason={this.editReason}
-            deleteReason={this.deleteReason}
+            deleteReason={this.showDeleteConfirmation}
             isMain
           />
         </SettingsContainer>
@@ -144,23 +163,28 @@ export default class ReasonListContainer extends Component {
             reasons={subReasons}
             addReason={this.addReason}
             editReason={this.editReason}
-            deleteReason={this.deleteReason}
+            deleteReason={this.showDeleteConfirmation}
           />
         </SettingsContainer>
 
         <SettingsContainer label={'Archived Reasons'}>
           <ul className={s.listInformation}>
-            <li>Archived reasons will be hidden from visitors</li>
-            <li>The reasons may still be viewed as statistics</li>
+            <li>Archived reasons are hidden from visitors</li>
+            <li>The reasons may still be viewed from statistics</li>
           </ul>
           <ReasonList
             reasons={archivedReasons}
             addReason={this.addReason}
             editReason={this.editReason}
-            deleteReason={this.deleteReason}
+            deleteReason={this.showDeleteConfirmation}
             isArchive
           />
         </SettingsContainer>
+        <DeleteConfirmationModal
+          show={this.state.showDeleteConfirmation}
+          cancel={this.hideDeleteConfirmation}
+          confirm={this.deleteReason}
+        />
       </React.Fragment>
     );
   }
