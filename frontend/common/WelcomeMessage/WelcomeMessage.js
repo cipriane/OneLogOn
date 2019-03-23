@@ -28,14 +28,14 @@ export default class WelcomeMessage extends Component {
       <React.Fragment>
         <Form onSubmit={this.handleSubmit}>
           <Form.Group controlId="formBasicMessage">
-            <Form.Label className={s.label}>Checkin Message:</Form.Label>
+            <Form.Label className={s.label}>Welcome Message</Form.Label>
             <Form.Control
+              as="textarea"
               type="text"
               name="welcomeMessage"
               value={this.state.welcomeMessage}
               onChange={this.handleChange}
             />
-            <Form.Text className="text-muted">Edit the welcome message on the home page.</Form.Text>
           </Form.Group>
           <Button type="submit" variant="outline-success" label="Save" className={s.submit}>
             Save changes

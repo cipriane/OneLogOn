@@ -1,35 +1,22 @@
 import React, { Component } from 'react';
 import { ListGroup, Form, Row, Col, Button } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import Reason from 'common/Reasons/Reason/Reason';
-import myFetch from 'utils/fetch';
+import s from './ReasonList.css';
 
 export default class ReasonList extends Component {
-  state = {
-    input: '',
-    reasons: [],
-    isLoading: false,
-    error: null,
+  static propTypes = {
+    reasons: PropTypes.array.isRequired,
+    addReason: PropTypes.func.isRequired,
+    editReason: PropTypes.func.isRequired,
+    deleteReason: PropTypes.func.isRequired,
+    isArchive: PropTypes.bool,
+    isMain: PropTypes.bool,
   };
 
-  async componentDidMount() {
-    try {
-      this.setState({
-        error: null,
-        isLoading: true,
-      });
-      const data = await myFetch('/api/visitreasons');
-
-      this.setState({
-        reasons: data,
-        isLoading: false,
-      });
-    } catch (err) {
-      this.setState({
-        isLoading: false,
-        error: err.message,
-      });
-    }
-  }
+  state = {
+    input: '',
+  };
 
   handleChange = event => {
     const target = event.target;
@@ -40,103 +27,61 @@ export default class ReasonList extends Component {
     });
   };
 
-  addReason = async () => {
-    try {
-      const { input, reasons } = this.state;
-      this.setState({
-        error: null,
-        isLoading: true,
-      });
-      const reason = await myFetch('/api/visitreason/create', {
-        method: 'POST',
-        body: {
-          description: input,
-        },
-      });
-
-      this.setState({
-        reasons: [reason, ...reasons],
-        isLoading: false,
-        input: '',
-      });
-    } catch (err) {
-      this.setState({
-        isLoading: false,
-        error: err.message,
-      });
-    }
-  };
-
-  deleteReason = async id => {
-    try {
-      const { reasons } = this.state;
-      this.setState({
-        error: null,
-        isLoading: true,
-      });
-      await myFetch(`/api/visitreason/${id}/delete`, {
-        method: 'DELETE',
-      });
-      this.setState({
-        reasons: reasons.filter(reason => {
-          return reason.id !== id;
-        }),
-        isLoading: false,
-      });
-    } catch (err) {
-      this.setState({
-        isLoading: false,
-        error: err.message,
-      });
-    }
-  };
-
-  editReason = async (id, index, value) => {
-    try {
-      const { input, reasons } = this.state;
-      this.setState({
-        error: null,
-        isLoading: true,
-      });
-      const updatedReason = await myFetch(`/api/visitreason/${id}/update`, {
-        method: 'PATCH',
-        body: {
-          description: value,
-        },
-      });
-      this.setState(prevState => {
-        // Update description of edited reason
-        prevState.reasons[index].description = value;
-        return {
-          reasons: prevState.reasons,
-          isLoading: false,
-        };
-      });
-    } catch (err) {
-      this.setState({
-        isLoading: false,
-        error: err.message,
-      });
-    }
-  };
-
   handleSubmit = event => {
     event.preventDefault();
-    this.addReason();
+    this.props.addReason(this.state.input, this.props.isMain);
+    this.setState({
+      input: '',
+    });
   };
 
-  isValidReason = inputt => {
-    return inputt && inputt.length >= 1;
+  isValidReason = input => {
+    return input && input.length >= 1;
   };
 
   render() {
-    const { input, reasons } = this.state;
-    return (
-      <React.Fragment>
+    const { input } = this.state;
+    const { reasons, editReason, deleteReason, isArchive, isMain } = this.props;
+
+    let reasonsMap = null;
+    if (reasons.length) {
+      reasonsMap = reasons.map((reason, index) => (
+        <Reason
+          key={index}
+          index={index}
+          description={reason.description}
+          isArchived={!reason.is_active}
+          reasonId={reason.id}
+          deleteReason={deleteReason}
+          editReason={editReason}
+          archiveReason={this.props.archiveReason}
+        />
+      ));
+    } else {
+      if (isArchive) {
+        reasonsMap = <span className={s.emptyMessage}>No archived reasons</span>;
+      } else if (isMain) {
+        reasonsMap = <span className={s.emptyMessage}>No main reasons added yet</span>;
+      } else {
+        reasonsMap = <span className={s.emptyMessage}>No sub reasons added yet</span>;
+      }
+    }
+
+    let addReasonForm = null;
+    if (!isArchive) {
+      let labelText;
+      if (isMain) {
+        labelText = 'New Main Reason';
+      } else {
+        labelText = 'New Sub Reason';
+      }
+
+      addReasonForm = (
         <Form noValidate onSubmit={this.handleSubmit}>
           <Form.Group controlId="formBasicreasonList">
             <Row>
               <Col>
+                <Form.Label className={s.label}>{labelText}</Form.Label>
                 <Form.Control
                   type="text"
                   name="input"
@@ -148,26 +93,25 @@ export default class ReasonList extends Component {
                 />
               </Col>
               <Col>
-                <Button variant="outline-success" type="submit" disabled={!input}>
+                <Button
+                  className={s.alignBottom}
+                  variant="outline-success"
+                  type="submit"
+                  disabled={!input}
+                >
                   Add Reason
                 </Button>
               </Col>
             </Row>
           </Form.Group>
         </Form>
+      );
+    }
 
-        <ListGroup>
-          {reasons.map((reason, index) => (
-            <Reason
-              key={index}
-              index={index}
-              reason={reason.description}
-              reasonId={reason.id}
-              deleteReason={this.deleteReason}
-              editReason={this.editReason}
-            />
-          ))}
-        </ListGroup>
+    return (
+      <React.Fragment>
+        {addReasonForm}
+        <ListGroup>{reasonsMap}</ListGroup>
       </React.Fragment>
     );
   }
