@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Alert, Form, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import me from 'utils/me';
+import myFetch from 'utils/fetch';
 import s from './Profile.css';
 
 class Profile extends Component {
@@ -13,12 +14,43 @@ class Profile extends Component {
   state = {
     currentPassword: '',
     newPassword: '',
+    changeSuccess: false,
     isLoading: false,
     error: null,
   };
 
-  handleSubmit = event => {
+  handleSubmit = async event => {
     event.preventDefault();
+
+    try {
+      this.setState({
+        error: null,
+        isLoading: true,
+        changeSuccess: false,
+      });
+      const { currentPassword, newPassword } = this.state;
+      const reason = await myFetch('/api/password', {
+        method: 'POST',
+        body: {
+          old_password: currentPassword,
+          new_password: newPassword,
+        },
+      });
+
+      this.setState(prevState => ({
+        currentPassword: '',
+        newPassword: '',
+        changeSuccess: true,
+        isLoading: false,
+        input: '',
+      }));
+    } catch (err) {
+      this.setState({
+        changeSuccess: false,
+        isLoading: false,
+        error: err.message,
+      });
+    }
   };
 
   handleChange = event => {
@@ -31,11 +63,18 @@ class Profile extends Component {
   };
 
   render() {
-    const { currentPassword, newPassword } = this.state;
+    const { currentPassword, newPassword, error, changeSuccess } = this.state;
+    let alertMessage = null;
+    if (error) {
+      alertMessage = <Alert variant="danger">{error}</Alert>;
+    } else if (changeSuccess) {
+      alertMessage = <Alert variant="success">Password changed successfully</Alert>;
+    }
 
     return (
       <React.Fragment>
         <Form onSubmit={this.handleSubmit}>
+          {alertMessage}
           <Form.Group controlId="username" className={s.hidden}>
             <Form.Control
               type="text"

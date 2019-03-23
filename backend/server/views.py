@@ -33,6 +33,9 @@ from backend.server.serializers import UserCompanySerializer
 from django.core import serializers
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.password_validation import MinimumLengthValidator
+from django.core.exceptions import ValidationError
 
 from datetime import timedelta
 from datetime import datetime
@@ -434,14 +437,18 @@ class ChangePassword(APIView):
             user_id = request.user.id
 
             try:
-                user = User.objects.get(id=user_id)
+                user = request.user
 
                 if(user.check_password(old_password)):
+                    try:
+                        validate_password(new_password)
+                    except Exception as e:
+                        return Response({'error' :  str(e)}, status=status.HTTP_400_BAD_REQUEST)
                     user.set_password(new_password)
                     user.save()
                     return Response({'success' : 'password succesfully changed'}, status=status.HTTP_200_OK)
                 else:
-                    return Response({'error' : 'incorrect old password'}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({'error' : 'Incorrect password'}, status=status.HTTP_400_BAD_REQUEST)
 
             except Exception:
                 return Response({'error' : 'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
