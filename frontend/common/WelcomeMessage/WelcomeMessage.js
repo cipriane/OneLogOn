@@ -1,17 +1,63 @@
 import React, { Component } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Alert } from 'react-bootstrap';
 import s from './WelcomeMessage.css';
+import myFetch from 'utils/fetch';
 
 export default class WelcomeMessage extends Component {
   state = {
-    welcomeMessage:
-      'A simple Open Source visitor check-in and statistics aggregation system for your facility or site.',
-    isLoading: false,
+    welcomeMessage: '',
+    saveSuccess: false,
+    isLoading: true,
     error: null,
   };
 
-  handleSubmit = event => {
+  componentDidMount = async () => {
+    try {
+      this.setState({
+        isLoading: true,
+        error: null,
+      });
+      const data = await myFetch('/api/companies/message');
+
+      this.setState({
+        welcomeMessage: data.company_message || '',
+        isLoading: false,
+      });
+    } catch (err) {
+      this.setState({
+        isLoading: false,
+        error: err.message,
+      });
+    }
+  };
+
+  handleSubmit = async event => {
     event.preventDefault();
+    try {
+      this.setState({
+        saveSuccess: false,
+        isLoading: true,
+        error: null,
+      });
+      const data = await myFetch('/api/companies/message', {
+        method: 'POST',
+        body: {
+          company_message: this.state.welcomeMessage,
+        },
+      });
+
+      this.setState({
+        saveSuccess: true,
+        welcomeMessage: data.company_message,
+        isLoading: false,
+      });
+    } catch (err) {
+      this.setState({
+        saveSuccess: false,
+        isLoading: false,
+        error: err.message,
+      });
+    }
   };
 
   handleChange = event => {
@@ -24,18 +70,35 @@ export default class WelcomeMessage extends Component {
   };
 
   render() {
+    const { error, saveSuccess } = this.state;
+    let alertMessage = null;
+    if (error) {
+      alertMessage = (
+        <Alert variant="danger" dismissible>
+          {error}
+        </Alert>
+      );
+    } else if (saveSuccess) {
+      alertMessage = (
+        <Alert variant="success" dismissible>
+          Welcome Message saved successfully
+        </Alert>
+      );
+    }
+
     return (
       <React.Fragment>
         <Form onSubmit={this.handleSubmit}>
+          {alertMessage}
           <Form.Group controlId="formBasicMessage">
-            <Form.Label className={s.label}>Checkin Message:</Form.Label>
+            <Form.Label className={s.label}>Welcome Message</Form.Label>
             <Form.Control
+              as="textarea"
               type="text"
               name="welcomeMessage"
               value={this.state.welcomeMessage}
               onChange={this.handleChange}
             />
-            <Form.Text className="text-muted">Edit the welcome message on the home page.</Form.Text>
           </Form.Group>
           <Button type="submit" variant="outline-success" label="Save" className={s.submit}>
             Save changes
