@@ -9,15 +9,15 @@ from . import views
 
 urlpatterns = [
     path('api/companies', views.CompanyListView.as_view()),
+    path('api/companies/message', views.CompanyMessageView.as_view()),
     path('api/companies/create', views.CompanyCreateView.as_view()),
     path('api/companies/<pk>', views.CompanyDetailView.as_view()),
-    path('api/companies/message', views.CompanyMessageView.as_view()),
 
     path('api/visitors', views.VisitorsListView.as_view()),
     path('api/visitors/create', views.VisitorsCreateView.as_view()),
     path('api/visitors/<visitor_id>', views.VisitorsDetailView.as_view()),
     path('api/visitors/<pk>/update', views.VisitorsUpdateView.as_view()),
-    path('api/visitors/<pk>/waiver/', views.VisitorsUpdateWaiverView.as_view()),
+    path('api/visitors/<pk>/waiver', views.VisitorsUpdateWaiverView.as_view()),
 
     path('api/checkins', views.CheckInsListView.as_view()),
     path('api/checkins/create', views.CheckInsCreateView.as_view()),
@@ -45,6 +45,6 @@ urlpatterns = [
     path('api/password', views.ChangePassword.as_view()),
 
     path('api/sendInvite', views.SendInvite.as_view()),
- 
+
     re_path(r'', views.index, name='index'),
 ]

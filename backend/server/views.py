@@ -33,6 +33,9 @@ from backend.server.serializers import UserCompanySerializer
 from django.core import serializers
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.password_validation import MinimumLengthValidator
+from django.core.exceptions import ValidationError
 
 from datetime import timedelta
 from datetime import datetime
@@ -67,8 +70,10 @@ class CompanyMessageView(APIView):
     Handle company check-in messages
     """
     permission_classes = (IsAuthenticated,)
+    print("Got here 2")
 
     def post(self, request, format='json'):
+        print("Got here 3")
         """
         POST /api/companies/message
         Set new company message
@@ -100,6 +105,7 @@ class CompanyMessageView(APIView):
         Returns company message
         Required Parameters: None
         """
+        print("Got here 1")
         try:
             id = request.user.id
             try:
@@ -283,6 +289,15 @@ class VisitReasonListView(generics.ListAPIView):
     def get(self, request, *args, **kwargs):
         company_id = UserCompany.objects.get(user_id=request.user.id).company_id
         reasons = VisitReason.objects.filter(company=company_id)
+        is_main = self.request.query_params.get('is_main_reason', None)
+        if is_main is not None:
+            is_main = True if is_main == 'true' else False
+            reasons = reasons.filter(is_main_reason=is_main)
+        is_archived = self.request.query_params.get('is_archived', None)
+        if is_archived is not None:
+            is_archived = True if is_archived == 'true' else False
+            is_active = not is_archived
+            reasons = reasons.filter(is_active=is_active)
         data = list(reasons.values())
         return JsonResponse(data, safe=False)
 
@@ -350,7 +365,7 @@ class Registration(APIView):
     """
     permission_classes = (AllowAny,)
     def post(self, request, format='json'):
-        
+
         # make this a function in the future please.
         california_tz = pytz.timezone('US/Pacific')
 
@@ -362,7 +377,7 @@ class Registration(APIView):
 
         # if we cannot verify the user, then throw
         if not user_serializer.is_valid():
-            return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+            return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         # verify the company
         # if we have the key, locate the company
@@ -372,35 +387,35 @@ class Registration(APIView):
             try:
                 # get the company id that has the key and expiration is greater than equal to today
                 company_id = CompanyInvite.objects.get(
-                    invite_key=key, 
+                    invite_key=key,
                     expires_on__gte = california_tz.localize(datetime.now())
                     ).company_id
-            except Exception as err: 
+            except Exception as err:
                 # invite not found or expired
-                return Response({'error': 'Invite is invalid or has expired.'}, status=status.HTTP_400_BAD_REQUEST) 
+                return Response({'error': 'Invite is invalid or has expired.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
         # if we do not have the key, make a new company
-        else: 
+        else:
             # verify the company is not null
             company_serializer = CompanySerializer(data=request.data)
 
             # if we cannot verify, throw
             if not company_serializer.is_valid():
-               return Response(company.errors, status=status.HTTP_400_BAD_REQUEST)    
-            
+               return Response(company.errors, status=status.HTTP_400_BAD_REQUEST)
+
             # save the company -- get the id where we should save
             company_id = company_serializer.save().id
 
         # get the user
         user_id = user_serializer.save().id
 
-        # bind user and company -- company already has the id   
+        # bind user and company -- company already has the id
         data = {
-            'user' : user_id, 
+            'user' : user_id,
             'company' : company_id
             }
-        
+
         # attempt to bind otherwise throw
         user_company_serializer = UserCompanySerializer(data=data)
         if not user_company_serializer.is_valid():
@@ -410,7 +425,7 @@ class Registration(APIView):
         user_company = user_company_serializer.save()
 
         return Response(user_serializer.data, status=status.HTTP_201_CREATED)
-        
+
 
 class ChangePassword(APIView):
     """
@@ -425,14 +440,18 @@ class ChangePassword(APIView):
             user_id = request.user.id
 
             try:
-                user = User.objects.get(id=user_id)
+                user = request.user
 
                 if(user.check_password(old_password)):
+                    try:
+                        validate_password(new_password)
+                    except Exception as e:
+                        return Response({'error' :  str(e)}, status=status.HTTP_400_BAD_REQUEST)
                     user.set_password(new_password)
                     user.save()
                     return Response({'success' : 'password succesfully changed'}, status=status.HTTP_200_OK)
                 else:
-                    return Response({'error' : 'incorrect old password'}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({'error' : 'Incorrect password'}, status=status.HTTP_400_BAD_REQUEST)
 
             except Exception:
                 return Response({'error' : 'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
@@ -444,12 +463,12 @@ class ChangePassword(APIView):
 class SendInvite(APIView):
     def post(self, request, format = 'json'):
         '''
-            must pass in the body: 
+            must pass in the body:
                 recipient: email_address
         '''
 
         recipient = request.data['recipient']
-        
+
         # to do: send expiration data through request or have static time
         # currently it expires exaclty 10 years from now -- see timedelta
         california_tz = pytz.timezone('US/Pacific')
@@ -465,7 +484,7 @@ class SendInvite(APIView):
         # generate invite code
         while True:
             # attempt to find a random string that has not been used before
-            
+
             # generate len 32 random key
             data['invite_key'] = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(32)])
 
@@ -490,7 +509,7 @@ class SendInvite(APIView):
         link = 'http://127.0.0.1:8000/register/?key={invite_code}'.format(invite_code=invite_code)
         msg = 'Click this <a href = \"{link}\">link</a> to join'.format(link=link)
         subject = 'Invite to Join OneLogOn'
-    
+
         send_mail(
             subject,
             '',
@@ -501,7 +520,3 @@ class SendInvite(APIView):
         )
 
         return Response(status=status.HTTP_200_OK)
-
-
-
-

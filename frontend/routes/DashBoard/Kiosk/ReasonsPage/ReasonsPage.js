@@ -7,7 +7,13 @@ import s from './ReasonsPage.css';
 export default class ReasonsPage extends Component {
   static propTypes = {
     next: PropTypes.func.isRequired,
-    reasons: PropTypes.arrayOf(
+    mainReasons: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number,
+        description: PropTypes.string,
+      }),
+    ).isRequired,
+    subReasons: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number,
         description: PropTypes.string,
@@ -16,58 +22,96 @@ export default class ReasonsPage extends Component {
   };
 
   state = {
-    selected: [],
+    mainReasonSelected: null,
+    subReasonsSelected: [],
   };
 
   handleChange = event => {
+    event.preventDefault();
+    const { mainReasonSelected, subReasonsSelected } = this.state;
     const target = event.target;
     const id = target.id;
-    const isChecked = this.state.selected.includes(id);
+    const isMainReason = this.props.mainReasons.some(reason => reason.id == id);
+    if (isMainReason) {
+      this.setState({
+        mainReasonSelected: id,
+      });
+      return;
+    }
+
+    const isChecked = subReasonsSelected.includes(id);
 
     if (!isChecked) {
       this.setState(prevState => ({
-        selected: [...prevState.selected, id],
+        subReasonsSelected: [...prevState.subReasonsSelected, id],
       }));
     } else {
       this.setState(prevState => ({
-        selected: prevState.selected.filter(el => el !== id),
+        subReasonsSelected: prevState.subReasonsSelected.filter(el => el !== id),
       }));
     }
   };
 
   render() {
-    const { selected } = this.state;
+    const { mainReasonSelected, subReasonsSelected } = this.state;
     const isSelectedVariant = 'info';
     const isNotSelectedVariant = 'outline-info';
+    let mainReasons = this.props.mainReasons.map(reason => {
+      return (
+        <div className={s.checkbox} key={reason.id}>
+          <Button
+            className={s.checkboxInput}
+            id={`${reason.id}`}
+            variant={mainReasonSelected == reason.id ? isSelectedVariant : isNotSelectedVariant}
+            onClick={this.handleChange}
+          >
+            {reason.description}
+          </Button>
+        </div>
+      );
+    });
+
+    const hasMainReason = mainReasonSelected !== null;
+    const allSelected = hasMainReason
+      ? [mainReasonSelected, ...subReasonsSelected]
+      : subReasonsSelected;
+
+    let subReasons = null;
+    if (hasMainReason) {
+      subReasons = this.props.subReasons.map(reason => {
+        return (
+          <div className={s.checkbox} key={reason.id}>
+            <Button
+              className={s.checkboxInput}
+              id={`${reason.id}`}
+              variant={
+                subReasonsSelected.includes('' + reason.id)
+                  ? isSelectedVariant
+                  : isNotSelectedVariant
+              }
+              onClick={this.handleChange}
+            >
+              {reason.description}
+            </Button>
+          </div>
+        );
+      });
+    }
+
     return (
       <React.Fragment>
-        <Form onSubmit={this.props.next(selected)}>
+        <Form onSubmit={this.props.next(allSelected)}>
           <h1 className={s.title}>Please select at least one reason for this visit</h1>
-          <div className={s.checkboxContainer}>
-            {this.props.reasons.map(reason => {
-              return (
-                <div className={s.checkbox} key={reason.id}>
-                  <Button
-                    className={s.checkboxInput}
-                    id={`${reason.id}`}
-                    variant={
-                      selected.includes(`${reason.id}`) ? isSelectedVariant : isNotSelectedVariant
-                    }
-                    onClick={this.handleChange}
-                  >
-                    {reason.description}
-                  </Button>
-                </div>
-              );
-            })}
-          </div>
+          <div className={s.checkboxContainer}>{mainReasons}</div>
+          <hr />
+          <div className={s.checkboxContainer}>{subReasons}</div>
           <div className={s.buttonsBar}>
             <div className={s.alignLeft}>
               <FancyButton muted label="Cancel" type="button" onClick={this.props.cancel} />
             </div>
             <div className={s.alignRight}>
               <FancyButton
-                disabled={!selected.length || this.props.isLoading}
+                disabled={!allSelected.length || this.props.isLoading}
                 loading={this.props.isLoading}
                 label="Next"
                 type="submit"

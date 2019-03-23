@@ -107,7 +107,7 @@ class Kiosk extends Component {
         isLoading: true,
       });
       let [reasons, visitor] = await Promise.all([
-        myFetch('/api/visitreasons'),
+        myFetch('/api/visitreasons?is_archived=false'),
         this.findOrCreateVisitor(param),
       ]);
       this.setState(
@@ -387,6 +387,8 @@ class Kiosk extends Component {
     }
 
     const { reasons } = this.state;
+    const mainReasons = reasons.filter(reason => reason.is_main_reason);
+    const subReasons = reasons.filter(reason => !reason.is_main_reason);
     const fullscreenButton = isFullscreen ? null : (
       <div className={s.icon} onClick={this.goFullscreen}>
         <img src={fullscreenIcon} alt="Fullscreen" />
@@ -400,7 +402,8 @@ class Kiosk extends Component {
             <PageToDisplay
               cancel={this.cancel}
               next={this.next}
-              reasons={reasons}
+              mainReasons={mainReasons}
+              subReasons={subReasons}
               checkIn={this.checkIn}
               checkOut={this.checkOut}
               checkInTime={checkInTime}
