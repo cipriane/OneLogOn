@@ -45,6 +45,8 @@ class Timesheet(models.Model):
 class VisitReason(models.Model):
     company = models.ForeignKey(Company,on_delete=models.CASCADE,verbose_name="company_id")
     description = models.CharField(max_length=30)
+    is_main_reason = models.BooleanField(default=False)
+    has_sub_reasons = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
 
 class CheckInVisitReason(models.Model):

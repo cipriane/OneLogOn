@@ -8,6 +8,12 @@
   margin: 10px;
 }
 
+.archive {
+  float: right;
+  min-width: 80px;
+  margin: 10px;
+}
+
 .delete {
   float: right;
   width: 80px;
