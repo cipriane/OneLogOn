@@ -70,10 +70,8 @@ class CompanyMessageView(APIView):
     Handle company check-in messages
     """
     permission_classes = (IsAuthenticated,)
-    print("Got here 2")
 
     def post(self, request, format='json'):
-        print("Got here 3")
         """
         POST /api/companies/message
         Set new company message
@@ -105,7 +103,6 @@ class CompanyMessageView(APIView):
         Returns company message
         Required Parameters: None
         """
-        print("Got here 1")
         try:
             id = request.user.id
             try:
