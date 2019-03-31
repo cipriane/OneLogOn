@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import FancyFormHeader from 'common/FancyFormHeader/FancyFormHeader';
 import FancyTextField from 'common/FancyTextField/FancyTextField';
 import FancyButton from 'common/FancyButton/FancyButton';
+import myFetch from 'utils/fetch';
 import s from './CheckInPage.css';
 
 export default class CheckInPage extends Component {
@@ -13,7 +14,30 @@ export default class CheckInPage extends Component {
 
   state = {
     id: '',
+    message: '',
   };
+
+  async componentDidMount() {
+    try {
+      this.setState({
+        error: false,
+        isLoading: true,
+      });
+
+      const data = await myFetch('/api/companies/message');
+
+      this.setState({
+        message: data.company_message,
+        isLoading: false,
+      });
+    } catch (err) {
+      console.log('got here error');
+      this.setState({
+        isLoading: false,
+        error: err.toString(),
+      });
+    }
+  }
 
   isValid = input => {
     return /^\d+$/.test(input) && input.length === 7;
@@ -35,7 +59,7 @@ export default class CheckInPage extends Component {
         <Form validated={id && this.isValid(id)} onSubmit={this.props.next(id)}>
           <Form.Group>
             <FancyFormHeader text="" />
-            <div className={s.greeting}>Welcome to the Innovation Center{'\n'}Please check in</div>
+            <div className={s.greeting}>{this.state.message}</div>
             <FancyTextField
               autoFocus
               autoComplete="off"
