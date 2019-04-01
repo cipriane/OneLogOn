@@ -10,12 +10,14 @@ import {
   DropdownButton,
   Dropdown,
 } from 'react-bootstrap';
+import AddModal from './AddModal/AddModal';
 import myFetch from 'utils/fetch';
-import s from './Manage.css';
+import s from './Employees.css';
 
-export default class ManageUsers extends Component {
+export default class Employees extends Component {
   state = {
-    visitors: [],
+    employees: [],
+    showAddModal: false,
     isLoading: false,
     error: false,
   };
@@ -26,25 +28,25 @@ export default class ManageUsers extends Component {
         error: null,
         isLoading: true,
       });
-      const data = await myFetch('/api/visitors');
+      const data = await myFetch('/api/visitors?is_employee=true');
 
       this.setState({
-        visitors: data,
+        employees: data,
         isLoading: false,
       });
     } catch (err) {
       this.setState({
         isLoading: false,
-        error: err.toString(),
+        error: err.message,
       });
     }
   }
 
   deleteVisitor = index => {
-    const { visitors } = this.state;
-    let list = visitors;
+    const { employees } = this.state;
+    let list = employees;
     list.splice(index, 1);
-    this.setState({ visitors: list });
+    this.setState({ employees: list });
   };
 
   invite_api_call = async () => {
@@ -56,12 +58,24 @@ export default class ManageUsers extends Component {
     });
   };
 
+  showAddModal = () => {
+    this.setState({
+      showAddModal: true,
+    });
+  };
+
+  hideAddModal = () => {
+    this.setState({
+      showAddModal: false,
+    });
+  };
+
   render() {
-    const { visitors } = this.state;
-    return (
-      <div>
-        <SimpleHeader title="Manage Visitors" />
-        <button onClick={this.invite_api_call}>Invite skarchmit@gmail.com</button>
+    const { employees } = this.state;
+
+    let employeeTable = null;
+    if (employees.length) {
+      employeeTable = (
         <Container fluid>
           <Table responsive striped bordered hover size="sm">
             <thead>
@@ -74,13 +88,31 @@ export default class ManageUsers extends Component {
               </tr>
             </thead>
             <tbody>
-              {visitors.map((visitor, id) => (
+              {employees.map((visitor, id) => (
                 <TableRowVisitor key={id} visitor={visitor} deleteVisitor={this.deleteVisitor} />
               ))}
             </tbody>
           </Table>
         </Container>
-      </div>
+      );
+    } else {
+      employeeTable = <div className={s.emptyMessage}>No employees added yet.</div>;
+    }
+
+    return (
+      <React.Fragment>
+        <SimpleHeader title="Employee Directory" />
+        <div className={s.root}>
+          <div className={s.flex}>
+            <h2 className={s.tableName}>Employees</h2>
+            <Button className={s.right} onClick={this.showAddModal} variant="success">
+              Add Employee
+            </Button>
+            <AddModal show={this.state.showAddModal} onHide={this.hideAddModal} />
+          </div>
+          {employeeTable}
+        </div>
+      </React.Fragment>
     );
   }
 }

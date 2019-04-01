@@ -11,15 +11,17 @@ import { Roles } from 'utils/constants';
 import me from 'utils/me';
 
 import Settings from 'routes/DashBoard/Settings/Settings';
-import Manage from 'routes/DashBoard/Manage/Manage';
 import Statistics from 'routes/DashBoard/Statistics/Statistics';
+import Employees from 'routes/DashBoard/Employees/Employees';
+import Admin from 'routes/DashBoard/Admin/Admin';
 import Kiosk from 'routes/DashBoard/Kiosk/Kiosk';
 
 const dashboardRoutes = [
   { id: 0, name: 'Statistics', path: 'statistics', component: Statistics },
-  { id: 1, name: 'Manage', path: 'manage', component: Manage },
-  { id: 2, name: 'Settings', path: 'settings', component: Settings },
-  { id: 3, name: 'Kiosk Mode', path: 'kiosk', component: Kiosk },
+  { id: 1, name: 'Settings', path: 'settings', component: Settings },
+  { id: 2, name: 'Employees', path: 'employees', component: Employees },
+  { id: 3, name: 'Admin', path: 'admin', component: Admin },
+  { id: 4, name: 'Kiosk Mode', path: 'kiosk', component: Kiosk },
 ];
 
 class DashBoard extends Component {

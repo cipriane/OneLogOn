@@ -220,6 +220,16 @@ class VisitorsListView(generics.ListAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
 
+    def get(self, request, *args, **kwargs):
+        company_id = UserCompany.objects.get(user_id=request.user.id).company_id
+        visitors = Visitors.objects.filter(company=company_id)
+        is_employee = self.request.query_params.get('is_employee', None)
+        if is_employee is not None:
+            is_employee = True if is_employee == 'true' else False
+            visitors = visitors.filter(is_employee=is_employee)
+        data = list(visitors.values())
+        return JsonResponse(data, safe=False)
+
 class VisitorsDetailView(generics.RetrieveAPIView):
     lookup_field = 'visitor_id'
     queryset = Visitors.objects.all()
