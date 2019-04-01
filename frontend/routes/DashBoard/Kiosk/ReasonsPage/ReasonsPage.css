@@ -2,9 +2,17 @@
   display: inline;
 }
 
+.mainReasonContainer {
+  max-width: 675px;
+  margin: 20px auto 50px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .checkboxContainer {
-  max-width: 900px;
-  margin: 20px 15px 50px;
+  max-width: 500px;
+  margin: 20px auto 50px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

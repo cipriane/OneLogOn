@@ -110,7 +110,7 @@ export default class ReasonList extends Component {
     }
 
     let reasonMapLabel = null;
-    if (isMain) {
+    if (isMain && reasons.length) {
       reasonMapLabel = <div className={s.showSubReasonsLabel}>Show Sub Reasons</div>;
     }
 
