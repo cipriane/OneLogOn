@@ -47,14 +47,15 @@ export default class ReasonList extends Component {
     if (reasons.length) {
       reasonsMap = reasons.map((reason, index) => (
         <Reason
-          key={index}
+          key={reason.id}
           index={index}
           description={reason.description}
-          isArchived={!reason.is_active}
           reasonId={reason.id}
+          hasSubReasons={reason.has_sub_reasons}
+          isMain={reason.is_main_reason}
+          isArchived={!reason.is_active}
           deleteReason={deleteReason}
           editReason={editReason}
-          archiveReason={this.props.archiveReason}
         />
       ));
     } else {
@@ -108,9 +109,15 @@ export default class ReasonList extends Component {
       );
     }
 
+    let reasonMapLabel = null;
+    if (isMain) {
+      reasonMapLabel = <div className={s.showSubReasonsLabel}>Show Sub Reasons</div>;
+    }
+
     return (
       <React.Fragment>
         {addReasonForm}
+        {reasonMapLabel}
         <ListGroup>{reasonsMap}</ListGroup>
       </React.Fragment>
     );
