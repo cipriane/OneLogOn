@@ -1,0 +1,32 @@
+.root {
+  max-width: 1000px;
+  margin: 15px;
+  padding: 0 40px;
+}
+
+.button {
+  margin-right: 10px;
+}
+
+.emptyMessage {
+  text-align: center;
+  margin: 50px 0;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.flex {
+  position: relative;
+  align-items: center;
+  display: flex;
+  padding-bottom: 1rem;
+}
+
+.right {
+  margin: 0 0 0 auto;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0 !important;
+}

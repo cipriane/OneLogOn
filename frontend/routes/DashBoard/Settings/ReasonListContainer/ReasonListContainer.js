@@ -170,7 +170,7 @@ export default class ReasonListContainer extends Component {
         <SettingsContainer label={'Archived Reasons'}>
           <ul className={s.listInformation}>
             <li>Archived reasons are hidden from visitors</li>
-            <li>The reasons may still be viewed from statistics</li>
+            <li>The reasons will continue to show in statistics</li>
           </ul>
           <ReasonList
             reasons={archivedReasons}
