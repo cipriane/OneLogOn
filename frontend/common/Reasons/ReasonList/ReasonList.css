@@ -18,3 +18,12 @@
 .addMargin {
   margin: 20px 0;
 }
+
+.showSubReasonsLabel {
+  margin-bottom: 2px;
+  font-size: 14px;
+  color: #64676d;
+  font-weight: 600;
+  max-width: 80px;
+  text-align: center;
+}

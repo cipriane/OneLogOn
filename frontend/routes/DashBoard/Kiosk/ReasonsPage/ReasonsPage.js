@@ -9,14 +9,15 @@ export default class ReasonsPage extends Component {
     next: PropTypes.func.isRequired,
     mainReasons: PropTypes.arrayOf(
       PropTypes.shape({
-        id: PropTypes.number,
-        description: PropTypes.string,
+        id: PropTypes.number.isRequired,
+        description: PropTypes.string.isRequired,
+        has_sub_reasons: PropTypes.bool.isRequired,
       }),
     ).isRequired,
     subReasons: PropTypes.arrayOf(
       PropTypes.shape({
-        id: PropTypes.number,
-        description: PropTypes.string,
+        id: PropTypes.number.isRequired,
+        description: PropTypes.string.isRequired,
       }),
     ).isRequired,
   };
@@ -33,9 +34,15 @@ export default class ReasonsPage extends Component {
     const id = target.id;
     const isMainReason = this.props.mainReasons.some(reason => reason.id == id);
     if (isMainReason) {
-      this.setState({
-        mainReasonSelected: id,
-      });
+      if (mainReasonSelected === id) {
+        this.setState({
+          mainReasonSelected: null,
+        });
+      } else {
+        this.setState({
+          mainReasonSelected: id,
+        });
+      }
       return;
     }
 
@@ -77,25 +84,36 @@ export default class ReasonsPage extends Component {
       : subReasonsSelected;
 
     let subReasons = null;
-    if (hasMainReason) {
-      subReasons = this.props.subReasons.map(reason => {
-        return (
-          <div className={s.checkbox} key={reason.id}>
-            <Button
-              className={s.checkboxInput}
-              id={`${reason.id}`}
-              variant={
-                subReasonsSelected.includes('' + reason.id)
-                  ? isSelectedVariant
-                  : isNotSelectedVariant
-              }
-              onClick={this.handleChange}
-            >
-              {reason.description}
-            </Button>
-          </div>
+    if (mainReasonSelected) {
+      const { mainReasons } = this.props;
+      const hasSubReasons = mainReasons.find(r => r.id == mainReasonSelected).has_sub_reasons;
+      if (hasSubReasons) {
+        subReasons = (
+          <React.Fragment>
+            <hr />
+            <div className={s.checkboxContainer}>
+              {this.props.subReasons.map(reason => {
+                return (
+                  <div className={s.checkbox} key={reason.id}>
+                    <Button
+                      className={s.checkboxInput}
+                      id={`${reason.id}`}
+                      variant={
+                        subReasonsSelected.includes('' + reason.id)
+                          ? isSelectedVariant
+                          : isNotSelectedVariant
+                      }
+                      onClick={this.handleChange}
+                    >
+                      {reason.description}
+                    </Button>
+                  </div>
+                );
+              })}
+            </div>
+          </React.Fragment>
         );
-      });
+      }
     }
 
     return (
@@ -103,8 +121,7 @@ export default class ReasonsPage extends Component {
         <Form onSubmit={this.props.next(allSelected)}>
           <h1 className={s.title}>Please select at least one reason for this visit</h1>
           <div className={s.checkboxContainer}>{mainReasons}</div>
-          <hr />
-          <div className={s.checkboxContainer}>{subReasons}</div>
+          {subReasons}
           <div className={s.buttonsBar}>
             <div className={s.alignLeft}>
               <FancyButton muted label="Cancel" type="button" onClick={this.props.cancel} />
