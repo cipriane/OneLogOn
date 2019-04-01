@@ -12,16 +12,17 @@ export default class Settings extends Component {
     return (
       <React.Fragment>
         <SimpleHeader title="Settings" />
+        <div className={s.root}>
+          <SettingsContainer label={'Welcome Message'}>
+            <WelcomeMessage />
+          </SettingsContainer>
 
-        <SettingsContainer label={'Welcome Message'}>
-          <WelcomeMessage />
-        </SettingsContainer>
+          <SettingsContainer label={'Update Password'}>
+            <Profile />
+          </SettingsContainer>
 
-        <SettingsContainer label={'Update Password'}>
-          <Profile />
-        </SettingsContainer>
-
-        <ReasonListContainer />
+          <ReasonListContainer />
+        </div>
       </React.Fragment>
     );
   }
