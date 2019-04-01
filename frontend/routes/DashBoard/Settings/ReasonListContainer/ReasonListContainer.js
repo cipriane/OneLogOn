@@ -111,7 +111,7 @@ export default class ReasonListContainer extends Component {
       const updatedReason = await myFetch(`/api/visitreason/${id}/update`, {
         method: 'PATCH',
         body: {
-          [key]: value,
+          [key]: value || 0, // 0 is false for Django
         },
       });
       this.setState(prevState => {
