@@ -71,10 +71,12 @@ export default class Employees extends Component {
   };
 
   render() {
-    const { employees } = this.state;
+    const { isLoading, employees } = this.state;
 
     let employeeTable = null;
-    if (employees.length) {
+    if (isLoading) {
+      employeeTable = <div className={s.emptyMessage}>Loading...</div>;
+    } else if (employees.length) {
       employeeTable = (
         <Container fluid>
           <Table responsive striped bordered hover size="sm">
