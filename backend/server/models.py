@@ -23,6 +23,7 @@ class Visitors(models.Model):
     last_name = models.CharField(max_length=30,null=True)
     is_employee = models.BooleanField(default=False)
     waiver_signed = models.BooleanField(default=False)
+    date_hired = models.DateTimeField(null=True)
     class Meta:
         unique_together = ('company', 'visitor_id')
 

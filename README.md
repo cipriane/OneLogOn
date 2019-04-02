@@ -53,11 +53,15 @@ Type `$ deactivate` to exit for both systems.
 
 This command will install all dependencies listed in `requirements.txt`.
 
-#### 5. Run `yarn start`
+#### 5. Copy `secret_settings.py.template` into `secret_settings.py`
+
+Change the various sensitive keys as necessary.
+
+#### 6. Run `yarn start`
 
 This command will build the frontend bundle in development mode and automatically rebuild on file changes. This command will also start up the Django server at the same time.
 
-#### 6. Navigate to [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in your browser
+#### 7. Navigate to [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in your browser
 
 If everything works, you'll see the home landing page.
 Refresh the page to see any code changes.  
