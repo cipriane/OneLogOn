@@ -334,6 +334,7 @@ class VisitorsDetailView(generics.RetrieveAPIView):
             
         return JsonResponse(visitor)
 
+
 class VisitorsCreateView(generics.CreateAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
@@ -350,31 +351,59 @@ class VisitorsCreateView(generics.CreateAPIView):
 
 
 
+
+
+
 class VisitorsUpdateView(generics.UpdateAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
 
     def patch(self, request, visitor_id, *args, **kwargs):
-        print (request.data)
+        '''
+            The request should make a person an employee
+        '''
 
         # get the company id so we can modify the right visitor
-        company_id = UserCompany.objects.get(user_id=request.user.id).company_id
-
-        # get the visitor
-        visitor = Visitors.objects.filter(visitor_id=visitor_id, company=company_id)
-
-        # if visitor doesnt exist, create it
-        if not visitor:
-            print ('No visitor')
+        company_id = getCompanyID(request) 
 
 
+        try:
+            obj, created = Visitors.objects.update_or_create(
+                visitor_id = visitor_id,
+                company_id = company_id,
+                is_employee = True,
+                date_hired = request.data['date_hired'],
+                first_name = request.data.get('first_name', ''),
+                last_name = request.data.get('last_name', ''),
+                )
 
+            return Response({'SUCCESS' : 'OK'}, status=status.HTTP_200_OK)
+
+        except:
+            return Response({'error' : 'Employee already exists'}, status=status.HTTP_400_BAD_REQUEST )
+
+    def delete(self, request, visitor_id, *args, **kwargs):
+        '''
+        We arent actually deleting the user, but simply updating 
+        to have flags turned off
+        '''
+
+        # get the company id so we can modify the right visitor
+        company_id = getCompanyID(request) 
+
+        obj, created = Visitors.objects.update_or_create(
+                visitor_id = visitor_id,
+                company_id = company_id,
+                is_employee = False,
+                date_hired = None
+                )
+
+        # to do: set is_employee = False and date_hired = null
+        # return code should be different too...
         return Response({'SUCCESS' : 'OK'}, status=status.HTTP_200_OK)
 
 
-
-
-
+        
 
 
 class VisitorsUpdateWaiverView(generics.UpdateAPIView):
