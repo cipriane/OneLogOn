@@ -52,17 +52,48 @@ import string, random # for generating random keys
 def index(request):
     return render(request, 'index.html')
 
+
+def getCompanyID(request):
+    '''
+        returns the ID of the company
+    '''
+    return getUserCompanyClass(request).company_id
+
+
+def getUserCompanyClass(request):
+    '''
+        returns the user - company 
+    '''
+    return UserCompany.objects.get(user_id=request.user.id)
+
+def getCompanyClass(request):
+    '''
+        returns the company object
+    '''
+    return Company.objects.get(id=getCompanyID(request))
+
+def localizeDateTime(_date_time):
+    california_tz = pytz.timezone('US/Pacific')
+    try:
+        return california_tz.localize(_date_time)
+    except:
+        return _date_time.astimezone(california_tz)
+
+
 class CompanyListView(generics.ListAPIView):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
+
 
 class CompanyDetailView(generics.RetrieveAPIView):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
 
+
 class CompanyCreateView(generics.CreateAPIView):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
+
 
 class CompanyMessageView(APIView):
     """
@@ -71,73 +102,74 @@ class CompanyMessageView(APIView):
     """
     permission_classes = (IsAuthenticated,)
 
-    def post(self, request, format='json'):
+    def post(self, request,  *args, **kwargs):
         """
         POST /api/companies/message
         Set new company message
         Required Parameters: company_message
         """
+
+        # check parameters
+        if not 'company_message' in request.data:
+            return Response({'error': 'Missing Company Message in request'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # if parameters ok, extract data
+        message = request.data['company_message']
+
+        # attempt to locate the company and save the message
         try:
-            id, message = request.user.id, request.data['company_message']
-            try:
-                # Get company
-                company_id = UserCompany.objects.get(user_id=id).company_id
-                company = Company.objects.get(id=company_id)
-                # Update company message and save it
-                company.company_message = message
-                company.save()
-                message = {'company_message' : company.company_message}
-                return Response(message, status=status.HTTP_200_OK)
+            company = getCompanyClass(request)
+            company.company_message = message
+            company.save()
 
-            except Exception:
-                message = {'error' : 'company does not exist'}
-                return Response(message, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'company_message' : company.company_message}, status=status.HTTP_200_OK)
 
-        except Exception:
-            message = {'missing parameter' : 'company_message'}
-            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        # error: company is not found or error saving the message due to company_message not existing
+        except Exception as err:
+            return Response({'error': str(err)}, status=status.HTTP_400_BAD_REQUEST)
 
-    def get(self, request, format='json'):
+
+
+    def get(self, request, *args, **kwargs):
         """
         GET /api/companies/message
         Returns company message
         Required Parameters: None
         """
-        try:
-            id = request.user.id
-            try:
-                # Get company message using UserCompany table and return company message
-                company_id = UserCompany.objects.get(user_id=id).company_id
-                company = Company.objects.get(id=company_id)
-                message = {'company_message' : company.company_message}
-                return Response(message, status=status.HTTP_200_OK)
 
-            except Exception:
-                message = {'error' : 'company does not exist'}
-                return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        try: 
+            company =  getCompanyClass(request)
+            message = {'company_message' : company.company_message}
+            return Response(message, status=status.HTTP_200_OK)
 
-        except Exception:
-            message = {'error' : 'user is not logged in'}
-            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as err: 
+            return Response({'error': str(err)}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class CheckInsListView(generics.ListAPIView):
     queryset = CheckIns.objects.all()
     serializer_class = CheckInsSerializer
 
-    def get(self, request, format = 'json'):
+    def get(self, request, format = 'json'): 
+        """
+        GET /api/....
+        Required Parameters: start_time, end_time, both in the format mm/dd/yyyy
+        Optional Parameters:
+        """
         # find var in the query, else get the second param
         start_time = request.query_params.get('start_time')
         end_time = request.query_params.get('end_time')
 
+        # validate the required parameters
         if not start_time:
             return Response({'Start time' : 'invalid'}, status = status.HTTP_400_BAD_REQUEST)
 
         if not end_time:
             return Response({'End time' : 'invalid'}, status = status.HTTP_400_BAD_REQUEST)
 
-        california_tz = pytz.timezone('US/Pacific')
-        start_time = california_tz.localize(datetime.strptime(start_time, '%m/%d/%Y'))
-        end_time   = california_tz.localize(datetime.strptime(end_time,   '%m/%d/%Y'))
+        # convert the parameters to datetime 
+        start_time = localizeDateTime(datetime.strptime(start_time, '%m/%d/%Y'))
+        end_time   = localizeDateTime(datetime.strptime(end_time,   '%m/%d/%Y'))
 
         # get all CheckIns
         c = CheckIns.objects.all().select_related('visitor').order_by('-check_in')
@@ -148,7 +180,7 @@ class CheckInsListView(generics.ListAPIView):
         c = c.filter(check_in__gte = start_time, check_in__lte = end_time)
 
         # Filter by company
-        company_id = UserCompany.objects.get(user_id=request.user.id).company_id
+        company_id = getCompanyID(request)
         c = c.filter(visitor__company=company_id)
 
         # format as JSON and send it back
@@ -192,65 +224,114 @@ class CheckInsListView(generics.ListAPIView):
                 check_in['reasons'] = []
 
         return JsonResponse(check_ins, safe=False)
+
+
 class CheckInsDetailView(generics.RetrieveAPIView):
     queryset = CheckIns.objects.all()
     serializer_class = CheckInsSerializer
+
 
 class CheckInsCreateView(generics.CreateAPIView):
     queryset = CheckIns.objects.all()
     serializer_class = CheckInsSerializer
 
+
 class CheckInsUpdateView(generics.UpdateAPIView):
     queryset = CheckIns.objects.all()
     serializer_class = CheckInsSerializer
+
 
 class TimesheetListView(generics.ListAPIView):
     queryset = Timesheet.objects.all()
     serializer_class = CheckInsSerializer
 
+
 class TimesheetDetailView(generics.RetrieveAPIView):
     queryset = Timesheet.objects.all()
     serializer_class = CheckInsSerializer
 
+
 class TimesheetCreateView(generics.CreateAPIView):
     queryset = Timesheet.objects.all()
     serializer_class = CheckInsSerializer
+
 
 class VisitorsListView(generics.ListAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
 
     def get(self, request, *args, **kwargs):
-        company_id = UserCompany.objects.get(user_id=request.user.id).company_id
-        visitors = Visitors.objects.filter(company=company_id)
+        '''
+        GET /api/...
+        Required Parameters: None
+        Optional Parameters: is_employee, 
+        
+        returns a copmlete list of visitors in the company
+        if optional parameter is_employee is set to true, it will only 
+            return a list of vistors that are employee only
+
+        if optional parameter is_employee is set to false, it will only
+            return a list of visitors that are not employee
+        '''
+
+        # get the optional parameter
         is_employee = self.request.query_params.get('is_employee', None)
-        if is_employee is not None:
-            is_employee = True if is_employee == 'true' else False
+
+        # get current company for the correct visitors
+        company_id = getCompanyID(request)
+        
+        # grab a list of all the visitors
+        visitors = Visitors.objects.filter(company=company_id)
+             
+        # if employee flag is set 
+        # check whether to return only visitors or only employees
+        if is_employee:
+            is_employee = True if is_employee.lower() == 'true' else False
             visitors = visitors.filter(is_employee=is_employee)
+        
         data = list(visitors.values())
         return JsonResponse(data, safe=False)
+
+
 
 class VisitorsDetailView(generics.RetrieveAPIView):
     lookup_field = 'visitor_id'
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
 
-    def get(self, request, *args, **kwargs):
-        company_id = UserCompany.objects.get(user_id=request.user.id).company_id
-        visitor = Visitors.objects.filter(visitor_id=self.kwargs[self.lookup_field], company=company_id)
+    def get(self, request, visitor_id , *args, **kwargs):
+        '''
+        GET api/visitors/<visitor_id>
+        returns a JSON response of whether a visitor is logged in 
+        and if logged in, when the last log in time was
+        '''
+
+        company_id = getCompanyID(request)
+
+        # get the visitor in the company 
+        visitor = Visitors.objects.filter(visitor_id=visitor_id, company=company_id)
+        
+        # check if visitor exists in company
+        # gets executed if looking for a specific user
+        # although it also gets executed from KIOSK mode... 
         if not visitor:
             return Response({'visitor': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        # get the first value
         visitor = visitor.values()[0]
+
+        # get the latest checkin
         try:
             lastCheckIn = CheckIns.objects.filter(visitor=visitor['id'],check_out__isnull=True).latest('check_in')
-        except CheckIns.DoesNotExist:
+            visitor['is_checked_in'] = localizeDateTime(lastCheckIn.check_in).date() == localizeDateTime(now()).date()
+            visitor['check_in_id'] = lastCheckIn.id
+
+        # first time checking in
+        except CheckIns.DoesNotExist as err:
             lastCheckIn = None
-        if lastCheckIn is None:
             visitor['is_checked_in'] = False
             visitor['check_in_id'] = False
-        else:
-            visitor['is_checked_in'] = lastCheckIn.check_in.astimezone(timezone('US/Pacific')).date() == now().today().astimezone(timezone('US/Pacific')).date()
-            visitor['check_in_id'] = lastCheckIn.id
+            
         return JsonResponse(visitor)
 
 class VisitorsCreateView(generics.CreateAPIView):
@@ -258,12 +339,43 @@ class VisitorsCreateView(generics.CreateAPIView):
     serializer_class = VisitorsSerializer
 
     def post(self, request, *args, **kwargs):
-        request.data['company'] = UserCompany.objects.get(user_id=request.user.id).company_id
+        '''
+        create a visitor
+        '''
+        request.data['company'] = getCompanyID(request)
         return self.create(request, *args, **kwargs)
+
+
+
+
+
 
 class VisitorsUpdateView(generics.UpdateAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
+
+    def patch(self, request, visitor_id, *args, **kwargs):
+        print (request.data)
+
+        # get the company id so we can modify the right visitor
+        company_id = UserCompany.objects.get(user_id=request.user.id).company_id
+
+        # get the visitor
+        visitor = Visitors.objects.filter(visitor_id=visitor_id, company=company_id)
+
+        # if visitor doesnt exist, create it
+        if not visitor:
+            print ('No visitor')
+
+
+
+        return Response({'SUCCESS' : 'OK'}, status=status.HTTP_200_OK)
+
+
+
+
+
+
 
 class VisitorsUpdateWaiverView(generics.UpdateAPIView):
     """
@@ -294,23 +406,35 @@ class VisitReasonListView(generics.ListAPIView):
     serializer_class = VisitReasonSerializer
 
     def get(self, request, *args, **kwargs):
-        company_id = UserCompany.objects.get(user_id=request.user.id).company_id
+        '''
+        GET /api/visitreasons
+        optional parameters: 
+            is_main_reason: true/false, 
+            is_archived : true/false
+        '''
+        
+        company_id = getCompanyID(request)
         reasons = VisitReason.objects.filter(company=company_id)
         is_main = self.request.query_params.get('is_main_reason', None)
+        
         if is_main is not None:
             is_main = True if is_main == 'true' else False
             reasons = reasons.filter(is_main_reason=is_main)
         is_archived = self.request.query_params.get('is_archived', None)
+        
         if is_archived is not None:
             is_archived = True if is_archived == 'true' else False
             is_active = not is_archived
             reasons = reasons.filter(is_active=is_active)
+       
         data = list(reasons.values())
         return JsonResponse(data, safe=False)
+
 
 class VisitReasonDetailView(generics.RetrieveAPIView):
     queryset = VisitReason.objects.all()
     serializer_class = VisitReasonSerializer
+
 
 class VisitReasonCreateView(generics.CreateAPIView):
     queryset = VisitReason.objects.all()
@@ -320,21 +444,26 @@ class VisitReasonCreateView(generics.CreateAPIView):
         request.data['company'] = UserCompany.objects.get(user_id=request.user.id).company_id
         return self.create(request, *args, **kwargs)
 
+
 class VisitReasonUpdateView(generics.UpdateAPIView):
     queryset = VisitReason.objects.all()
     serializer_class = VisitReasonSerializer
+
 
 class VisitReasonDestroyView(generics.DestroyAPIView):
     queryset = VisitReason.objects.all()
     serializer_class = VisitReasonSerializer
 
+
 class CheckInVisitReasonListView(generics.ListAPIView):
     queryset = CheckInVisitReason.objects.all()
     serializer_class = CheckInVisitReasonSerializer
 
+
 class CheckInVisitReasonDetailView(generics.RetrieveAPIView):
     queryset = CheckInVisitReason.objects.all()
     serializer_class = CheckInVisitReasonSerializer
+
 
 class CheckInVisitReasonCreateView(generics.CreateAPIView):
     queryset = CheckInVisitReason.objects.all()
@@ -351,6 +480,7 @@ class CheckInVisitReasonCreateView(generics.CreateAPIView):
             headers = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
+
 class UserCreate(APIView):
     permission_classes = []
     """
@@ -362,6 +492,7 @@ class UserCreate(APIView):
             user = serializer.save()
             if user:
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 class Registration(APIView):
     """
@@ -511,7 +642,7 @@ class SendInvite(APIView):
         invite_code = key
 
         # to do: get get email from request
-        recipient = 'skarchmit@gmail.com'
+        recipient = 'onebitoffteam@gmail.com'
         creator = 'onebitoffteam@gmail.com'
         link = 'http://127.0.0.1:8000/register/?key={invite_code}'.format(invite_code=invite_code)
         msg = 'Click this <a href = \"{link}\">link</a> to join'.format(link=link)
