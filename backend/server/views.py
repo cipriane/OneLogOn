@@ -249,7 +249,7 @@ class VisitorsDetailView(generics.RetrieveAPIView):
             visitor['is_checked_in'] = False
             visitor['check_in_id'] = False
         else:
-            visitor['is_checked_in'] = lastCheckIn.check_in.astimezone(timezone('US/Pacific')).date() == now().today().date()
+            visitor['is_checked_in'] = lastCheckIn.check_in.astimezone(timezone('US/Pacific')).date() == now().today().astimezone(timezone('US/Pacific')).date()
             visitor['check_in_id'] = lastCheckIn.id
         return JsonResponse(visitor)
 
