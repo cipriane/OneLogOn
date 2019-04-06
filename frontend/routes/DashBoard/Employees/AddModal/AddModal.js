@@ -8,7 +8,7 @@ import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import InputGroup from 'react-bootstrap/InputGroup';
 import PropTypes from 'prop-types';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
-import Calendar from '../../Calendar/Calendar';
+import Calendar from 'common/Calendar/Calendar';
 import formatDate from 'utils/formatDate';
 import Button from 'react-bootstrap/Button';
 import myFetch from 'utils/fetch';
