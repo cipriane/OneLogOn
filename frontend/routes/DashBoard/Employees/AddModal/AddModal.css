@@ -1,0 +1,31 @@
+.flex {
+  position: relative;
+  align-items: center;
+  display: flex;
+  padding-bottom: 1rem;
+}
+
+.title {
+  font-size: 30px;
+}
+
+.paddingRight {
+  padding-right: 10px;
+}
+
+.yearPicker {
+  width: 85%;
+}
+
+.marginTop {
+  margin-top: 20px;
+}
+
+.marginRight {
+  margin-right: 10px !important;
+  border-radius: 5px !important;
+}
+
+.whiteBg {
+  background: whitesmoke !important;
+}

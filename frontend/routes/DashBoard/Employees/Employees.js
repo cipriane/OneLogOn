@@ -47,6 +47,11 @@ export default class Employees extends Component {
     let list = employees;
     list.splice(index, 1);
     this.setState({ employees: list });
+
+    // what is the ID?????????
+    const data = myFetch(`/api/visitors/${this.state.id}/update`, {
+      method: 'DELETE',
+    });
   };
 
   invite_api_call = async () => {
