@@ -12,7 +12,7 @@ export default class SettingsContainer extends Component {
   render() {
     return (
       <Container className={s.padding}>
-        <h2>{this.props.label}</h2>
+        <h2 className={s.header}>{this.props.label}</h2>
         <div className={s.border}>
           <div className={s.formGroupContainer}>{this.props.children}</div>
         </div>

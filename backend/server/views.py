@@ -331,7 +331,6 @@ class VisitorsDetailView(generics.RetrieveAPIView):
             lastCheckIn = None
             visitor['is_checked_in'] = False
             visitor['check_in_id'] = False
-            
         return JsonResponse(visitor)
 
 

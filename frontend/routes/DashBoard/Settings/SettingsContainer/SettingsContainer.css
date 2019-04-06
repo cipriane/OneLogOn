@@ -13,7 +13,7 @@
   padding: 20px;
 }
 
-h2 {
+.header {
   font-size: 1.5rem;
-  margin-bottom: 15px !important;
+  margin: 35px 0 5px !important;
 }
