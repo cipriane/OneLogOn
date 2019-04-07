@@ -168,7 +168,11 @@ export default class ExportModal extends Component {
     const { error } = this.state;
     let errorMessage = null;
     if (error) {
-      errorMessage = <Alert variant="danger">{error}</Alert>;
+      errorMessage = (
+        <Alert variant="danger" dismissible>
+          {error}
+        </Alert>
+      );
     }
 
     return (
@@ -185,21 +189,18 @@ export default class ExportModal extends Component {
         {errorMessage}
         <Modal.Body>
           <div className={s.flex}>
-            {/* <p className={s.label}>From:</p> */}
             <InputGroup.Prepend className={s.paddingRight}>
               <InputGroup.Text className={s.whiteBg}>From:</InputGroup.Text>
             </InputGroup.Prepend>
             <Calendar setDate={this.setStartDate} date={this.state.startDate} />
           </div>
           <div className={s.flex}>
-            {/* <p className={s.label}>Until:</p> */}
             <InputGroup.Prepend className={s.paddingRight}>
               <InputGroup.Text className={s.whiteBg}>Until:</InputGroup.Text>
             </InputGroup.Prepend>
             <Calendar setDate={this.setEndDate} date={this.state.endDate} />
           </div>
           <ButtonToolbar>
-            {/* <p className={s.label}>Set Quarter:</p> */}
             <InputGroup.Prepend className={s.paddingRight}>
               <InputGroup.Text className={s.whiteBg}>Set Quarter:</InputGroup.Text>
             </InputGroup.Prepend>
