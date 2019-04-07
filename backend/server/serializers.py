@@ -16,8 +16,6 @@ class CompanySerializer(serializers.ModelSerializer):
         fields = ('company_name', 'company_address','company_city',
         'company_zip','company_state')
 
-
-
 class CheckInsSerializer(serializers.ModelSerializer):
     class Meta:
         model = CheckIns
@@ -32,7 +30,7 @@ class VisitorsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Visitors
         fields = ('id', 'company', 'visitor_id', 'first_name',
-        'last_name', 'is_employee', 'waiver_signed')
+        'last_name', 'is_employee', 'waiver_signed', 'date_hired')
 
 class VisitReasonSerializer(serializers.ModelSerializer):
     class Meta:

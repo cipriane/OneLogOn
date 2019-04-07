@@ -80,6 +80,7 @@ export default class AddModal extends Component {
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
     this.setState({
+      error: null,
       [name]: value,
     });
   };
@@ -88,11 +89,7 @@ export default class AddModal extends Component {
     const { error, isLoading } = this.state;
     let errorMessage = null;
     if (error) {
-      errorMessage = (
-        <Alert variant="danger" dismissible>
-          {error}
-        </Alert>
-      );
+      errorMessage = <Alert variant="danger">{error}</Alert>;
     }
 
     let submitButton = null;
@@ -163,7 +160,7 @@ export default class AddModal extends Component {
             <InputGroup.Prepend className={s.paddingRight}>
               <InputGroup.Text className={s.whiteBg}>Date hired</InputGroup.Text>
             </InputGroup.Prepend>
-            <Calendar setDate={this.setDateHired} date={this.state.dateHired} />
+            <Calendar setDate={this.setDateHired} date={this.state.dateHired} showSideArrows />
           </div>
         </Modal.Body>
         <Modal.Footer>

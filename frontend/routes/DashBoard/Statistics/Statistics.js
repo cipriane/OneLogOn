@@ -121,7 +121,7 @@ export default class Statistics extends Component {
         <SimpleHeader title="Statistics" />
         <div className={s.root}>
           <div className={s.flex}>
-            <Calendar setDate={this.setDate} date={this.state.selectedDate} />
+            <Calendar setDate={this.setDate} date={this.state.selectedDate} showSideArrows />
             <Button className={s.right} onClick={this.showExportModal} variant="success">
               Export
             </Button>

@@ -11,52 +11,93 @@ import {
   Dropdown,
 } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import Calendar from 'common/Calendar/Calendar';
 import formatDate from 'utils/formatDate';
 import s from './EmployeeRow.css';
+import myFetch from 'utils/fetch';
 
 export default class EmployeeRow extends Component {
   static propTypes = {
+    updateEmployee: PropTypes.func.isRequired,
     removeEmployee: PropTypes.func.isRequired,
+    setError: PropTypes.func.isRequired,
     employee: PropTypes.object.isRequired,
     setError: PropTypes.func.isRequired,
   };
 
   state = {
     editMode: false,
+    isSaving: false,
     isDeleting: false,
+    dateHired: this.props.employee.date_hired,
+    firstName: this.props.employee.first_name,
+    lastName: this.props.employee.last_name,
   };
 
-  removeEmployee = id => {
-    this.setState({ isDeleting: true });
+  removeEmployee = async () => {
+    const { employee } = this.props;
     try {
-      const visitor = myFetch(`/api/visitors/${id}/update`, {
+      this.setState({ isDeleting: true });
+      const deletedEmployee = await myFetch(`/api/visitors/${employee.visitor_id}/update`, {
         method: 'PATCH',
         body: {
           date_hired: null,
           is_employee: false,
         },
       });
-
-      this.props.removeEmployee(visitor.id);
-
       this.setState({ isDeleting: false });
+      this.props.removeEmployee(deletedEmployee.visitor_id);
     } catch (err) {
       this.setState({
         isDeleting: false,
       });
-      this.props.setDeleteError(err);
+      this.props.setError(err);
     }
   };
 
-  updateEmployee = () => {
+  setDate = date => {
     this.setState({
-      editMode: false,
+      dateHired: date,
     });
+  };
+
+  updateEmployee = async () => {
+    try {
+      this.setState({
+        isSaving: true,
+      });
+      const updatedEmployee = await myFetch(
+        `/api/visitors/${this.props.employee.visitor_id}/update`,
+        {
+          method: 'PATCH',
+          body: {
+            date_hired: this.state.dateHired,
+            first_name: this.state.firstName,
+            last_name: this.state.lastName,
+          },
+        },
+      );
+
+      this.setState({
+        editMode: false,
+        isSaving: false,
+      });
+      this.props.updateEmployee(updatedEmployee);
+    } catch (err) {
+      this.setState({
+        editMode: false,
+        isSaving: false,
+      });
+      this.props.setError(err);
+    }
   };
 
   cancelEdit = () => {
     this.setState({
       editMode: false,
+      dateHired: this.props.employee.date_hired,
+      firstName: this.props.employee.first_name,
+      lastName: this.props.employee.last_name,
     });
   };
 
@@ -71,20 +112,21 @@ export default class EmployeeRow extends Component {
   };
 
   render() {
-    const { employee, removeEmployee } = this.props;
-    const { editMode } = this.state;
+    const { employee } = this.props;
+    const { editMode, isSaving, isDeleting, firstName, lastName } = this.state;
 
     if (editMode) {
       return (
         <tr>
-          <td>{employee.visitor_id}</td>
+          <td className={s.idField}>{employee.visitor_id}</td>
           <td>
             <InputGroup size="sm">
               <Form.Control
+                className={s.textInputField}
                 type="text"
-                name="first_name"
-                placeholder={employee.first_name}
-                value={employee.first_name}
+                name="firstName"
+                placeholder="First name"
+                value={firstName || ''}
                 onChange={this.handleChange}
               />
             </InputGroup>
@@ -92,22 +134,33 @@ export default class EmployeeRow extends Component {
           <td>
             <InputGroup size="sm">
               <Form.Control
+                className={s.textInputField}
                 type="text"
-                name="last_name"
-                placeholder={employee.last_name}
-                value={employee.last_name}
+                name="lastName"
+                placeholder={'Last name'}
+                value={lastName || ''}
                 onChange={this.handleChange}
               />
             </InputGroup>
           </td>
-          <td>Calendar Picker</td>
-          <td>View Timecard</td>
           <td>
-            <Button variant="secondary" size="sm" onClick={this.cancelEdit}>
+            <div className={s.calendarContainer}>
+              <Calendar
+                setDate={this.setDate}
+                date={new Date(this.state.dateHired)}
+                showSideArrows={false}
+              />
+            </div>
+          </td>
+          <td className={s.timecardField}>View Timecard</td>
+          <td className={s.buttonField}>
+            <Button variant="secondary" disabled={isSaving} size="sm" onClick={this.cancelEdit}>
               Cancel
             </Button>
-            <Button variant="success" size="sm" onClick={this.updateEmployee}>
-              Save
+          </td>
+          <td className={s.buttonField}>
+            <Button variant="success" disabled={isSaving} size="sm" onClick={this.updateEmployee}>
+              {isSaving ? 'Saving...' : 'Save'}
             </Button>
           </td>
         </tr>
@@ -115,12 +168,12 @@ export default class EmployeeRow extends Component {
     }
     return (
       <tr>
-        <td>{employee.visitor_id}</td>
+        <td className={s.idField}>{employee.visitor_id}</td>
         <td>{employee.first_name || ''}</td>
         <td>{employee.last_name || ''}</td>
         <td>{formatDate(new Date(employee.date_hired))}</td>
-        <td>View Timecard</td>
-        <td>
+        <td className={s.timecardField}>View Timecard</td>
+        <td className={s.buttonField}>
           <Button
             className={s.button}
             variant="info"
@@ -129,8 +182,10 @@ export default class EmployeeRow extends Component {
           >
             Edit
           </Button>
-          <Button variant="danger" size="sm" onClick={removeEmployee}>
-            Remove
+        </td>
+        <td className={s.buttonField}>
+          <Button variant="danger" disabled={isDeleting} size="sm" onClick={this.removeEmployee}>
+            {isDeleting ? 'Removing...' : 'Remove'}
           </Button>
         </td>
       </tr>

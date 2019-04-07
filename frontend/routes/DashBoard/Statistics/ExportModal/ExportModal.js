@@ -192,13 +192,13 @@ export default class ExportModal extends Component {
             <InputGroup.Prepend className={s.paddingRight}>
               <InputGroup.Text className={s.whiteBg}>From:</InputGroup.Text>
             </InputGroup.Prepend>
-            <Calendar setDate={this.setStartDate} date={this.state.startDate} />
+            <Calendar setDate={this.setStartDate} date={this.state.startDate} showSideArrows />
           </div>
           <div className={s.flex}>
             <InputGroup.Prepend className={s.paddingRight}>
               <InputGroup.Text className={s.whiteBg}>Until:</InputGroup.Text>
             </InputGroup.Prepend>
-            <Calendar setDate={this.setEndDate} date={this.state.endDate} />
+            <Calendar setDate={this.setEndDate} date={this.state.endDate} showSideArrows />
           </div>
           <ButtonToolbar>
             <InputGroup.Prepend className={s.paddingRight}>

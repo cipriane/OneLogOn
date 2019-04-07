@@ -9,6 +9,7 @@ export default class Calendar extends Component {
   static propTypes = {
     setDate: PropTypes.func.isRequired,
     date: PropTypes.instanceOf(Date).isRequired,
+    showSideArrows: PropTypes.bool,
   };
 
   state = {
@@ -74,12 +75,14 @@ export default class Calendar extends Component {
     ) : null;
     return (
       <React.Fragment>
-        <div
-          className={[s.calendarSideButton, s.calendarButton].join(' ')}
-          onClick={this.decreaseDate}
-        >
-          ‹
-        </div>
+        {this.props.showSideArrows && (
+          <div
+            className={[s.calendarSideButton, s.calendarButton].join(' ')}
+            onClick={this.decreaseDate}
+          >
+            ‹
+          </div>
+        )}
         <div
           className={[s.calendarButton, s.calendarDate].join(' ')}
           onClick={this.toggleDisplayCalendar}
@@ -88,12 +91,14 @@ export default class Calendar extends Component {
           {formatDate(this.props.date)}
         </div>
         {calendar}
-        <div
-          className={[s.calendarSideButton, s.calendarButton].join(' ')}
-          onClick={this.increaseDate}
-        >
-          ›
-        </div>
+        {this.props.showSideArrows && (
+          <div
+            className={[s.calendarSideButton, s.calendarButton].join(' ')}
+            onClick={this.increaseDate}
+          >
+            ›
+          </div>
+        )}
       </React.Fragment>
     );
   }
