@@ -62,7 +62,7 @@ def getCompanyID(request):
 
 def getUserCompanyClass(request):
     '''
-        returns the user - company 
+        returns the user - company
     '''
     return UserCompany.objects.get(user_id=request.user.id)
 
@@ -137,12 +137,12 @@ class CompanyMessageView(APIView):
         Required Parameters: None
         """
 
-        try: 
+        try:
             company =  getCompanyClass(request)
             message = {'company_message' : company.company_message}
             return Response(message, status=status.HTTP_200_OK)
 
-        except Exception as err: 
+        except Exception as err:
             return Response({'error': str(err)}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -150,7 +150,7 @@ class CheckInsListView(generics.ListAPIView):
     queryset = CheckIns.objects.all()
     serializer_class = CheckInsSerializer
 
-    def get(self, request, format = 'json'): 
+    def get(self, request, format = 'json'):
         """
         GET /api/....
         Required Parameters: start_time, end_time, both in the format mm/dd/yyyy
@@ -167,7 +167,7 @@ class CheckInsListView(generics.ListAPIView):
         if not end_time:
             return Response({'End time' : 'invalid'}, status = status.HTTP_400_BAD_REQUEST)
 
-        # convert the parameters to datetime 
+        # convert the parameters to datetime
         start_time = localizeDateTime(datetime.strptime(start_time, '%m/%d/%Y'))
         end_time   = localizeDateTime(datetime.strptime(end_time,   '%m/%d/%Y'))
 
@@ -264,10 +264,10 @@ class VisitorsListView(generics.ListAPIView):
         '''
         GET /api/...
         Required Parameters: None
-        Optional Parameters: is_employee, 
-        
+        Optional Parameters: is_employee,
+
         returns a copmlete list of visitors in the company
-        if optional parameter is_employee is set to true, it will only 
+        if optional parameter is_employee is set to true, it will only
             return a list of vistors that are employee only
 
         if optional parameter is_employee is set to false, it will only
@@ -279,16 +279,16 @@ class VisitorsListView(generics.ListAPIView):
 
         # get current company for the correct visitors
         company_id = getCompanyID(request)
-        
+
         # grab a list of all the visitors
         visitors = Visitors.objects.filter(company=company_id)
-             
-        # if employee flag is set 
+
+        # if employee flag is set
         # check whether to return only visitors or only employees
         if is_employee:
             is_employee = True if is_employee.lower() == 'true' else False
             visitors = visitors.filter(is_employee=is_employee)
-        
+
         data = list(visitors.values())
         return JsonResponse(data, safe=False)
 
@@ -302,18 +302,18 @@ class VisitorsDetailView(generics.RetrieveAPIView):
     def get(self, request, visitor_id , *args, **kwargs):
         '''
         GET api/visitors/<visitor_id>
-        returns a JSON response of whether a visitor is logged in 
+        returns a JSON response of whether a visitor is logged in
         and if logged in, when the last log in time was
         '''
 
         company_id = getCompanyID(request)
 
-        # get the visitor in the company 
+        # get the visitor in the company
         visitor = Visitors.objects.filter(visitor_id=visitor_id, company=company_id)
-        
+
         # check if visitor exists in company
         # gets executed if looking for a specific user
-        # although it also gets executed from KIOSK mode... 
+        # although it also gets executed from KIOSK mode...
         if not visitor:
             return Response({'visitor': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -345,64 +345,68 @@ class VisitorsCreateView(generics.CreateAPIView):
         request.data['company'] = getCompanyID(request)
         return self.create(request, *args, **kwargs)
 
-
-
-
-
-
-
-
-
 class VisitorsUpdateView(generics.UpdateAPIView):
     queryset = Visitors.objects.all()
     serializer_class = VisitorsSerializer
 
     def patch(self, request, visitor_id, *args, **kwargs):
-        '''
-            The request should make a person an employee
-        '''
+        company_id = getCompanyID(request)
 
-        # get the company id so we can modify the right visitor
-        company_id = getCompanyID(request) 
+        new_values = {}
+        is_employee = request.data.get('is_employee', None)
+        waiver_signed = request.data.get('waiver_signed', None)
+        date_hired = request.data.get('date_hired', None)
+        first_name = request.data.get('first_name', None)
+        last_name = request.data.get('last_name', None)
 
+        if is_employee is not None:
+            new_values['is_employee'] = is_employee
+        if waiver_signed is not None:
+            new_values['waiver_signed'] = waiver_signed
+        if date_hired is not None:
+            new_values['date_hired'] = date_hired
+        if first_name is not None:
+            new_values['first_name'] = first_name
+        if last_name is not None:
+            new_values['last_name'] = last_name
 
         try:
-            obj, created = Visitors.objects.update_or_create(
-                visitor_id = visitor_id,
-                company_id = company_id,
-                is_employee = True,
-                date_hired = request.data['date_hired'],
-                first_name = request.data.get('first_name', ''),
-                last_name = request.data.get('last_name', ''),
-                )
-
-            return Response({'SUCCESS' : 'OK'}, status=status.HTTP_200_OK)
-
-        except:
-            return Response({'error' : 'Employee already exists'}, status=status.HTTP_400_BAD_REQUEST )
+            visitor = Visitors.objects.get(visitor_id=visitor_id,company_id=company_id)
+            for key, value in new_values.items():
+                setattr(visitor, key, value)
+            visitor.save()
+            return Response(VisitorsSerializer(visitor).data, status=status.HTTP_200_OK)
+        except Visitors.DoesNotExist:
+            new_values['visitor_id'] = visitor_id
+            new_values['comapny_id'] = company_id
+            visitor = Visitors(**new_values)
+            visitor.save()
+            return Response(VisitorsSerializer(visitor).data, status=status.HTTP_200_OK)
+        except Exception as err:
+            return Response({'error': str(err)}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, visitor_id, *args, **kwargs):
         '''
-        We arent actually deleting the user, but simply updating 
+        We arent actually deleting the user, but simply updating
         to have flags turned off
         '''
 
         # get the company id so we can modify the right visitor
-        company_id = getCompanyID(request) 
+        company_id = getCompanyID(request)
 
         obj, created = Visitors.objects.update_or_create(
-                visitor_id = visitor_id,
-                company_id = company_id,
-                is_employee = False,
-                date_hired = None
-                )
+            visitor_id = visitor_id,
+            company_id = company_id,
+            is_employee = False,
+            date_hired = None,
+        )
 
         # to do: set is_employee = False and date_hired = null
         # return code should be different too...
         return Response({'SUCCESS' : 'OK'}, status=status.HTTP_200_OK)
 
 
-        
+
 
 
 class VisitorsUpdateWaiverView(generics.UpdateAPIView):
@@ -436,25 +440,25 @@ class VisitReasonListView(generics.ListAPIView):
     def get(self, request, *args, **kwargs):
         '''
         GET /api/visitreasons
-        optional parameters: 
-            is_main_reason: true/false, 
+        optional parameters:
+            is_main_reason: true/false,
             is_archived : true/false
         '''
-        
+
         company_id = getCompanyID(request)
         reasons = VisitReason.objects.filter(company=company_id)
         is_main = self.request.query_params.get('is_main_reason', None)
-        
+
         if is_main is not None:
             is_main = True if is_main == 'true' else False
             reasons = reasons.filter(is_main_reason=is_main)
         is_archived = self.request.query_params.get('is_archived', None)
-        
+
         if is_archived is not None:
             is_archived = True if is_archived == 'true' else False
             is_active = not is_archived
             reasons = reasons.filter(is_active=is_active)
-       
+
         data = list(reasons.values())
         return JsonResponse(data, safe=False)
 
@@ -536,7 +540,7 @@ class Registration(APIView):
         california_tz = pytz.timezone('US/Pacific')
 
         # obtain the key
-        key =request.data.get('key', None)
+        key = request.data.get('key', None)
 
         # verify the user is unique
         user_serializer = UserSerializer(data=request.data)
@@ -548,14 +552,13 @@ class Registration(APIView):
         # verify the company
         # if we have the key, locate the company
         if key:
-
             # verify the invite -- find the company associated with it
             try:
                 # get the company id that has the key and expiration is greater than equal to today
                 company_id = CompanyInvite.objects.get(
                     invite_key=key,
                     expires_on__gte = california_tz.localize(datetime.now())
-                    ).company_id
+                ).company_id
             except Exception as err:
                 # invite not found or expired
                 return Response({'error': 'Invite is invalid or has expired.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -580,7 +583,7 @@ class Registration(APIView):
         data = {
             'user' : user_id,
             'company' : company_id
-            }
+        }
 
         # attempt to bind otherwise throw
         user_company_serializer = UserCompanySerializer(data=data)

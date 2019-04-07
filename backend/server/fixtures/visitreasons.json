@@ -12,7 +12,7 @@
         "pk":2,
         "fields": {
             "description": "Audio/Video",
-            "company_id": "2"
+            "company_id": "1"
         }
     },
     {
@@ -20,7 +20,7 @@
         "pk":3,
         "fields": {
             "description": "CNC/Milling",
-            "company_id": "3"
+            "company_id": "1"
         }
     },
     {
@@ -28,7 +28,7 @@
         "pk":4,
         "fields": {
             "description": "Fiber Arts",
-            "company_id": "3"
+            "company_id": "1"
         }
     },
     {
@@ -36,7 +36,7 @@
         "pk":5,
         "fields": {
             "description": "General",
-            "company_id": "3"
+            "company_id": "1"
         }
     },
     {
@@ -44,7 +44,7 @@
         "pk":6,
         "fields": {
             "description": "Internships",
-            "company_id": "2"
+            "company_id": "1"
         }
     },
     {
@@ -52,7 +52,7 @@
         "pk":7,
         "fields": {
             "description": "Laser",
-            "company_id": "2"
+            "company_id": "1"
         }
     },
     {
@@ -76,7 +76,7 @@
         "pk":10,
         "fields": {
             "description": "Vinyl Cutter",
-            "company_id": "2"
+            "company_id": "1"
         }
     }
 ]

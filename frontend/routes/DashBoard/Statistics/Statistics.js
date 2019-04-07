@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import SimpleHeader from 'common/SimpleHeader/SimpleHeader';
 import s from './Statistics.css';
 import ExportModal from './ExportModal/ExportModal';
-import Calendar from './Calendar/Calendar';
+import Calendar from 'common/Calendar/Calendar';
 import MyTable from './MyTable/MyTable';
 import fetchVisitors from './fetchVisitors';
 import formatDate from 'utils/formatDate';

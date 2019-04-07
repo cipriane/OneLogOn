@@ -8,7 +8,7 @@ import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import InputGroup from 'react-bootstrap/InputGroup';
 import PropTypes from 'prop-types';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
-import Calendar from '../../Calendar/Calendar';
+import Calendar from 'common/Calendar/Calendar';
 import formatDate from 'utils/formatDate';
 import Button from 'react-bootstrap/Button';
 import myFetch from 'utils/fetch';
@@ -20,33 +20,32 @@ export default class AddModal extends Component {
   };
 
   state = {
-    student_id: 0,
-    date_hired: new Date(),
-    first_name: '',
-    last_name: '',
+    employeeID: '',
+    dateHired: new Date(),
+    firstName: null,
+    lastName: null,
     error: null,
     isLoading: false,
   };
 
   addEmployee = async () => {
-    console.log(`/api/visitors/${this.state.student_id}/update`);
-
     try {
       this.setState({ isLoading: true, error: null });
 
-      const data = await myFetch(`/api/visitors/${this.state.student_id}/update`, {
+      const data = await myFetch(`/api/visitors/${this.state.employeeID}/update`, {
         method: 'PATCH',
         body: {
-          date_hired: this.state.date_hired,
-          first_name: this.state.first_name,
-          last_name: this.state.last_name,
+          is_employee: true,
+          date_hired: this.state.dateHired,
+          first_name: this.state.firstName,
+          last_name: this.state.lastName,
         },
       });
 
       // hide the modal
       this.props.onHide();
     } catch (err) {
-      console.log(err);
+      console.error(err);
 
       this.setState({
         isLoading: false,
@@ -55,9 +54,9 @@ export default class AddModal extends Component {
     }
   };
 
-  set_date_hired = date => {
+  setDateHired = date => {
     this.setState({
-      date_hired: date,
+      dateHired: date,
     });
   };
 
@@ -92,7 +91,8 @@ export default class AddModal extends Component {
               className={s.name}
               type="number"
               placeholder="Student ID without the w"
-              name="student_id"
+              name="employeeID"
+              value={this.state.employeeID}
               onChange={this.handleChange}
             />
           </InputGroup>
@@ -101,7 +101,8 @@ export default class AddModal extends Component {
             <FancyTextField
               className={s.name}
               placeholder="First Name"
-              name="first_name"
+              name="firstName"
+              value={this.state.firstName}
               onChange={this.handleChange}
             />
           </InputGroup>
@@ -110,7 +111,8 @@ export default class AddModal extends Component {
             <FancyTextField
               className={s.student_picker}
               placeholder="Last Name"
-              name="last_name"
+              name="lastName"
+              value={this.state.lastName}
               onChange={this.handleChange}
             />
           </InputGroup>
@@ -118,9 +120,9 @@ export default class AddModal extends Component {
           <div className={s.flex}>
             {/* <p className={s.label}>From:</p> */}
             <InputGroup.Prepend className={s.paddingRight}>
-              <InputGroup.Text className={s.whiteBg}>Hired on:</InputGroup.Text>
+              <InputGroup.Text className={s.whiteBg}>Date Hired</InputGroup.Text>
             </InputGroup.Prepend>
-            <Calendar setDate={this.set_date_hired} date={this.state.date_hired} />
+            <Calendar setDate={this.setDateHired} date={this.state.dateHired} />
           </div>
         </Modal.Body>
         <Modal.Footer>

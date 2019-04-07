@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 import Layout from 'common/Layout/Layout';
 import FullScreenLayout from 'common/FullScreenLayout/FullScreenLayout';
 import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
@@ -94,7 +95,12 @@ class Login extends Component {
                   onChange={this.handleChange}
                 />
               </Form.Group>
-              <FancyButton label="Log in" loading={isLoading ? 1 : 0} type="submit" />
+              <div>
+                <FancyButton label="Log in" loading={isLoading ? 1 : 0} type="submit" />
+              </div>
+              <div className={s.redirectLink}>
+                <Link to="/register">Create an account</Link>
+              </div>
             </MainFormLayout>
           </Form>
         </FullScreenLayout>

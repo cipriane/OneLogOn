@@ -1,8 +1,8 @@
 .secondaryButton {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(0, 0, 0, 0.1);
   text-transform: uppercase;
-  color: rgba(200, 200, 200, 0.8);
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: rgb(230, 230, 230);
+  border: 2px solid rgb(210, 210, 210);
   cursor: pointer;
   border-radius: 5px 5px 5px 5px;
   transition: all 0.3s ease-in-out;
@@ -10,7 +10,7 @@
 
 .secondaryButton:hover,
 .secondaryButton:active {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .centered {
@@ -19,12 +19,13 @@
   vertical-align: middle;
 }
 
-h3.centered {
+h2.centered {
   color: white;
-  padding: 6vh;
+  padding: 10px;
 }
 
 .fiftyfifty {
+  font-size: 16px !important;
   margin: 0;
   float: left;
   width: 50%;
@@ -49,23 +50,6 @@ h3.centered {
   margin-left: 2%;
 }
 
-/*overriding jumbotron settings*/
-.background,
-.splash,
-.blank,
-.section {
-  margin-bottom: 0 !important;
-  padding: 0 !important;
-  background: none;
-}
-
-/* one log on and buttons container */
-.splash {
-  background: rgba(0, 0, 0, 0.1) !important;
-  min-height: 500px;
-  overflow: hidden;
-}
-
 .section {
   margin: 0 auto;
   margin-top: 150px;
@@ -82,11 +66,11 @@ h3.centered {
   padding-bottom: 50px;
   margin: 0 auto;
   flex-grow: 0.85 !important;
-  border-radius: 5px 5px 5px 5px;
+  border-radius: 5px;
 }
 
 .tagline {
-  width: 85% !important;
+  width: 80% !important;
   max-width: 800px;
 }
 
@@ -98,17 +82,13 @@ h3.centered {
 .background {
   min-height: 100vh;
   min-width: 100%;
-
-  background: linear-gradient(124deg, #2b60de, #a3c1ad);
-
-  background-size: 1800% 1800%;
+  background: linear-gradient(124deg, #2b60de, #a3b5c1);
 }
 
 .title {
-  margin-top: 5vw;
-  font-size: 14vw;
-  margin-bottom: 100px;
-  color: rgba(255, 255, 255, 0.8);
+  margin: 80px 0 20px;
+  font-size: 128px;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .fixMargin {
@@ -116,23 +96,12 @@ h3.centered {
   margin-right: auto !important;
 }
 
-/*max size*/
-@media screen and (min-width: 1200px) {
-  .title {
-    font-size: 170px;
-  }
-
-  .functionality {
-    margin-top: 115px !important;
-  }
+.buttonContainer {
+  padding: 50px 0 0;
 }
 
 /*min size*/
 @media screen and (max-width: 900px) {
-  .title {
-    margin-bottom: 50px;
-  }
-
   .fiftyfifty {
     margin: 0 auto;
     float: right !important;
