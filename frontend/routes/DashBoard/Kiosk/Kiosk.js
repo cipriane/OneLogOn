@@ -50,7 +50,8 @@ class Kiosk extends Component {
     checkOutTime: '',
     waiverSigned: false,
     isEmployee: false,
-    visitorId: '',
+    visitorId: '', // The actual ID of the visitor in the database
+    studentId: '', // The number the visitor enters
     isLoading: false,
     error: null,
   };
@@ -114,6 +115,7 @@ class Kiosk extends Component {
         {
           reasons: reasons,
           visitorId: visitor.id,
+          studentId: visitor.visitor_id,
           waiverSigned: visitor.waiver_signed,
           isCheckedIn: visitor.is_checked_in || false,
           checkInID: visitor.check_in_id,
@@ -167,9 +169,10 @@ class Kiosk extends Component {
         error: null,
         isLoading: true,
       });
-      let visitor = await myFetch(`/api/visitors/${this.state.visitorId}/update`, {
+      let visitor = await myFetch(`/api/visitors/${this.state.studentId}/update`, {
         method: 'PATCH',
         body: {
+          is_employee: this.state.isEmployee,
           waiver_signed: !!param,
         },
       });
@@ -238,7 +241,6 @@ class Kiosk extends Component {
   checkIn = async () => {
     try {
       this.setState({ error: null, isLoading: true });
-
       const checkInResp = await myFetch('/api/checkins/create', {
         method: 'POST',
         body: {
@@ -307,6 +309,7 @@ class Kiosk extends Component {
       waiverSigned: false,
       isEmployee: false,
       visitorId: '',
+      studentId: '',
       isLoading: false,
       error: null,
     });
@@ -350,32 +353,44 @@ class Kiosk extends Component {
     if (!user.is_kiosk_mode) {
       return (
         <FullScreenLayout>
-          <MainFormLayout>
-            <FancyFormHeader />
-            <div className={s.text}>
-              <Alert variant="danger">Activating Kiosk mode will log you out.</Alert>
-            </div>
-            {invalidPassword && <Alert variant="danger">Invalid password</Alert>}
-            <Form.Group>
-              <FancyTextField
-                required
-                autoComplete="current-password"
-                type="password"
-                placeholder="password"
-                name="password"
-                onChange={this.handleChange}
+          <Form noValidate className={s.margin} onSubmit={this.activateKioskMode}>
+            <MainFormLayout>
+              <FancyFormHeader />
+              <div className={s.text}>
+                <Alert variant="danger">Activating Kiosk mode will log you out.</Alert>
+              </div>
+              {invalidPassword && <Alert variant="danger">Invalid password</Alert>}
+              <Form.Group controlId="username" className={s.hidden}>
+                <Form.Control
+                  type="text"
+                  name="username"
+                  autoComplete="usernname"
+                  hidden
+                  readOnly
+                  value={me(this.props.jwt).username}
+                />
+              </Form.Group>
+              <Form.Group>
+                <FancyTextField
+                  required
+                  autoComplete="current-password"
+                  type="password"
+                  placeholder="password"
+                  name="password"
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+              <Form.Text className="text-muted">
+                You must enter your password to activate kiosk mode
+              </Form.Text>
+              <FancyButton
+                label="Activate Kiosk Mode"
+                type="submit"
+                loading={isLoading ? 1 : 0}
+                disabled={!this.state.password}
               />
-            </Form.Group>
-            <Form.Text className="text-muted">
-              You must enter your password to activate kiosk mode
-            </Form.Text>
-            <FancyButton
-              label="Activate Kiosk Mode"
-              onClick={this.activateKioskMode}
-              loading={isLoading ? 1 : 0}
-              disabled={!this.state.password}
-            />
-          </MainFormLayout>
+            </MainFormLayout>
+          </Form>
         </FullScreenLayout>
       );
     }

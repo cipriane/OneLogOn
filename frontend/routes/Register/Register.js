@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import Layout from 'common/Layout/Layout';
@@ -124,7 +125,7 @@ class Register extends Component {
     return (
       <Layout>
         <FullScreenLayout>
-          <Form noValidate onSubmit={this.handleSubmit}>
+          <Form noValidate className={s.margin} onSubmit={this.handleSubmit}>
             {errorMessage}
             <MainFormLayout>
               <FancyFormHeader text="Register" />
@@ -182,12 +183,17 @@ class Register extends Component {
                 />
                 <Form.Text className="text-muted">Must be 8 characters or longer</Form.Text>
               </Form.Group>
-              <FancyButton
-                label="Register"
-                disabled={!this.isValidAll()}
-                loading={isLoading ? 1 : 0}
-                type="submit"
-              />
+              <div>
+                <FancyButton
+                  label="Register"
+                  disabled={!this.isValidAll()}
+                  loading={isLoading ? 1 : 0}
+                  type="submit"
+                />
+              </div>
+              <div className={s.redirectLink}>
+                <Link to="/login">Log into your account</Link>
+              </div>
             </MainFormLayout>
           </Form>
         </FullScreenLayout>

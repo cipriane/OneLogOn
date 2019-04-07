@@ -4,10 +4,6 @@
   padding: 0 40px;
 }
 
-.button {
-  margin-right: 10px;
-}
-
 .emptyMessage {
   text-align: center;
   margin: 50px 0;
@@ -24,6 +20,10 @@
 
 .right {
   margin: 0 0 0 auto;
+}
+
+.noPad {
+  padding: 0 !important;
 }
 
 h2 {
