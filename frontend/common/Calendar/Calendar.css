@@ -1,3 +1,7 @@
+.calendarWrapper {
+  display: flex;
+}
+
 .calendarDate {
   width: 135px;
 }

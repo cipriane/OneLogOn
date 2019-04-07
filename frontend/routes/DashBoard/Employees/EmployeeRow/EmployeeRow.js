@@ -15,6 +15,7 @@ import Calendar from 'common/Calendar/Calendar';
 import formatDate from 'utils/formatDate';
 import s from './EmployeeRow.css';
 import myFetch from 'utils/fetch';
+import Timecard from '../Timecard/Timecard';
 
 export default class EmployeeRow extends Component {
   static propTypes = {
@@ -152,7 +153,9 @@ export default class EmployeeRow extends Component {
               />
             </div>
           </td>
-          <td className={s.timecardField}>View Timecard</td>
+          <td className={s.timecardField}>
+            <Timecard employee={employee} editMode={editMode} />
+          </td>
           <td className={s.buttonField}>
             <Button variant="secondary" disabled={isSaving} size="sm" onClick={this.cancelEdit}>
               Cancel
@@ -172,7 +175,9 @@ export default class EmployeeRow extends Component {
         <td>{employee.first_name || ''}</td>
         <td>{employee.last_name || ''}</td>
         <td>{formatDate(new Date(employee.date_hired))}</td>
-        <td className={s.timecardField}>View Timecard</td>
+        <td className={s.timecardField}>
+          <Timecard employee={employee} editMode={editMode} />
+        </td>
         <td className={s.buttonField}>
           <Button
             className={s.button}

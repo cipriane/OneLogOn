@@ -1,0 +1,39 @@
+.title {
+  font-size: 30px;
+}
+
+.name {
+  margin-right: 50px;
+  font-size: 2rem;
+  line-height: 1.5rem;
+}
+
+.flex {
+  position: relative;
+  align-items: center;
+  display: flex;
+  padding-bottom: 1rem;
+}
+
+.paddingRight {
+  padding-right: 10px;
+}
+
+.margin {
+  margin: 20px 0;
+}
+
+.marginRight {
+  margin-right: 10px !important;
+  border-radius: 5px !important;
+}
+
+.whiteBg {
+  background: whitesmoke !important;
+  text-align: right !important;
+  min-width: 135px;
+}
+
+.textfield {
+  width: 50% !important;
+}
