@@ -74,7 +74,7 @@ export default class Calendar extends Component {
       </div>
     ) : null;
     return (
-      <React.Fragment>
+      <div className={s.calendarWrapper}>
         {this.props.showSideArrows && (
           <div
             className={[s.calendarSideButton, s.calendarButton].join(' ')}
@@ -99,7 +99,7 @@ export default class Calendar extends Component {
             ›
           </div>
         )}
-      </React.Fragment>
+      </div>
     );
   }
 }
