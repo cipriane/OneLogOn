@@ -4,7 +4,7 @@ import { NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import userlogo from 'assets/user.png';
-import logo from 'assets/logo-white.png';
+import logo from 'assets/logo-carrot.png';
 import HamburgerButton from 'common/HamburgerButton/HamburgerButton';
 import s from './DashBoard.css';
 import { Roles } from 'utils/constants';
@@ -66,7 +66,7 @@ class DashBoard extends Component {
             onClick={this.state.sideBarOpen == true ? this.closeSideMenu : this.openSideMenu}
           />
           <Navbar.Brand>
-            <img alt="" src={logo} width="30" height="30" />
+            <img className={s.profileImage} alt="" src={logo} />
           </Navbar.Brand>
           <Navbar.Brand>
             <p className={s.title}>DashBoard</p>
