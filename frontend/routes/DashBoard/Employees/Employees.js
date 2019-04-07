@@ -43,15 +43,40 @@ export default class Employees extends Component {
     }
   }
 
-  deleteVisitor = index => {
-    const { employees } = this.state;
-    let list = employees;
-    list.splice(index, 1);
-    this.setState({ employees: list });
+  addEmployee = employee => {
+    if (!employee) {
+      this.setState({
+        error: 'Error: Invalid employee',
+      });
+      return;
+    }
 
-    // what is the ID?????????
-    const data = myFetch(`/api/visitors/${this.state.id}/update`, {
-      method: 'DELETE',
+    this.setState(prevState => ({
+      employees: [...prevState.employees, employee],
+    }));
+  };
+
+  removeEmployee = (err, id) => {
+    if (err) {
+      this.setState({
+        error: err.message,
+      });
+      return;
+    }
+
+    this.setState(prevState => {
+      const { employees } = prevState;
+      const index = employees.findIndex(employee => employee.visitor_id === id);
+      employees.splice(index, 1);
+      return {
+        employees,
+      };
+    });
+  };
+
+  setError = err => {
+    this.setState({
+      error: err,
     });
   };
 
@@ -89,15 +114,21 @@ export default class Employees extends Component {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Name</th>
-                <th>Role</th>
-                <th>Waiver</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Date hired</th>
+                <th>Timecard</th>
                 <th />
               </tr>
             </thead>
             <tbody>
-              {employees.map((visitor, id) => (
-                <EmployeeRow key={id} visitor={visitor} deleteVisitor={this.deleteVisitor} />
+              {employees.map(employee => (
+                <EmployeeRow
+                  key={employee.visitor_id}
+                  employee={employee}
+                  removeEmployee={this.removeEmployee}
+                  setError={this.setError}
+                />
               ))}
             </tbody>
           </Table>
@@ -106,6 +137,7 @@ export default class Employees extends Component {
     } else {
       employeeTable = <div className={s.emptyMessage}>No employees added yet.</div>;
     }
+    const employeeIDs = employees.map(employee => employee.visitor_id);
 
     return (
       <React.Fragment>
@@ -116,7 +148,12 @@ export default class Employees extends Component {
             <Button className={s.right} onClick={this.showAddModal} variant="success">
               Add Employee
             </Button>
-            <AddModal show={this.state.showAddModal} onHide={this.hideAddModal} />
+            <AddModal
+              employeeIDs={employeeIDs}
+              show={this.state.showAddModal}
+              onHide={this.hideAddModal}
+              addEmployee={this.addEmployee}
+            />
           </div>
           {employeeTable}
         </div>

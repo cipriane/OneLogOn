@@ -3,18 +3,19 @@ import Modal from 'react-bootstrap/Modal';
 import FancyTextField from 'common/FancyTextField/FancyTextField';
 import FancyButton from 'common/FancyButton/FancyButton';
 import s from './AddModal.css';
+import Alert from 'react-bootstrap/Alert';
 import Form from 'react-bootstrap/Form';
 import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import InputGroup from 'react-bootstrap/InputGroup';
 import PropTypes from 'prop-types';
-import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import Calendar from 'common/Calendar/Calendar';
-import formatDate from 'utils/formatDate';
 import Button from 'react-bootstrap/Button';
 import myFetch from 'utils/fetch';
 
 export default class AddModal extends Component {
   static propTypes = {
+    employeeIDs: PropTypes.array.isRequired,
+    addEmployee: PropTypes.func.isRequired,
     show: PropTypes.bool.isRequired,
     onHide: PropTypes.func.isRequired,
   };
@@ -22,8 +23,8 @@ export default class AddModal extends Component {
   state = {
     employeeID: '',
     dateHired: new Date(),
-    firstName: null,
-    lastName: null,
+    firstName: '',
+    lastName: '',
     error: null,
     isLoading: false,
   };
@@ -31,27 +32,41 @@ export default class AddModal extends Component {
   addEmployee = async () => {
     try {
       this.setState({ isLoading: true, error: null });
-
-      const data = await myFetch(`/api/visitors/${this.state.employeeID}/update`, {
+      const { employeeID } = this.state;
+      if (employeeID.length <= 0) {
+        throw new Error('Missing employee ID');
+      } else if (this.props.employeeIDs.includes(employeeID)) {
+        throw new Error('An employee with that ID already exists');
+      }
+      const employee = await myFetch(`/api/visitors/${employeeID}/update`, {
         method: 'PATCH',
         body: {
           is_employee: true,
           date_hired: this.state.dateHired,
-          first_name: this.state.firstName,
-          last_name: this.state.lastName,
+          first_name: this.state.firstName || null,
+          last_name: this.state.lastName || null,
         },
       });
-
-      // hide the modal
+      this.setState({
+        isLoading: false,
+        employeeID: '',
+        firstName: '',
+        lastName: '',
+      });
       this.props.onHide();
+      this.props.addEmployee(employee);
     } catch (err) {
-      console.error(err);
-
       this.setState({
         isLoading: false,
         error: err.message,
       });
     }
+  };
+
+  setError = err => {
+    this.setState({
+      error: err.message,
+    });
   };
 
   setDateHired = date => {
@@ -70,9 +85,30 @@ export default class AddModal extends Component {
   };
 
   render() {
-    const { error } = this.state;
+    const { error, isLoading } = this.state;
     let errorMessage = null;
+    if (error) {
+      errorMessage = (
+        <Alert variant="danger" dismissible>
+          {error}
+        </Alert>
+      );
+    }
 
+    let submitButton = null;
+    if (isLoading) {
+      submitButton = (
+        <Button disabled variant="success">
+          Loading...
+        </Button>
+      );
+    } else {
+      submitButton = (
+        <Button onClick={this.addEmployee} variant="success">
+          Add Employee
+        </Button>
+      );
+    }
     return (
       <Modal
         show={this.props.show}
@@ -86,18 +122,23 @@ export default class AddModal extends Component {
         </Modal.Header>
         {errorMessage}
         <Modal.Body>
-          <InputGroup className={s.name_box}>
+          <InputGroup className={s.margin}>
+            <InputGroup.Prepend className={s.paddingRight}>
+              <InputGroup.Text className={s.whiteBg}>ID</InputGroup.Text>
+            </InputGroup.Prepend>
             <FancyTextField
               className={s.name}
               type="number"
-              placeholder="Student ID without the w"
+              placeholder="Employee ID"
               name="employeeID"
               value={this.state.employeeID}
               onChange={this.handleChange}
             />
           </InputGroup>
-
-          <InputGroup className={s.name_box}>
+          <InputGroup className={s.margin}>
+            <InputGroup.Prepend className={s.paddingRight}>
+              <InputGroup.Text className={s.whiteBg}>First name</InputGroup.Text>
+            </InputGroup.Prepend>
             <FancyTextField
               className={s.name}
               placeholder="First Name"
@@ -106,8 +147,10 @@ export default class AddModal extends Component {
               onChange={this.handleChange}
             />
           </InputGroup>
-
-          <InputGroup className={s.marginTop}>
+          <InputGroup className={s.margin}>
+            <InputGroup.Prepend className={s.paddingRight}>
+              <InputGroup.Text className={s.whiteBg}>Last name</InputGroup.Text>
+            </InputGroup.Prepend>
             <FancyTextField
               className={s.student_picker}
               placeholder="Last Name"
@@ -116,11 +159,9 @@ export default class AddModal extends Component {
               onChange={this.handleChange}
             />
           </InputGroup>
-
           <div className={s.flex}>
-            {/* <p className={s.label}>From:</p> */}
             <InputGroup.Prepend className={s.paddingRight}>
-              <InputGroup.Text className={s.whiteBg}>Date Hired</InputGroup.Text>
+              <InputGroup.Text className={s.whiteBg}>Date hired</InputGroup.Text>
             </InputGroup.Prepend>
             <Calendar setDate={this.setDateHired} date={this.state.dateHired} />
           </div>
@@ -129,9 +170,7 @@ export default class AddModal extends Component {
           <Button onClick={this.props.onHide} variant="secondary">
             Cancel
           </Button>
-          <Button variant="success" onClick={this.addEmployee}>
-            Add Employee
-          </Button>
+          {submitButton}
         </Modal.Footer>
       </Modal>
     );
