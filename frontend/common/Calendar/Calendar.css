@@ -16,7 +16,7 @@
   height: 35px;
   box-sizing: border-box;
   min-width: 0;
-  background-color: transparent;
+  background-color: white;
   box-shadow: 0 0 0 1px #c9cacd inset;
   color: #282c36;
   font-size: 16px;
@@ -32,6 +32,7 @@
 
 .calendarSideButton {
   width: 35px;
+  background-color: white;
   line-height: 33px;
   font-size: 26px;
   padding: 0;

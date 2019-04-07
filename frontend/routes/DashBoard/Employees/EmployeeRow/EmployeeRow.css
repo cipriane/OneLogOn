@@ -1,3 +1,45 @@
 .button {
   margin-right: 10px;
 }
+
+.calendarContainer {
+  overflow-x: visible !important;
+  position: relative;
+  display: flex;
+}
+
+tr {
+  height: 60px;
+}
+
+td {
+}
+
+.buttonField {
+  width: 75px;
+}
+
+.buttonField > button {
+  width: 100%;
+  margin: auto;
+}
+
+.idField {
+  width: 100px;
+}
+
+.timecardField {
+  width: 130px;
+  color: rgba(0, 0, 0, 0.7);
+  text-decoration: underline;
+}
+
+.timecardField:hover {
+  color: rgba(0, 0, 0, 0.9);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.textInputField {
+  font-size: 16px !important;
+}

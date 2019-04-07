@@ -31,7 +31,6 @@ export default class CheckInPage extends Component {
         isLoading: false,
       });
     } catch (err) {
-      console.log('got here error');
       this.setState({
         isLoading: false,
         error: err.toString(),
