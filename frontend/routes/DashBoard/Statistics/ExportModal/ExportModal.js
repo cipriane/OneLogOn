@@ -8,7 +8,7 @@ import ToggleButton from 'react-bootstrap/ToggleButton';
 import InputGroup from 'react-bootstrap/InputGroup';
 import PropTypes from 'prop-types';
 import s from './ExportModal.css';
-import Calendar from '../Calendar/Calendar';
+import Calendar from 'common/Calendar/Calendar';
 import FancyTextField from 'common/FancyTextField/FancyTextField';
 import formatDate from 'utils/formatDate';
 import fetchVisitors from '../fetchVisitors';

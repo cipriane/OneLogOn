@@ -16,7 +16,7 @@ urlpatterns = [
     path('api/visitors', views.VisitorsListView.as_view()),
     path('api/visitors/create', views.VisitorsCreateView.as_view()),
     path('api/visitors/<visitor_id>', views.VisitorsDetailView.as_view()),
-    path('api/visitors/<pk>/update', views.VisitorsUpdateView.as_view()),
+    path('api/visitors/<visitor_id>/update', views.VisitorsUpdateView.as_view()),
     path('api/visitors/<pk>/waiver', views.VisitorsUpdateWaiverView.as_view()),
 
     path('api/checkins', views.CheckInsListView.as_view()),

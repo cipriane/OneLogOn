@@ -1,0 +1,16 @@
+.form {
+  margin: 100px 0;
+}
+
+.redirectLink {
+  padding: 0 0 40px;
+  text-decoration: underline;
+}
+
+.redirectLink > a {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.redirectLink > a:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
