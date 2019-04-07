@@ -39,7 +39,7 @@ export default class Admin extends Component {
           <div className={s.flex}>
             <h2 className={s.tableName}>Admins</h2>
             <Button className={s.right} onClick={this.showAddModal} variant="success">
-              Add Admin
+              Invite Admin
             </Button>
             <AddModal show={this.state.showAddModal} onHide={this.hideAddModal} />
           </div>

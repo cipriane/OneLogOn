@@ -17,8 +17,8 @@
   width: 85%;
 }
 
-.marginTop {
-  margin-top: 20px;
+.margin {
+  margin: 20px 0;
 }
 
 .marginRight {
@@ -28,4 +28,13 @@
 
 .whiteBg {
   background: whitesmoke !important;
+  width: 100px;
+  text-align: right !important;
+}
+
+.label {
+  margin-bottom: 2px;
+  font-size: 16px;
+  color: #64676d;
+  font-weight: 600;
 }

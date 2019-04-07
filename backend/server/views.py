@@ -378,36 +378,12 @@ class VisitorsUpdateView(generics.UpdateAPIView):
             return Response(VisitorsSerializer(visitor).data, status=status.HTTP_200_OK)
         except Visitors.DoesNotExist:
             new_values['visitor_id'] = visitor_id
-            new_values['comapny_id'] = company_id
+            new_values['company_id'] = company_id
             visitor = Visitors(**new_values)
             visitor.save()
             return Response(VisitorsSerializer(visitor).data, status=status.HTTP_200_OK)
         except Exception as err:
             return Response({'error': str(err)}, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, visitor_id, *args, **kwargs):
-        '''
-        We arent actually deleting the user, but simply updating
-        to have flags turned off
-        '''
-
-        # get the company id so we can modify the right visitor
-        company_id = getCompanyID(request)
-
-        obj, created = Visitors.objects.update_or_create(
-            visitor_id = visitor_id,
-            company_id = company_id,
-            is_employee = False,
-            date_hired = None,
-        )
-
-        # to do: set is_employee = False and date_hired = null
-        # return code should be different too...
-        return Response({'SUCCESS' : 'OK'}, status=status.HTTP_200_OK)
-
-
-
-
 
 class VisitorsUpdateWaiverView(generics.UpdateAPIView):
     """

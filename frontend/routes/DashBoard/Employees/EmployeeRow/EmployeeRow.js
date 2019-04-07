@@ -10,15 +10,54 @@ import {
   DropdownButton,
   Dropdown,
 } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import formatDate from 'utils/formatDate';
 import s from './EmployeeRow.css';
 
 export default class EmployeeRow extends Component {
+  static propTypes = {
+    removeEmployee: PropTypes.func.isRequired,
+    employee: PropTypes.object.isRequired,
+    setError: PropTypes.func.isRequired,
+  };
+
   state = {
-    first_name: this.props.visitor.first_name,
-    last_name: this.props.visitor.last_name,
-    is_employee: this.props.visitor.is_employee,
-    waiver_signed: this.props.visitor.waiver_signed,
     editMode: false,
+    isDeleting: false,
+  };
+
+  removeEmployee = id => {
+    this.setState({ isDeleting: true });
+    try {
+      const visitor = myFetch(`/api/visitors/${id}/update`, {
+        method: 'PATCH',
+        body: {
+          date_hired: null,
+          is_employee: false,
+        },
+      });
+
+      this.props.removeEmployee(visitor.id);
+
+      this.setState({ isDeleting: false });
+    } catch (err) {
+      this.setState({
+        isDeleting: false,
+      });
+      this.props.setDeleteError(err);
+    }
+  };
+
+  updateEmployee = () => {
+    this.setState({
+      editMode: false,
+    });
+  };
+
+  cancelEdit = () => {
+    this.setState({
+      editMode: false,
+    });
   };
 
   handleChange = event => {
@@ -32,65 +71,43 @@ export default class EmployeeRow extends Component {
   };
 
   render() {
-    const { visitor, deleteVisitor } = this.props;
-    const { first_name, last_name, is_employee, waiver_signed, editMode } = this.state;
+    const { employee, removeEmployee } = this.props;
+    const { editMode } = this.state;
 
     if (editMode) {
       return (
         <tr>
-          <td>{visitor.visitor_id}</td>
+          <td>{employee.visitor_id}</td>
           <td>
             <InputGroup size="sm">
-              <InputGroup.Prepend>
-                <InputGroup.Text>First Name</InputGroup.Text>
-              </InputGroup.Prepend>
               <Form.Control
                 type="text"
                 name="first_name"
-                placeholder={visitor.first_name}
-                value={first_name}
-                onChange={this.handleChange}
-              />
-              <Form.Control
-                type="text"
-                name="last_name"
-                placeholder={visitor.last_name}
-                value={last_name}
+                placeholder={employee.first_name}
+                value={employee.first_name}
                 onChange={this.handleChange}
               />
             </InputGroup>
           </td>
           <td>
-            <DropdownButton
-              title={is_employee ? 'Employee' : 'Visitor'}
-              variant={is_employee ? 'primary' : 'success'}
-              size="sm"
-            >
-              <Dropdown.Item onClick={() => this.setState({ is_employee: true })}>
-                Employee
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => this.setState({ is_employee: false })}>
-                Visitor
-              </Dropdown.Item>
-            </DropdownButton>
+            <InputGroup size="sm">
+              <Form.Control
+                type="text"
+                name="last_name"
+                placeholder={employee.last_name}
+                value={employee.last_name}
+                onChange={this.handleChange}
+              />
+            </InputGroup>
           </td>
+          <td>Calendar Picker</td>
+          <td>View Timecard</td>
           <td>
-            <DropdownButton
-              title={waiver_signed ? 'Waiver Signed' : 'Waiver Not Signed'}
-              variant={waiver_signed ? 'success' : 'danger'}
-              size="sm"
-            >
-              <Dropdown.Item onClick={() => this.setState({ waiver_signed: true })}>
-                Waiver Signed
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => this.setState({ waiver_signed: false })}>
-                Waiver Not Signed
-              </Dropdown.Item>
-            </DropdownButton>
-          </td>
-          <td>
-            <Button variant="success" size="sm" onClick={() => this.setState({ editMode: false })}>
-              Save Changes
+            <Button variant="secondary" size="sm" onClick={this.cancelEdit}>
+              Cancel
+            </Button>
+            <Button variant="success" size="sm" onClick={this.updateEmployee}>
+              Save
             </Button>
           </td>
         </tr>
@@ -98,22 +115,11 @@ export default class EmployeeRow extends Component {
     }
     return (
       <tr>
-        <td>{visitor.visitor_id}</td>
-        <td>{first_name + ' ' + last_name}</td>
-        <td>
-          {is_employee == true ? (
-            <Badge variant="primary">Employee</Badge>
-          ) : (
-            <Badge variant="success">visitor</Badge>
-          )}
-        </td>
-        <td>
-          {waiver_signed == true ? (
-            <Badge variant="success">Waiver signed</Badge>
-          ) : (
-            <Badge variant="danger">Waiver not signed</Badge>
-          )}
-        </td>
+        <td>{employee.visitor_id}</td>
+        <td>{employee.first_name || ''}</td>
+        <td>{employee.last_name || ''}</td>
+        <td>{formatDate(new Date(employee.date_hired))}</td>
+        <td>View Timecard</td>
         <td>
           <Button
             className={s.button}
@@ -123,8 +129,8 @@ export default class EmployeeRow extends Component {
           >
             Edit
           </Button>
-          <Button variant="danger" size="sm" onClick={deleteVisitor}>
-            Delete
+          <Button variant="danger" size="sm" onClick={removeEmployee}>
+            Remove
           </Button>
         </td>
       </tr>
