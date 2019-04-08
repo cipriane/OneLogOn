@@ -62,7 +62,7 @@ export default class Admin extends Component {
               <tr>
                 <td>Admin</td>
                 <td>✔️</td>
-                <td>❌</td>
+                <td>Limited</td>
                 <td>✔️</td>
                 <td>❌</td>
                 <td>❌</td>

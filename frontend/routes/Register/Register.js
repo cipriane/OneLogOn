@@ -9,6 +9,7 @@ import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import FancyButton from 'common/FancyButton/FancyButton';
 import FancyTextField from 'common/FancyTextField/FancyTextField';
 import FancyFormHeader from 'common/FancyFormHeader/FancyFormHeader';
+import isValidEmail from 'utils/isValidEmail';
 import myFetch from 'utils/fetch';
 import s from './Register.css';
 import { connect } from 'react-redux';
@@ -34,20 +35,12 @@ class Register extends Component {
   isValidCompany = input => {
     return input && input.length <= 30;
   };
-  isValidEmail = input => {
-    return (
-      input &&
-      /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(
-        input,
-      )
-    );
-  };
   isValidAll = () => {
     return !!(
       this.isValidUsername(this.state.username) &&
       this.isValidPassword(this.state.password) &&
       this.isValidCompany(this.state.company) &&
-      this.isValidEmail(this.state.email)
+      isValidEmail(this.state.email)
     );
   };
 
@@ -163,8 +156,8 @@ class Register extends Component {
                   type="email"
                   placeholder="email"
                   name="email"
-                  isValid={email && this.isValidEmail(email)}
-                  isInvalid={email && !this.isValidEmail(email)}
+                  isValid={email && isValidEmail(email)}
+                  isInvalid={email && !isValidEmail(email)}
                   value={email}
                   onChange={this.handleChange}
                 />

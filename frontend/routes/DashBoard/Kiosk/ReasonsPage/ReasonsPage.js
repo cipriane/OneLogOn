@@ -87,7 +87,7 @@ export default class ReasonsPage extends Component {
     if (mainReasonSelected) {
       const { mainReasons } = this.props;
       const hasSubReasons = mainReasons.find(r => r.id == mainReasonSelected).has_sub_reasons;
-      if (hasSubReasons) {
+      if (hasSubReasons && this.props.subReasons.length) {
         subReasons = (
           <React.Fragment>
             <hr />

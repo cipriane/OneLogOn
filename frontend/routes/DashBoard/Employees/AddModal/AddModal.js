@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import Modal from 'react-bootstrap/Modal';
+import PropTypes from 'prop-types';
 import FancyTextField from 'common/FancyTextField/FancyTextField';
 import FancyButton from 'common/FancyButton/FancyButton';
 import s from './AddModal.css';
 import Alert from 'react-bootstrap/Alert';
-import Form from 'react-bootstrap/Form';
-import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import InputGroup from 'react-bootstrap/InputGroup';
-import PropTypes from 'prop-types';
 import Calendar from 'common/Calendar/Calendar';
 import Button from 'react-bootstrap/Button';
 import myFetch from 'utils/fetch';

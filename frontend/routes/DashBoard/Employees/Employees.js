@@ -153,15 +153,6 @@ export default class Employees extends Component {
     });
   };
 
-  invite_api_call = async () => {
-    await myFetch('/api/sendInvite', {
-      method: 'POST',
-      body: {
-        recipient: 'skarchmit@gmail.com',
-      },
-    });
-  };
-
   showAddModal = () => {
     this.setState({
       showAddModal: true,
