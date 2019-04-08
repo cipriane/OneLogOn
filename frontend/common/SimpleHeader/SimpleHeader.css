@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Capriola');
 .root {
   width: 100%;
   background-color: #f5f5f5;
@@ -6,5 +7,16 @@
 
 .title {
   padding: 20px 20px 20px 40px;
-  font-size: 45px;
+  font-size: 3em;
+  line-height: 3rem;
+  font-family: 'Capriola', sans-serif;
+  font-weight: 100;
+}
+
+@media only screen and (max-width: 992px) {
+  .title {
+    font-size: 2.1em;
+    line-height: 2rem;
+    margin-bottom: 10px;
+  }
 }

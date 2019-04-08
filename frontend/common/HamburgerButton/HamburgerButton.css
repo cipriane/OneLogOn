@@ -2,4 +2,9 @@
   color: #f2f2f2;
   padding: 13px;
   margin-right: 13px;
+  border: none !important;
+}
+
+.root:hover {
+  background: #377be1 !important;
 }

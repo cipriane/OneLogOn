@@ -20,7 +20,7 @@ export default class MyTable extends Component {
 
     return (
       <div>
-        <Table striped bordered hover>
+        <Table striped bordered hover responsive>
           <thead>
             <tr>
               {headers.map((category, id) => (

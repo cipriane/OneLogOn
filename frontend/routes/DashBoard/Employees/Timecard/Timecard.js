@@ -36,7 +36,7 @@ export default class Timecard extends Component {
   };
 
   render() {
-    let text = this.props.editMode ? 'Edit Timecard' : 'View Timecard';
+    let text = this.props.editMode ? 'Edit' : 'View';
 
     return (
       <div>
@@ -47,7 +47,7 @@ export default class Timecard extends Component {
           updateEmployee={this.updateEmployee}
           editMode={this.props.editMode}
         />
-        <Button size="sm" onClick={this.handleClick}>
+        <Button size="sm" onClick={this.handleClick} className={s.button}>
           {text}
         </Button>
       </div>

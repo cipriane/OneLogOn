@@ -27,10 +27,6 @@
   padding: 0 !important;
 }
 
-.noPad > div {
-  overflow-x: visible !important;
-}
-
 h2 {
   font-size: 1.5rem;
   margin-bottom: 0 !important;
