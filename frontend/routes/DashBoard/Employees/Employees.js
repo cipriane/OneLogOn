@@ -179,7 +179,7 @@ export default class Employees extends Component {
     } else if (employees.length) {
       employeeTable = (
         <Container fluid className={s.noPad}>
-          <Table responsive striped bordered hover size="sm">
+          <Table responsive striped bordered hover>
             <thead>
               <tr>
                 <th onClick={() => this.setSort(1)} className={s.sortable}>

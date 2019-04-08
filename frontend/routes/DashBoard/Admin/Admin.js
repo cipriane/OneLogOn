@@ -47,7 +47,7 @@ export default class Admin extends Component {
           <div className={s.largeSpacer} />
           <h2 className={s.tableName}>Role permissions</h2>
           <div className={s.smallSpacer} />
-          <Table striped bordered hover>
+          <Table striped bordered hover responsive>
             <thead>
               <tr>
                 <th />
@@ -77,7 +77,6 @@ export default class Admin extends Component {
               </tr>
             </tbody>
           </Table>
-          ;
         </div>
       </React.Fragment>
     );
