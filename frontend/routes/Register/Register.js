@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
+import queryString from 'query-string';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import Layout from 'common/Layout/Layout';
@@ -9,6 +10,7 @@ import MainFormLayout from 'common/MainFormLayout/MainFormLayout';
 import FancyButton from 'common/FancyButton/FancyButton';
 import FancyTextField from 'common/FancyTextField/FancyTextField';
 import FancyFormHeader from 'common/FancyFormHeader/FancyFormHeader';
+import isValidEmail from 'utils/isValidEmail';
 import myFetch from 'utils/fetch';
 import s from './Register.css';
 import { connect } from 'react-redux';
@@ -20,9 +22,9 @@ class Register extends Component {
     password: '',
     email: '',
     company: '',
+    key: queryString.parse(this.props.location.search).key,
     error: null,
     isLoading: false,
-    key: null,
   };
 
   isValidUsername = input => {
@@ -34,20 +36,13 @@ class Register extends Component {
   isValidCompany = input => {
     return input && input.length <= 30;
   };
-  isValidEmail = input => {
-    return (
-      input &&
-      /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(
-        input,
-      )
-    );
-  };
   isValidAll = () => {
     return !!(
       this.isValidUsername(this.state.username) &&
       this.isValidPassword(this.state.password) &&
-      this.isValidCompany(this.state.company) &&
-      this.isValidEmail(this.state.email)
+      ((!this.state.key && this.isValidCompany(this.state.company)) ||
+        (this.state.key && !this.state.company)) &&
+      isValidEmail(this.state.email)
     );
   };
 
@@ -64,23 +59,7 @@ class Register extends Component {
   handleSubmit = async event => {
     event.preventDefault();
     try {
-      this.setState({ isLoading: true, error: null, key: 'aaa' });
-
-      // get url to process the key
-      const url = window.location.href;
-
-      var regex = /[?&]([^=#]+)=([^&#]*)/g,
-        params = {},
-        match;
-      while ((match = regex.exec(url))) {
-        params[match[1]] = match[2];
-      }
-
-      //console.log(params);
-
-      // save the key
-      this.key = params['key'];
-      //console.log(this.key);
+      this.setState({ isLoading: true, error: null });
 
       await myFetch('/api/register', {
         method: 'POST',
@@ -88,13 +67,13 @@ class Register extends Component {
           username: this.state.username,
           company_name: this.state.company,
           email: this.state.email,
-          key: this.key,
+          key: this.state.key,
           password: this.state.password,
         },
       });
     } catch (err) {
       return this.setState({
-        error: err.toString(),
+        error: err.message,
         isLoading: false,
       });
     }
@@ -115,13 +94,52 @@ class Register extends Component {
   };
 
   render() {
-    const { error } = this.state;
+    const { error, key, company } = this.state;
     let errorMessage = null;
     if (error) {
       errorMessage = <Alert variant="danger">{error}</Alert>;
     }
 
-    const { username, company, email, password, isLoading } = this.state;
+    let keyInputField = null;
+    if (key) {
+      keyInputField = (
+        <Form.Group>
+          <Form.Label className={s.label}>Invite Key</Form.Label>
+          <FancyTextField
+            required
+            disabled
+            type="text"
+            placeholder="key"
+            name="key"
+            isValid={key}
+            isInvalid={!key}
+            value={key}
+          />
+        </Form.Group>
+      );
+    }
+
+    let companyInputField = null;
+    if (!key) {
+      companyInputField = (
+        <Form.Group>
+          <Form.Label className={s.label}>Company Name</Form.Label>
+          <FancyTextField
+            required
+            autoComplete="organization"
+            type="text"
+            placeholder="Company name"
+            name="company"
+            isValid={company && this.isValidCompany(company)}
+            isInvalid={company && !this.isValidCompany(company)}
+            value={company}
+            onChange={this.handleChange}
+          />
+        </Form.Group>
+      );
+    }
+
+    const { username, email, password, isLoading } = this.state;
     return (
       <Layout>
         <FullScreenLayout>
@@ -130,12 +148,13 @@ class Register extends Component {
             <MainFormLayout>
               <FancyFormHeader text="Register" />
               <Form.Group>
+                <Form.Label className={s.label}>Username</Form.Label>
                 <FancyTextField
                   required
                   autoFocus
                   autoComplete="username"
                   type="text"
-                  placeholder="username"
+                  placeholder="Username"
                   name="username"
                   isValid={this.isValidUsername(username)}
                   isInvalid={username && !this.isValidUsername(username)}
@@ -143,46 +162,39 @@ class Register extends Component {
                   onChange={this.handleChange}
                 />
               </Form.Group>
+              {companyInputField}
               <Form.Group>
-                <FancyTextField
-                  required
-                  autoComplete="organization"
-                  type="text"
-                  placeholder="company"
-                  name="company"
-                  isValid={company && this.isValidCompany(company)}
-                  isInvalid={company && !this.isValidCompany(company)}
-                  value={company}
-                  onChange={this.handleChange}
-                />
-              </Form.Group>
-              <Form.Group>
+                <Form.Label className={s.label}>Email</Form.Label>
                 <FancyTextField
                   required
                   autoComplete="email"
                   type="email"
-                  placeholder="email"
+                  placeholder="Email"
                   name="email"
-                  isValid={email && this.isValidEmail(email)}
-                  isInvalid={email && !this.isValidEmail(email)}
+                  isValid={email && isValidEmail(email)}
+                  isInvalid={email && !isValidEmail(email)}
                   value={email}
                   onChange={this.handleChange}
                 />
               </Form.Group>
               <Form.Group>
+                <Form.Label className={s.label}>Password</Form.Label>
                 <FancyTextField
                   required
                   autoComplete="new-password"
                   type="password"
-                  placeholder="password"
+                  placeholder="Password"
                   name="password"
                   isValid={password && this.isValidPassword(password)}
                   isInvalid={password && !this.isValidPassword(password)}
                   value={password}
                   onChange={this.handleChange}
                 />
-                <Form.Text className="text-muted">Must be 8 characters or longer</Form.Text>
+                <Form.Text className={['text-muted', s.mutedText].join(' ')}>
+                  Must be 8 characters or longer
+                </Form.Text>
               </Form.Group>
+              {keyInputField}
               <div>
                 <FancyButton
                   label="Register"

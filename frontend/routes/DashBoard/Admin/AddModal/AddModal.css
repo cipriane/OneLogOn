@@ -1,0 +1,13 @@
+.title {
+  font-size: 30px;
+}
+
+.margin {
+  margin: 20px 0;
+}
+
+.whiteBg {
+  background: whitesmoke !important;
+  width: 100px;
+  text-align: right !important;
+}

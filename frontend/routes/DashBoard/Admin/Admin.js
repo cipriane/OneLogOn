@@ -8,10 +8,31 @@ import s from './Admin.css';
 export default class Admin extends Component {
   state = {
     admins: [],
+    pendingInvites: [],
     showAddModal: false,
-    isLoading: false,
+    isLoading: true,
     error: false,
   };
+
+  async componentDidMount() {
+    try {
+      this.setState({
+        error: null,
+        isLoading: true,
+      });
+      const data = await myFetch('/api/visitors?is_employee=true');
+
+      this.setState({
+        employees: this.sortEmployees(data),
+        isLoading: false,
+      });
+    } catch (err) {
+      this.setState({
+        isLoading: false,
+        error: err.message,
+      });
+    }
+  }
 
   showAddModal = () => {
     this.setState({
@@ -26,11 +47,13 @@ export default class Admin extends Component {
   };
 
   render() {
-    const { admins } = this.state;
+    const { isLoading, admins, pendingInvites } = this.state;
     let adminTable = null;
-    if (admins.length) {
-    } else {
+    if (isLoading) {
+      adminTable = <div className={s.emptyMessage}>Loading...</div>;
+    } else if (!admins.length) {
       adminTable = <div className={s.emptyMessage}>No admins added yet.</div>;
+    } else {
     }
     return (
       <React.Fragment>
@@ -62,7 +85,7 @@ export default class Admin extends Component {
               <tr>
                 <td>Admin</td>
                 <td>✔️</td>
-                <td>❌</td>
+                <td>Limited</td>
                 <td>✔️</td>
                 <td>❌</td>
                 <td>❌</td>

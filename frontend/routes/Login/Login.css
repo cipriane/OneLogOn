@@ -14,3 +14,12 @@
 .redirectLink > a:hover {
   color: rgba(0, 0, 0, 0.8);
 }
+
+.label {
+  margin: 0 0 2px 45px;
+  font-size: 16px;
+  color: #64676d;
+  font-weight: 600;
+  text-align: left !important;
+  float: left !important;
+}

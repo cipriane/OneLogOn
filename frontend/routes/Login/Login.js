@@ -54,7 +54,7 @@ class Login extends Component {
       this.props.history.push('/dashboard');
     } catch (err) {
       this.setState({
-        error: err.toString(),
+        error: err.message,
         isLoading: false,
       });
     }
@@ -75,22 +75,24 @@ class Login extends Component {
             <MainFormLayout>
               <FancyFormHeader text="Login" />
               <Form.Group>
+                <Form.Label className={s.label}>Username</Form.Label>
                 <FancyTextField
                   autoFocus
                   required
                   autoComplete="username"
                   type="text"
-                  placeholder="username"
+                  placeholder="Username"
                   name="username"
                   onChange={this.handleChange}
                 />
               </Form.Group>
               <Form.Group>
+                <Form.Label className={s.label}>Password</Form.Label>
                 <FancyTextField
                   required
                   autoComplete="current-password"
                   type="password"
-                  placeholder="password"
+                  placeholder="Password"
                   name="password"
                   onChange={this.handleChange}
                 />

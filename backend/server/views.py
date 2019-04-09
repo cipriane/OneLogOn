@@ -21,9 +21,9 @@ from backend.server.models import Timesheet
 from backend.server.models import VisitReason
 from backend.server.models import CheckInVisitReason
 from backend.server.models import UserCompany
-from backend.server.models import CompanyInvite
+from backend.server.models import Invite
 from backend.server.serializers import CompanySerializer
-from backend.server.serializers import CompanyInviteSerializer
+from backend.server.serializers import InviteSerializer
 from backend.server.serializers import CheckInsSerializer
 from backend.server.serializers import TimesheetSerializer
 from backend.server.serializers import VisitorsSerializer
@@ -511,62 +511,51 @@ class Registration(APIView):
     """
     permission_classes = (AllowAny,)
     def post(self, request, format='json'):
-
-        # make this a function in the future please.
         california_tz = pytz.timezone('US/Pacific')
-
-        # obtain the key
         key = request.data.get('key', None)
 
         # verify the user is unique
         user_serializer = UserSerializer(data=request.data)
-
-        # if we cannot verify the user, then throw
         if not user_serializer.is_valid():
             return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # get the user
+        user_id = user_serializer.save().id
 
-        # verify the company
+        company_id = None
         # if we have the key, locate the company
         if key:
             # verify the invite -- find the company associated with it
             try:
-                # get the company id that has the key and expiration is greater than equal to today
-                company_id = CompanyInvite.objects.get(
-                    invite_key=key,
-                    expires_on__gte = california_tz.localize(datetime.now())
-                ).company_id
+                invite = Invite.objects.get(invite_key=key)
+                if not invite:
+                    return Response({'error': 'Invalid invite key'}, status=status.HTTP_400_BAD_REQUEST)
+                if invite.expires_on < california_tz.localize(datetime.now()):
+                    return Response({'error': 'Invite key has expired'}, status=status.HTTP_400_BAD_REQUEST)
+                if invite.is_claimed:
+                    return Response({'error': 'Invite key has already been used'}, status=status.HTTP_400_BAD_REQUEST)
+                invite.is_claimed = True
+                invite.save()
             except Exception as err:
-                # invite not found or expired
-                return Response({'error': 'Invite is invalid or has expired.'}, status=status.HTTP_400_BAD_REQUEST)
-
-
-        # if we do not have the key, make a new company
+                return Response({'error': str(err)}, status=status.HTTP_400_BAD_REQUEST)
+            company_id = invite.company_id
+        # else we do not have the key, make a new company
         else:
             # verify the company is not null
             company_serializer = CompanySerializer(data=request.data)
-
-            # if we cannot verify, throw
             if not company_serializer.is_valid():
-               return Response(company.errors, status=status.HTTP_400_BAD_REQUEST)
-
+               return Response(company_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             # save the company -- get the id where we should save
             company_id = company_serializer.save().id
 
-        # get the user
-        user_id = user_serializer.save().id
-
-        # bind user and company -- company already has the id
         data = {
             'user' : user_id,
             'company' : company_id
         }
 
-        # attempt to bind otherwise throw
         user_company_serializer = UserCompanySerializer(data=data)
         if not user_company_serializer.is_valid():
             return Response(user_company_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        # successfully created user and company, so we can now save
         user_company = user_company_serializer.save()
 
         return Response(user_serializer.data, status=status.HTTP_201_CREATED)
@@ -582,86 +571,68 @@ class ChangePassword(APIView):
     def post(self, request, format='json'):
         try:
             old_password, new_password = request.data['old_password'], request.data['new_password']
-            user_id = request.user.id
-
-            try:
-                user = request.user
-
-                if(user.check_password(old_password)):
-                    try:
-                        validate_password(new_password)
-                    except Exception as e:
-                        return Response({'error' :  str(e)}, status=status.HTTP_400_BAD_REQUEST)
-                    user.set_password(new_password)
-                    user.save()
-                    return Response({'success' : 'password succesfully changed'}, status=status.HTTP_200_OK)
-                else:
-                    return Response({'error' : 'Incorrect password'}, status=status.HTTP_400_BAD_REQUEST)
-
-            except Exception:
-                return Response({'error' : 'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
-
         except Exception:
             return Response({'error' : 'required parameters: old_password, new_password'}, status=status.HTTP_400_BAD_REQUEST)
 
+        try:
+            user = request.user
+            if(user.check_password(old_password)):
+                try:
+                    validate_password(new_password)
+                except Exception as e:
+                    return Response({'error' :  str(e)}, status=status.HTTP_400_BAD_REQUEST)
+                user.set_password(new_password)
+                user.save()
+                return Response({'success' : 'password succesfully changed'}, status=status.HTTP_200_OK)
+            else:
+                return Response({'error' : 'Incorrect password'}, status=status.HTTP_400_BAD_REQUEST)
 
-class SendInvite(APIView):
+        except Exception:
+            return Response({'error' : 'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+
+class InviteView(generics.CreateAPIView):
     def post(self, request, format = 'json'):
         '''
             must pass in the body:
                 recipient: email_address
         '''
-
         recipient = request.data['recipient']
+        first_name = request.data['first_name']
+        last_name = request.data['last_name']
+        role = request.data['role']
 
-        # to do: send expiration data through request or have static time
-        # currently it expires exaclty 10 years from now -- see timedelta
-        california_tz = pytz.timezone('US/Pacific')
+        company_id = UserCompany.objects.get(user_id=request.user.id).company_id
+        exp = pytz.timezone('US/Pacific').localize(datetime.now() + timedelta(days=2))
 
         data = {
-            'company'       : UserCompany.objects.get(user_id=request.user.id).company_id,
-            'invite_key'    : '', # fill this out later in the loop
-            'expires_on'    : california_tz.localize(datetime.now() + timedelta(days=365*10))
+            'company': company_id,
+            'expires_on': exp,
+            'role': role,
         }
-
-        attempts = 0
-
-        # generate invite code
-        while True:
-            # attempt to find a random string that has not been used before
-
-            # generate len 32 random key
-            data['invite_key'] = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(32)])
-
-
-            # attempt to save it, if it already exits, try again in the loop
-            invite_serializer = CompanyInviteSerializer(data=data)
-
-            # if it is valid, you will get a key, break
-            if invite_serializer.is_valid():
-                key = invite_serializer.save().invite_key
-                break
-
-
-
-
-        # to do: get a specific invite code
-        invite_code = key
-
-        # to do: get get email from request
-        recipient = 'onebitoffteam@gmail.com'
-        creator = 'onebitoffteam@gmail.com'
-        link = 'http://127.0.0.1:8000/register/?key={invite_code}'.format(invite_code=invite_code)
-        msg = 'Click this <a href = \"{link}\">link</a> to join'.format(link=link)
+        invite_serializer = InviteSerializer(data=data)
+        if invite_serializer.is_valid():
+            invite = invite_serializer.save()
+        else:
+            return Response(invite_serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        creator = 'hartiganaaron@gmail.com'
+        link = '{}/register/?key={}'.format(request.get_host(),invite.invite_key)
+        msg = """
+            Hello {} {},<br>
+            You have been invited to join OneLogOn.  Please click the following link to join.<br>
+            {}<br><br>
+            This invite expires in 48 hours.<br>
+            """.format(first_name, last_name, link, link)
         subject = 'Invite to Join OneLogOn'
 
-        send_mail(
-            subject,
-            '',
-            creator,
-            [recipient],
-            html_message=msg,
-            fail_silently=False,
-        )
-
-        return Response(status=status.HTTP_200_OK)
+        try:
+            send_mail(
+                subject,
+                '',
+                creator,
+                [recipient],
+                html_message=msg,
+                fail_silently=False,
+            )
+        except Exception as e:
+            return Response({'error' : str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(invite_serializer.data, status=status.HTTP_200_OK)

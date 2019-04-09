@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.timezone import now
 from django.contrib.auth.models import User
+import uuid
 
 class Company(models.Model):
     company_name = models.CharField(max_length=30)
@@ -11,10 +12,12 @@ class Company(models.Model):
     company_state = models.CharField(max_length=2, null=True)
     company_message = models.TextField()
 
-class CompanyInvite(models.Model):
+class Invite(models.Model):
     company = models.ForeignKey(Company,on_delete=models.CASCADE,verbose_name="company_id")
-    invite_key = models.CharField(max_length=256, null=False, unique = True)
-    expires_on = models.DateTimeField(null = True)
+    invite_key = models.UUIDField(default=uuid.uuid4)
+    role = models.IntegerField(default=-1)
+    expires_on = models.DateTimeField()
+    is_claimed = models.BooleanField(default=False)
 
 class Visitors(models.Model):
     company = models.ForeignKey(Company,on_delete=models.CASCADE,verbose_name="company_id")
