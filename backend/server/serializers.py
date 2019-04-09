@@ -8,7 +8,7 @@ from backend.server.models import Visitors
 from backend.server.models import VisitReason
 from backend.server.models import CheckInVisitReason
 from backend.server.models import UserCompany
-from backend.server.models import CompanyInvite
+from backend.server.models import Invite
 
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
@@ -64,7 +64,7 @@ class UserCompanySerializer(serializers.ModelSerializer):
         model = UserCompany
         fields = '__all__'
 
-class CompanyInviteSerializer(serializers.ModelSerializer):
+class InviteSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CompanyInvite
+        model = Invite
         fields = '__all__'

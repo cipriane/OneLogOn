@@ -25,8 +25,20 @@ export default class AddModal extends Component {
     email: '',
     firstName: '',
     lastName: '',
-    isValidInputs: false,
+    areInputsValid: false,
     role: ADMIN_ROLE,
+  };
+
+  setInputValidity = () => {
+    const { email, firstName, lastName } = this.state;
+    const isValidFirstName = firstName.length;
+    const isValidLastName = lastName.length;
+
+    const areInputsValid = isValidFirstName && isValidLastName && isValidEmail(email);
+
+    this.setState({
+      areInputsValid,
+    });
   };
 
   inviteAdmin = async () => {
@@ -38,7 +50,7 @@ export default class AddModal extends Component {
 
       const { email, firstName, lastName, role } = this.state;
 
-      await myFetch('/api/sendInvite', {
+      await myFetch('/api/invite', {
         method: 'POST',
         body: {
           first_name: firstName,
@@ -55,6 +67,8 @@ export default class AddModal extends Component {
         firstName: '',
         lastName: '',
       });
+
+      this.props.onHide();
     } catch (err) {
       this.setState({
         error: err.message,
@@ -63,18 +77,26 @@ export default class AddModal extends Component {
     }
   };
 
+  isValidName = input => {
+    return input && input.length;
+  };
+
   handleChange = event => {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
-    this.setState({
-      error: null,
-      [name]: value,
-    });
+    this.setState(
+      {
+        error: null,
+        [name]: value,
+      },
+      this.setInputValidity,
+    );
   };
 
   render() {
     const { error, isLoading } = this.state;
+
     let submitButton = null;
     if (isLoading) {
       submitButton = (
@@ -84,15 +106,17 @@ export default class AddModal extends Component {
       );
     } else {
       submitButton = (
-        <Button onClick={this.inviteAdmin} variant="success" disabled={!this.state.isValidInputs}>
+        <Button onClick={this.inviteAdmin} variant="success" disabled={!this.state.areInputsValid}>
           Invite
         </Button>
       );
     }
     let errorMessage = null;
     if (error) {
-      errorMessage = <Alert variant="danger">{error}</Alert>;
+      errorMessage = <Alert variant="danger">{error} Unable to send email.</Alert>;
     }
+
+    const { email, firstName, lastName } = this.state;
 
     return (
       <Modal
@@ -118,6 +142,8 @@ export default class AddModal extends Component {
               placeholder="Email"
               name="email"
               value={this.state.email}
+              isValid={email && isValidEmail(email)}
+              isInvalid={email && !isValidEmail(email)}
               onChange={this.handleChange}
             />
           </InputGroup>
@@ -144,6 +170,8 @@ export default class AddModal extends Component {
               placeholder="First Name"
               name="firstName"
               value={this.state.firstName}
+              isValid={firstName && this.isValidName(firstName)}
+              isInvalid={firstName && !this.isValidName(firstName)}
               onChange={this.handleChange}
             />
           </InputGroup>
@@ -155,6 +183,8 @@ export default class AddModal extends Component {
               className={s.student_picker}
               placeholder="Last Name"
               name="lastName"
+              isValid={lastName && this.isValidName(lastName)}
+              isInvalid={lastName && !this.isValidName(lastName)}
               value={this.state.lastName}
               onChange={this.handleChange}
             />

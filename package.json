@@ -62,7 +62,7 @@
     "predev": "yarn clean",
     "dev": "webpack --watch --mode development",
     "build": "webpack --mode production",
-    "loaddata": "python manage.py loaddata company && python manage.py loaddata visitors && python manage.py loaddata visitreasons && python manage.py loaddata checkins && python manage.py loaddata checkins invites"
+    "loaddata": "python manage.py loaddata company visitors visitreasons checkins"
   },
   "dependencies": {
     "autoprefixer": "^9.4.7",
@@ -70,6 +70,7 @@
     "file-loader": "^3.0.1",
     "jwt-decode": "^2.2.0",
     "postcss-loader": "^3.0.0",
+    "query-string": "^6.4.2",
     "react-bootstrap": "^1.0.0-beta.5",
     "react-day-picker": "^7.3.0",
     "react-full-screen": "^0.2.3",

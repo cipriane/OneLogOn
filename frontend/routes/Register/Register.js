@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
+import queryString from 'query-string';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import Layout from 'common/Layout/Layout';
@@ -23,7 +24,6 @@ class Register extends Component {
     company: '',
     error: null,
     isLoading: false,
-    key: null,
   };
 
   isValidUsername = input => {
@@ -57,23 +57,9 @@ class Register extends Component {
   handleSubmit = async event => {
     event.preventDefault();
     try {
-      this.setState({ isLoading: true, error: null, key: 'aaa' });
+      this.setState({ isLoading: true, error: null });
 
-      // get url to process the key
-      const url = window.location.href;
-
-      var regex = /[?&]([^=#]+)=([^&#]*)/g,
-        params = {},
-        match;
-      while ((match = regex.exec(url))) {
-        params[match[1]] = match[2];
-      }
-
-      //console.log(params);
-
-      // save the key
-      this.key = params['key'];
-      //console.log(this.key);
+      const params = queryString.parse(this.props.location.search);
 
       await myFetch('/api/register', {
         method: 'POST',
@@ -81,13 +67,13 @@ class Register extends Component {
           username: this.state.username,
           company_name: this.state.company,
           email: this.state.email,
-          key: this.key,
+          key: params.key,
           password: this.state.password,
         },
       });
     } catch (err) {
       return this.setState({
-        error: err.toString(),
+        error: err.message,
         isLoading: false,
       });
     }
