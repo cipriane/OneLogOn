@@ -511,62 +511,51 @@ class Registration(APIView):
     """
     permission_classes = (AllowAny,)
     def post(self, request, format='json'):
-
-        # make this a function in the future please.
         california_tz = pytz.timezone('US/Pacific')
-
-        # obtain the key
         key = request.data.get('key', None)
 
         # verify the user is unique
         user_serializer = UserSerializer(data=request.data)
-
-        # if we cannot verify the user, then throw
         if not user_serializer.is_valid():
             return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # get the user
+        user_id = user_serializer.save().id
 
-        # verify the company
+        company_id = None
         # if we have the key, locate the company
         if key:
             # verify the invite -- find the company associated with it
             try:
-                # get the company id that has the key and expiration is greater than equal to today
-                company_id = Invite.objects.get(
-                    invite_key=key,
-                    expires_on__gte = california_tz.localize(datetime.now())
-                ).company_id
+                invite = Invite.objects.get(invite_key=key)
+                if not invite:
+                    return Response({'error': 'Invalid invite key'}, status=status.HTTP_400_BAD_REQUEST)
+                if invite.expires_on < california_tz.localize(datetime.now()):
+                    return Response({'error': 'Invite key has expired'}, status=status.HTTP_400_BAD_REQUEST)
+                if invite.is_claimed:
+                    return Response({'error': 'Invite key has already been used'}, status=status.HTTP_400_BAD_REQUEST)
+                invite.is_claimed = True
+                invite.save()
             except Exception as err:
-                # invite not found or expired
-                return Response({'error': 'Invite is invalid or has expired.'}, status=status.HTTP_400_BAD_REQUEST)
-
-
-        # if we do not have the key, make a new company
+                return Response({'error': str(err)}, status=status.HTTP_400_BAD_REQUEST)
+            company_id = invite.company_id
+        # else we do not have the key, make a new company
         else:
             # verify the company is not null
             company_serializer = CompanySerializer(data=request.data)
-
-            # if we cannot verify, throw
             if not company_serializer.is_valid():
-               return Response(company.errors, status=status.HTTP_400_BAD_REQUEST)
-
+               return Response(company_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             # save the company -- get the id where we should save
             company_id = company_serializer.save().id
 
-        # get the user
-        user_id = user_serializer.save().id
-
-        # bind user and company -- company already has the id
         data = {
             'user' : user_id,
             'company' : company_id
         }
 
-        # attempt to bind otherwise throw
         user_company_serializer = UserCompanySerializer(data=data)
         if not user_company_serializer.is_valid():
             return Response(user_company_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        # successfully created user and company, so we can now save
         user_company = user_company_serializer.save()
 
         return Response(user_serializer.data, status=status.HTTP_201_CREATED)
@@ -601,7 +590,7 @@ class ChangePassword(APIView):
         except Exception:
             return Response({'error' : 'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
-class Invite(generics.CreateAPIView):
+class InviteView(generics.CreateAPIView):
     def post(self, request, format = 'json'):
         '''
             must pass in the body:
@@ -629,8 +618,9 @@ class Invite(generics.CreateAPIView):
         link = '{}/register/?key={}'.format(request.get_host(),invite.invite_key)
         msg = """
             Hello {} {},<br>
-            You have been invited to join OneLogOn.  Please follow the following link to join.<br>
-            {}
+            You have been invited to join OneLogOn.  Please click the following link to join.<br>
+            {}<br><br>
+            This invite expires in 48 hours.<br>
             """.format(first_name, last_name, link, link)
         subject = 'Invite to Join OneLogOn'
 

@@ -22,6 +22,7 @@ class Register extends Component {
     password: '',
     email: '',
     company: '',
+    key: queryString.parse(this.props.location.search).key,
     error: null,
     isLoading: false,
   };
@@ -39,7 +40,8 @@ class Register extends Component {
     return !!(
       this.isValidUsername(this.state.username) &&
       this.isValidPassword(this.state.password) &&
-      this.isValidCompany(this.state.company) &&
+      ((!this.state.key && this.isValidCompany(this.state.company)) ||
+        (this.state.key && !this.state.company)) &&
       isValidEmail(this.state.email)
     );
   };
@@ -59,15 +61,13 @@ class Register extends Component {
     try {
       this.setState({ isLoading: true, error: null });
 
-      const params = queryString.parse(this.props.location.search);
-
       await myFetch('/api/register', {
         method: 'POST',
         body: {
           username: this.state.username,
           company_name: this.state.company,
           email: this.state.email,
-          key: params.key,
+          key: this.state.key,
           password: this.state.password,
         },
       });
@@ -94,13 +94,52 @@ class Register extends Component {
   };
 
   render() {
-    const { error } = this.state;
+    const { error, key, company } = this.state;
     let errorMessage = null;
     if (error) {
       errorMessage = <Alert variant="danger">{error}</Alert>;
     }
 
-    const { username, company, email, password, isLoading } = this.state;
+    let keyInputField = null;
+    if (key) {
+      keyInputField = (
+        <Form.Group>
+          <Form.Label className={s.label}>Invite Key</Form.Label>
+          <FancyTextField
+            required
+            disabled
+            type="text"
+            placeholder="key"
+            name="key"
+            isValid={key}
+            isInvalid={!key}
+            value={key}
+          />
+        </Form.Group>
+      );
+    }
+
+    let companyInputField = null;
+    if (!key) {
+      companyInputField = (
+        <Form.Group>
+          <Form.Label className={s.label}>Company Name</Form.Label>
+          <FancyTextField
+            required
+            autoComplete="organization"
+            type="text"
+            placeholder="Company name"
+            name="company"
+            isValid={company && this.isValidCompany(company)}
+            isInvalid={company && !this.isValidCompany(company)}
+            value={company}
+            onChange={this.handleChange}
+          />
+        </Form.Group>
+      );
+    }
+
+    const { username, email, password, isLoading } = this.state;
     return (
       <Layout>
         <FullScreenLayout>
@@ -109,12 +148,13 @@ class Register extends Component {
             <MainFormLayout>
               <FancyFormHeader text="Register" />
               <Form.Group>
+                <Form.Label className={s.label}>Username</Form.Label>
                 <FancyTextField
                   required
                   autoFocus
                   autoComplete="username"
                   type="text"
-                  placeholder="username"
+                  placeholder="Username"
                   name="username"
                   isValid={this.isValidUsername(username)}
                   isInvalid={username && !this.isValidUsername(username)}
@@ -122,25 +162,14 @@ class Register extends Component {
                   onChange={this.handleChange}
                 />
               </Form.Group>
+              {companyInputField}
               <Form.Group>
-                <FancyTextField
-                  required
-                  autoComplete="organization"
-                  type="text"
-                  placeholder="company"
-                  name="company"
-                  isValid={company && this.isValidCompany(company)}
-                  isInvalid={company && !this.isValidCompany(company)}
-                  value={company}
-                  onChange={this.handleChange}
-                />
-              </Form.Group>
-              <Form.Group>
+                <Form.Label className={s.label}>Email</Form.Label>
                 <FancyTextField
                   required
                   autoComplete="email"
                   type="email"
-                  placeholder="email"
+                  placeholder="Email"
                   name="email"
                   isValid={email && isValidEmail(email)}
                   isInvalid={email && !isValidEmail(email)}
@@ -149,19 +178,23 @@ class Register extends Component {
                 />
               </Form.Group>
               <Form.Group>
+                <Form.Label className={s.label}>Password</Form.Label>
                 <FancyTextField
                   required
                   autoComplete="new-password"
                   type="password"
-                  placeholder="password"
+                  placeholder="Password"
                   name="password"
                   isValid={password && this.isValidPassword(password)}
                   isInvalid={password && !this.isValidPassword(password)}
                   value={password}
                   onChange={this.handleChange}
                 />
-                <Form.Text className="text-muted">Must be 8 characters or longer</Form.Text>
+                <Form.Text className={['text-muted', s.mutedText].join(' ')}>
+                  Must be 8 characters or longer
+                </Form.Text>
               </Form.Group>
+              {keyInputField}
               <div>
                 <FancyButton
                   label="Register"
