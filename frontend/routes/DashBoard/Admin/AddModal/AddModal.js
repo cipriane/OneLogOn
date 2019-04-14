@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FancyTextField from 'common/FancyTextField/FancyTextField';
-import s from './addModal.css';
+import s from './AddModal.css';
 import myFetch from 'utils/fetch';
 import isValidEmail from 'utils/isValidEmail';
 
