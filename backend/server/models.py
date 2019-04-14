@@ -17,6 +17,7 @@ class Invite(models.Model):
     invite_key = models.UUIDField(default=uuid.uuid4)
     first_name = models.CharField(max_length=255,default="")
     last_name = models.CharField(max_length=255,default="")
+    email = models.EmailField()
     role = models.IntegerField(default=-1)
     expires_on = models.DateTimeField()
     is_claimed = models.BooleanField(default=False)

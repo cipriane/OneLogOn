@@ -583,6 +583,15 @@ class ChangePassword(APIView):
             return Response({'error' : 'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
 class InviteView(generics.CreateAPIView):
+    def get(self, request):
+        company_id = UserCompany.objects.get(user_id=request.user.id).company_id
+        now = pytz.timezone('US/Pacific').localize(datetime.now())
+        try:
+            invites = Invite.objects.filter(company_id=company_id,expires_on__gt=now).exclude(is_claimed=True).values()
+        except Invite.DoesNotExist:
+            invites = []
+        return JsonResponse(list(invites), safe=False, status=status.HTTP_200_OK)
+
     def post(self, request, format = 'json'):
         '''
             must pass in the body:
@@ -600,6 +609,7 @@ class InviteView(generics.CreateAPIView):
             'company': company_id,
             'first_name': first_name,
             'last_name': last_name,
+            'email': recipient,
             'expires_on': exp,
             'role': role,
         }
