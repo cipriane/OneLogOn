@@ -10,12 +10,12 @@ import NoMatch from 'routes/NoMatch/NoMatch';
 import Authorization from 'common/Authorization/Authorization';
 import { Roles } from 'utils/constants';
 
-const KioskRole = Authorization([Roles.kiosk, Roles.admin]);
-const AdminRole = Authorization([Roles.staff, Roles.admin]);
-const SuperAdminRole = Authorization([Roles.admin]);
+const KioskRole = Authorization([Roles.kiosk, Roles.superAdmin]);
+const AdminRole = Authorization([Roles.superAdmin, Roles.admin]);
+const SuperAdminRole = Authorization([Roles.superAdmin]);
 
 const StatisticsProtected = AdminRole(Statistics);
-const SettingsProtected = SuperAdminRole(Settings);
+const SettingsProtected = AdminRole(Settings);
 const EmployeesProtected = AdminRole(Employees);
 const AdminProtected = SuperAdminRole(Admin);
 const KioskProtected = KioskRole(Kiosk);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import myFetch from 'utils/fetch';
-import { Button, Table } from 'react-bootstrap';
+import { Button, Table, Container } from 'react-bootstrap';
 import SimpleHeader from 'common/SimpleHeader/SimpleHeader';
 import AddModal from './AddModal/AddModal';
 import s from './Admin.css';
@@ -20,10 +20,10 @@ export default class Admin extends Component {
         error: null,
         isLoading: true,
       });
-      const data = await myFetch('/api/visitors?is_employee=true');
+      const data = await myFetch('/api/admin');
 
       this.setState({
-        employees: this.sortEmployees(data),
+        admins: data,
         isLoading: false,
       });
     } catch (err) {
@@ -48,12 +48,43 @@ export default class Admin extends Component {
 
   render() {
     const { isLoading, admins, pendingInvites } = this.state;
+
     let adminTable = null;
     if (isLoading) {
       adminTable = <div className={s.emptyMessage}>Loading...</div>;
     } else if (!admins.length) {
       adminTable = <div className={s.emptyMessage}>No admins added yet.</div>;
     } else {
+      adminTable = (
+        <Container fluid className={s.noPad}>
+          <Table responsive striped bordered hover>
+            <thead>
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th />
+                <th />
+              </tr>
+            </thead>
+            <tbody>
+              {admins.map(admin => (
+                <tr key={admin.id}>
+                  <td className={admin.idField}>{admin.first_name}</td>
+                  <td>{admin.last_name}</td>
+                  <td>{admin.email}</td>
+                  <td>
+                    {!admin.is_active ? 'Deactivated' : admin.is_staff ? 'Admin' : 'Super Admin'}
+                  </td>
+                  <td />
+                  <td />
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </Container>
+      );
     }
     return (
       <React.Fragment>

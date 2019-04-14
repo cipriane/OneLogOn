@@ -53,8 +53,7 @@ export default class Employees extends Component {
     }
   }
 
-  sortEmployees = (employees, sort) => {
-    sort = sort ? sort : this.state.sort;
+  sortEmployees = (employees, sort = this.state.sort) => {
     switch (sort) {
       case +SORT_OPTIONS.ID:
         return employees.sort((a, b) => {

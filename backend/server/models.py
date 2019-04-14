@@ -5,9 +5,9 @@ from django.contrib.auth.models import User
 import uuid
 
 class Company(models.Model):
-    company_name = models.CharField(max_length=30)
-    company_address = models.CharField(max_length=50, null=True)
-    company_city = models.CharField(max_length=30, null=True)
+    company_name = models.CharField(max_length=255)
+    company_address = models.CharField(max_length=255, null=True)
+    company_city = models.CharField(max_length=255, null=True)
     company_zip = models.CharField(max_length=15, null=True)
     company_state = models.CharField(max_length=2, null=True)
     company_message = models.TextField()
@@ -15,6 +15,8 @@ class Company(models.Model):
 class Invite(models.Model):
     company = models.ForeignKey(Company,on_delete=models.CASCADE,verbose_name="company_id")
     invite_key = models.UUIDField(default=uuid.uuid4)
+    first_name = models.CharField(max_length=255,default="")
+    last_name = models.CharField(max_length=255,default="")
     role = models.IntegerField(default=-1)
     expires_on = models.DateTimeField()
     is_claimed = models.BooleanField(default=False)
@@ -22,8 +24,8 @@ class Invite(models.Model):
 class Visitors(models.Model):
     company = models.ForeignKey(Company,on_delete=models.CASCADE,verbose_name="company_id")
     visitor_id = models.CharField(max_length=10)
-    first_name = models.CharField(max_length=30,null=True)
-    last_name = models.CharField(max_length=30,null=True)
+    first_name = models.CharField(max_length=255,null=True)
+    last_name = models.CharField(max_length=255,null=True)
     is_employee = models.BooleanField(default=False)
     waiver_signed = models.BooleanField(default=False)
     date_hired = models.DateTimeField(null=True)
@@ -46,7 +48,7 @@ class Timesheet(models.Model):
 
 class VisitReason(models.Model):
     company = models.ForeignKey(Company,on_delete=models.CASCADE,verbose_name="company_id")
-    description = models.CharField(max_length=30)
+    description = models.CharField(max_length=255)
     is_main_reason = models.BooleanField(default=False)
     has_sub_reasons = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
