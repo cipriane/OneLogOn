@@ -53,8 +53,7 @@ export default class Employees extends Component {
     }
   }
 
-  sortEmployees = (employees, sort) => {
-    sort = sort ? sort : this.state.sort;
+  sortEmployees = (employees, sort = this.state.sort) => {
     switch (sort) {
       case +SORT_OPTIONS.ID:
         return employees.sort((a, b) => {
@@ -186,13 +185,13 @@ export default class Employees extends Component {
                   ID {sort === 1 ? '▲' : sort === -1 ? '▼' : '\u00A0'}
                 </th>
                 <th onClick={() => this.setSort(2)} className={s.sortable}>
-                  First name {sort === 2 ? '▲' : sort === -2 ? '▼' : '\u00A0'}
+                  First Name {sort === 2 ? '▲' : sort === -2 ? '▼' : '\u00A0'}
                 </th>
                 <th onClick={() => this.setSort(3)} className={s.sortable}>
-                  Last name {sort === 3 ? '▲' : sort === -3 ? '▼' : '\u00A0'}
+                  Last Name {sort === 3 ? '▲' : sort === -3 ? '▼' : '\u00A0'}
                 </th>
                 <th onClick={() => this.setSort(4)} className={s.sortable}>
-                  Date hired {sort === 4 ? '▲' : sort === -4 ? '▼' : '\u00A0'}
+                  Date Hired {sort === 4 ? '▲' : sort === -4 ? '▼' : '\u00A0'}
                 </th>
                 <th>Timecard</th>
                 <th />

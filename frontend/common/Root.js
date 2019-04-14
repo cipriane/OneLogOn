@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Home from 'routes/Home/Home';
-import ReduxExample from 'routes/ReduxExample/ReduxExample';
 import Login from 'routes/Login/Login';
 import Logout from 'routes/Logout/Logout';
 import Register from 'routes/Register/Register';
@@ -14,8 +13,8 @@ import './Root.css';
 
 // Role-based authorization
 const NotIfLoggedIn = Authorization(['None'], true);
-const Kiosk = Authorization([Roles.kiosk, Roles.staff, Roles.admin]);
-const Staff = Authorization([Roles.staff, Roles.admin]);
+const Kiosk = Authorization([Roles.kiosk, Roles.superAdmin, Roles.admin]);
+const SuperAdmin = Authorization([Roles.superAdmin, Roles.admin]);
 const Admin = Authorization([Roles.admin]);
 
 const LoginProtected = NotIfLoggedIn(Login);
@@ -32,7 +31,6 @@ export default class App extends Component {
           <Route exact path="/login" component={LoginProtected} />
           <Route exact path="/logout" component={Logout} />
           <Route exact path="/register" component={RegisterProtected} />
-          <Route exact path="/ReduxExample" component={ReduxExample} />
           <Route path="/dashboard" component={DashBoardIsKiosk} />
           <Route component={NoMatch} />
         </Switch>

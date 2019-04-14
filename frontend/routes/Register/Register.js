@@ -123,12 +123,12 @@ class Register extends Component {
     if (!key) {
       companyInputField = (
         <Form.Group>
-          <Form.Label className={s.label}>Company Name</Form.Label>
+          <Form.Label className={s.label}>Company Name*</Form.Label>
           <FancyTextField
             required
             autoComplete="organization"
             type="text"
-            placeholder="Company name"
+            placeholder="Company Name"
             name="company"
             isValid={company && this.isValidCompany(company)}
             isInvalid={company && !this.isValidCompany(company)}
@@ -148,7 +148,7 @@ class Register extends Component {
             <MainFormLayout>
               <FancyFormHeader text="Register" />
               <Form.Group>
-                <Form.Label className={s.label}>Username</Form.Label>
+                <Form.Label className={s.label}>Username*</Form.Label>
                 <FancyTextField
                   required
                   autoFocus
@@ -164,7 +164,7 @@ class Register extends Component {
               </Form.Group>
               {companyInputField}
               <Form.Group>
-                <Form.Label className={s.label}>Email</Form.Label>
+                <Form.Label className={s.label}>Email*</Form.Label>
                 <FancyTextField
                   required
                   autoComplete="email"
@@ -178,7 +178,7 @@ class Register extends Component {
                 />
               </Form.Group>
               <Form.Group>
-                <Form.Label className={s.label}>Password</Form.Label>
+                <Form.Label className={s.label}>Password*</Form.Label>
                 <FancyTextField
                   required
                   autoComplete="new-password"

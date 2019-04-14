@@ -12,7 +12,7 @@ function me(jwt) {
 
     return {
       id: decodedJwt.user_id,
-      role: decodedJwt.is_staff ? Roles.staff : Roles.admin,
+      role: decodedJwt.is_staff ? Roles.admin : Roles.superAdmin,
       username: decodedJwt.name,
       is_staff: decodedJwt.is_staff,
       is_kiosk_mode: decodedJwt.is_kiosk_mode,

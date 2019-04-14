@@ -17,6 +17,7 @@ export default class AddModal extends Component {
   static propTypes = {
     show: PropTypes.bool.isRequired,
     onHide: PropTypes.func.isRequired,
+    addPendingInvite: PropTypes.func.isRequired,
   };
 
   state = {
@@ -50,7 +51,7 @@ export default class AddModal extends Component {
 
       const { email, firstName, lastName, role } = this.state;
 
-      await myFetch('/api/invite', {
+      const invite = await myFetch('/api/invite', {
         method: 'POST',
         body: {
           first_name: firstName,
@@ -68,6 +69,7 @@ export default class AddModal extends Component {
         lastName: '',
       });
 
+      this.props.addPendingInvite(invite);
       this.props.onHide();
     } catch (err) {
       this.setState({

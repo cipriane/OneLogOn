@@ -37,5 +37,9 @@ h2 {
 }
 
 .largeSpacer {
-  margin: 80px 0;
+  margin: 40px 0;
+}
+
+.noPad {
+  padding: 0 !important;
 }

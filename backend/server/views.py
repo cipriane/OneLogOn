@@ -37,6 +37,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.password_validation import MinimumLengthValidator
 from django.core.exceptions import ValidationError
 
+from django.db import transaction
 from datetime import timedelta
 from datetime import datetime
 from django.utils.timezone import now
@@ -292,8 +293,6 @@ class VisitorsListView(generics.ListAPIView):
         data = list(visitors.values())
         return JsonResponse(data, safe=False)
 
-
-
 class VisitorsDetailView(generics.RetrieveAPIView):
     lookup_field = 'visitor_id'
     queryset = Visitors.objects.all()
@@ -332,7 +331,6 @@ class VisitorsDetailView(generics.RetrieveAPIView):
             visitor['is_checked_in'] = False
             visitor['check_in_id'] = False
         return JsonResponse(visitor)
-
 
 class VisitorsCreateView(generics.CreateAPIView):
     queryset = Visitors.objects.all()
@@ -385,29 +383,16 @@ class VisitorsUpdateView(generics.UpdateAPIView):
         except Exception as err:
             return Response({'error': str(err)}, status=status.HTTP_400_BAD_REQUEST)
 
-class VisitorsUpdateWaiverView(generics.UpdateAPIView):
-    """
-    /api/visitors/<pk>/waiver/
-    """
-    queryset = Visitors.objects.all()
-    serializer_class = VisitorsSerializer
-    permission_classes = (IsAuthenticated,)
+class AdminListView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
-    def post(self, request,pk, format = 'json'):
-        """
-        POST /api/visitors/<pk>/waiver/
-        Set visitor's waiver_signed field to True
-        """
-        try:
-            #get visitor object with specified pk
-            visitor = self.queryset.get(id=pk)
+    def get(self, request, *args, **kwargs):
+        company_id = getCompanyID(request)
+        admin_ids = UserCompany.objects.filter(company=company_id).exclude(user=request.user.id).values_list('user', flat=True)
+        admins = User.objects.filter(id__in=admin_ids).values('id', 'email', 'first_name', 'last_name', 'is_active', 'is_staff', 'is_superuser')
 
-            visitor.waiver_signed = True
-            visitor.save()
-            return Response(status=status.HTTP_200_OK)
-        except Exception:
-            message = {'error' : 'Visitor doesn\'t exist'}
-            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse(list(admins), safe=False)
 
 class VisitReasonListView(generics.ListAPIView):
     queryset = VisitReason.objects.all()
@@ -501,7 +486,6 @@ class UserCreate(APIView):
             if user:
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-
 class Registration(APIView):
     """
     /api/register
@@ -510,55 +494,63 @@ class Registration(APIView):
         company_address, company_city, company_zip, company_state
     """
     permission_classes = (AllowAny,)
+    @transaction.atomic
     def post(self, request, format='json'):
-        california_tz = pytz.timezone('US/Pacific')
-        key = request.data.get('key', None)
+        try:
+            with transaction.atomic():
+                california_tz = pytz.timezone('US/Pacific')
+                key = request.data.get('key', None)
 
-        # verify the user is unique
-        user_serializer = UserSerializer(data=request.data)
-        if not user_serializer.is_valid():
-            return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        # get the user
-        user_id = user_serializer.save().id
+                company_id = None
+                invite = None
+                # if we have the key, locate the company
+                if key:
+                    # verify the invite -- find the company associated with it
+                    invite = Invite.objects.get(invite_key=key)
+                    if not invite:
+                        return Response({'error': 'Invalid invite key'}, status=status.HTTP_400_BAD_REQUEST)
+                    if invite.expires_on < california_tz.localize(datetime.now()):
+                        return Response({'error': 'Invite key has expired'}, status=status.HTTP_400_BAD_REQUEST)
+                    if invite.is_claimed:
+                        return Response({'error': 'Invite key has already been used'}, status=status.HTTP_400_BAD_REQUEST)
+                    invite.is_claimed = True
+                    invite.save()
+                    company_id = invite.company_id
+                # else we do not have the key, make a new company
+                else:
+                    # verify the company is not null
+                    company_serializer = CompanySerializer(data=request.data)
+                    if not company_serializer.is_valid():
+                       raise Exception(company_serializer.errors)
+                    # save the company -- get the id where we should save
+                    company_id = company_serializer.save().id
 
-        company_id = None
-        # if we have the key, locate the company
-        if key:
-            # verify the invite -- find the company associated with it
-            try:
-                invite = Invite.objects.get(invite_key=key)
-                if not invite:
-                    return Response({'error': 'Invalid invite key'}, status=status.HTTP_400_BAD_REQUEST)
-                if invite.expires_on < california_tz.localize(datetime.now()):
-                    return Response({'error': 'Invite key has expired'}, status=status.HTTP_400_BAD_REQUEST)
-                if invite.is_claimed:
-                    return Response({'error': 'Invite key has already been used'}, status=status.HTTP_400_BAD_REQUEST)
-                invite.is_claimed = True
-                invite.save()
-            except Exception as err:
-                return Response({'error': str(err)}, status=status.HTTP_400_BAD_REQUEST)
-            company_id = invite.company_id
-        # else we do not have the key, make a new company
-        else:
-            # verify the company is not null
-            company_serializer = CompanySerializer(data=request.data)
-            if not company_serializer.is_valid():
-               return Response(company_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            # save the company -- get the id where we should save
-            company_id = company_serializer.save().id
+                # verify the user had valid data
+                data = request.data
+                if invite is not None:
+                    data['first_name'] = invite.first_name
+                    data['last_name'] = invite.last_name
+                    data['is_staff'] = True if invite.role else False
+                user_serializer = UserSerializer(data=data)
 
-        data = {
-            'user' : user_id,
-            'company' : company_id
-        }
+                if not user_serializer.is_valid():
+                    raise Exception(user_serializer.errors)
+                user_id = user_serializer.save().id
 
-        user_company_serializer = UserCompanySerializer(data=data)
-        if not user_company_serializer.is_valid():
-            return Response(user_company_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                data = {
+                    'user' : user_id,
+                    'company' : company_id
+                }
 
-        user_company = user_company_serializer.save()
+                user_company_serializer = UserCompanySerializer(data=data)
+                if not user_company_serializer.is_valid():
+                    raise Exception(user_company_serializer.errors)
 
-        return Response(user_serializer.data, status=status.HTTP_201_CREATED)
+                user_company = user_company_serializer.save()
+
+                return Response(user_serializer.data, status=status.HTTP_201_CREATED)
+        except Exception as err:
+            return Response({'error': str(err)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ChangePassword(APIView):
@@ -591,6 +583,15 @@ class ChangePassword(APIView):
             return Response({'error' : 'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
 class InviteView(generics.CreateAPIView):
+    def get(self, request):
+        company_id = UserCompany.objects.get(user_id=request.user.id).company_id
+        now = pytz.timezone('US/Pacific').localize(datetime.now())
+        try:
+            invites = Invite.objects.filter(company_id=company_id,expires_on__gt=now).exclude(is_claimed=True).values()
+        except Invite.DoesNotExist:
+            invites = []
+        return JsonResponse(list(invites), safe=False, status=status.HTTP_200_OK)
+
     def post(self, request, format = 'json'):
         '''
             must pass in the body:
@@ -606,6 +607,9 @@ class InviteView(generics.CreateAPIView):
 
         data = {
             'company': company_id,
+            'first_name': first_name,
+            'last_name': last_name,
+            'email': recipient,
             'expires_on': exp,
             'role': role,
         }
