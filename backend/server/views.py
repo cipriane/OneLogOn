@@ -524,19 +524,20 @@ class Registration(APIView):
                        raise Exception(company_serializer.errors)
                     # save the company -- get the id where we should save
                     company_id = company_serializer.save().id
-
                 # verify the user had valid data
                 data = request.data
                 if invite is not None:
                     data['first_name'] = invite.first_name
                     data['last_name'] = invite.last_name
                     data['is_staff'] = True if invite.role else False
+                else:
+                    data['first_name'] = ''
+                    data['last_name'] = ''
+                    data['is_staff'] = False
                 user_serializer = UserSerializer(data=data)
-
                 if not user_serializer.is_valid():
                     raise Exception(user_serializer.errors)
                 user_id = user_serializer.save().id
-
                 data = {
                     'user' : user_id,
                     'company' : company_id
@@ -550,6 +551,7 @@ class Registration(APIView):
 
                 return Response(user_serializer.data, status=status.HTTP_201_CREATED)
         except Exception as err:
+            print(err)
             return Response({'error': str(err)}, status=status.HTTP_400_BAD_REQUEST)
 
 
