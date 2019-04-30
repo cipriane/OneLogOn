@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import myFetch from 'utils/fetch';
 import { Alert, Button, Table, Container } from 'react-bootstrap';
 import SimpleHeader from 'common/SimpleHeader/SimpleHeader';
 import AddModal from './AddModal/AddModal';
+import PendingInviteRow from './PendingInviteRow/PendingInviteRow';
+import AdminRow from './AdminRow/AdminRow';
 import s from './Admin.css';
-import formatDate from 'utils/formatDate';
-import formatTime from 'utils/formatTime';
+import myFetch from 'utils/fetch';
 
 export default class Admin extends Component {
   state = {
@@ -58,6 +58,40 @@ export default class Admin extends Component {
     });
   };
 
+  setError = err => {
+    this.setState({
+      error: err,
+    });
+  };
+
+  removeInvite = inviteID => {
+    this.setState(prevState => {
+      const { pendingInvites } = prevState;
+      const filteredInvites = pendingInvites.filter(invite => {
+        invite.id !== inviteID;
+      });
+      return {
+        pendingInvites: filteredInvites,
+      };
+    });
+  };
+
+  updateAdmin = admin => {
+    this.setState(prevState => {
+      const { admins } = prevState;
+      const index = admins.findIndex(a => {
+        return a.id == admin.id;
+      });
+      if (index === -1) {
+        return {};
+      }
+      admins[index] = admin;
+      return {
+        admins,
+      };
+    });
+  };
+
   render() {
     const { error, isLoading, admins, pendingInvites } = this.state;
 
@@ -82,19 +116,17 @@ export default class Admin extends Component {
                 <th>Email</th>
                 <th>Role</th>
                 <th />
+                <th />
               </tr>
             </thead>
             <tbody>
               {admins.map(admin => (
-                <tr key={admin.id}>
-                  <td className={admin.idField}>{admin.first_name}</td>
-                  <td>{admin.last_name}</td>
-                  <td>{admin.email}</td>
-                  <td>
-                    {!admin.is_active ? 'Deactivated' : admin.is_staff ? 'Admin' : 'Super Admin'}
-                  </td>
-                  <td>Edit</td>
-                </tr>
+                <AdminRow
+                  key={admin.id}
+                  admin={admin}
+                  updateAdmin={this.updateAdmin}
+                  setError={this.setError}
+                />
               ))}
             </tbody>
           </Table>
@@ -122,15 +154,12 @@ export default class Admin extends Component {
             </thead>
             <tbody>
               {pendingInvites.map(invite => (
-                <tr key={invite.id}>
-                  <td className={s.idField}>{invite.first_name}</td>
-                  <td>{invite.last_name}</td>
-                  <td>{invite.email}</td>
-                  <td>{`${formatDate(new Date(invite.expires_on))}, ${formatTime(
-                    new Date(invite.expires_on),
-                  )}`}</td>
-                  <td>Revoke</td>
-                </tr>
+                <PendingInviteRow
+                  key={invite.id}
+                  invite={invite}
+                  removeInvite={this.removeInvite}
+                  setError={this.setError}
+                />
               ))}
             </tbody>
           </Table>

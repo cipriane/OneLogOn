@@ -394,6 +394,32 @@ class AdminListView(generics.ListAPIView):
 
         return JsonResponse(list(admins), safe=False)
 
+class AdminUpdateView(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def patch(self, request, pk, *args, **kwargs):
+        role = request.data.get('role', None)
+        try:
+            admin = User.objects.get(id=pk)
+            if role is None:
+                return Response(UserSerializer(admin).data, status=status.HTTP_200_OK)
+            if role == '-1':
+                admin.is_active = False
+                admin.is_staff = False
+            elif role == '0':
+                admin.is_active = True
+                admin.is_staff = True
+            elif role == '1':
+                admin.is_active = True
+                admin.is_staff = False
+            admin.save()
+            return Response(UserSerializer(admin).data, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response(UserSerializer(admin).data, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as err:
+            return Response({'error': str(err)}, status=status.HTTP_400_BAD_REQUEST)
+
 class VisitReasonListView(generics.ListAPIView):
     queryset = VisitReason.objects.all()
     serializer_class = VisitReasonSerializer
@@ -583,6 +609,10 @@ class ChangePassword(APIView):
 
         except Exception:
             return Response({'error' : 'User does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+
+class InviteUpdateView(generics.UpdateAPIView):
+    queryset = Invite.objects.all()
+    serializer_class = InviteSerializer
 
 class InviteView(generics.CreateAPIView):
     def get(self, request):
