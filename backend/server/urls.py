@@ -19,6 +19,7 @@ urlpatterns = [
     path('api/visitors/<visitor_id>/update', views.VisitorsUpdateView.as_view()),
 
     path('api/admin', views.AdminListView.as_view()),
+    path('api/admin/<pk>/update', views.AdminUpdateView.as_view()),
 
     path('api/checkins', views.CheckInsListView.as_view()),
     path('api/checkins/create', views.CheckInsCreateView.as_view()),
@@ -46,6 +47,7 @@ urlpatterns = [
     path('api/password', views.ChangePassword.as_view()),
 
     path('api/invite', views.InviteView.as_view()),
+    path('api/invite/<pk>/update', views.InviteUpdateView.as_view()),
 
     re_path(r'', views.index, name='index'),
 ]

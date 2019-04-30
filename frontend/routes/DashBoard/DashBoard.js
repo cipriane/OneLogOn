@@ -17,11 +17,11 @@ import Admin from 'routes/DashBoard/Admin/Admin';
 import Kiosk from 'routes/DashBoard/Kiosk/Kiosk';
 
 const dashboardRoutes = [
-  { id: 0, name: 'Statistics', path: 'statistics', component: Statistics },
-  { id: 1, name: 'Settings', path: 'settings', component: Settings },
-  { id: 2, name: 'Employees', path: 'employees', component: Employees },
-  { id: 3, name: 'Admin', path: 'admin', component: Admin },
-  { id: 4, name: 'Kiosk Mode', path: 'kiosk', component: Kiosk },
+  { id: 0, name: 'Statistics', path: 'statistics', component: Statistics, protected: false },
+  { id: 1, name: 'Settings', path: 'settings', component: Settings, protected: false },
+  { id: 2, name: 'Employees', path: 'employees', component: Employees, protected: false },
+  { id: 3, name: 'Admin', path: 'admin', component: Admin, protected: true },
+  { id: 4, name: 'Kiosk Mode', path: 'kiosk', component: Kiosk, protected: true },
 ];
 
 class DashBoard extends Component {
@@ -95,6 +95,9 @@ class DashBoard extends Component {
             <p className={s.sideNavTitle}>DashBoard</p>
           </div>
           {dashboardRoutes.map(route => {
+            if (route.protected && user.is_staff) {
+              return;
+            }
             return (
               <NavLink key={route.id} to={`${this.props.url}/${route.path}`}>
                 <Button variant="outline-primary" className={s.sideNavItem}>

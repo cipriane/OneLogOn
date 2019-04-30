@@ -23,7 +23,6 @@ export default class EmployeeRow extends Component {
     removeEmployee: PropTypes.func.isRequired,
     setError: PropTypes.func.isRequired,
     employee: PropTypes.object.isRequired,
-    setError: PropTypes.func.isRequired,
   };
 
   state = {
@@ -52,7 +51,7 @@ export default class EmployeeRow extends Component {
       this.setState({
         isDeleting: false,
       });
-      this.props.setError(err);
+      this.props.setError(err.message);
     }
   };
 
