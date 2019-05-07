@@ -101,23 +101,29 @@ export default class ReasonListContainer extends Component {
     }
   };
 
-  editReason = async (id, key, value) => {
+  editReason = async (id, updatedValues) => {
     try {
       const { input, reasons } = this.state;
       this.setState({
         error: null,
         isLoading: true,
       });
+      // replace falsy with 0 for Django
+      Object.keys(updatedValues).map(key => {
+        if (!updatedValues[key]) {
+          updatedValues[key] = 0;
+        }
+      });
       const updatedReason = await myFetch(`/api/visitreason/${id}/update`, {
         method: 'PATCH',
         body: {
-          [key]: value || 0, // 0 is false for Django
+          ...updatedValues,
         },
       });
       this.setState(prevState => {
         // Update description of edited reason
-        const index = prevState.reasons.findIndex(reason => reason.id === id);
-        prevState.reasons[index][key] = value;
+        const index = prevState.reasons.findIndex(reason => reason.id === updatedReason.id);
+        prevState.reasons[index] = updatedReason;
         return {
           reasons: prevState.reasons,
           isLoading: false,
