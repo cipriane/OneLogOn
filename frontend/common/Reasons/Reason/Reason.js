@@ -37,8 +37,10 @@ export default class Reason extends Component {
   };
 
   saveEditReason = e => {
-    this.props.editReason(this.props.reasonId, 'description', this.state.value);
-    this.props.editReason(this.props.reasonId, 'has_sub_reasons', this.state.isSelected);
+    this.props.editReason(this.props.reasonId, {
+      description: this.state.value,
+      has_sub_reasons: this.state.isSelected,
+    });
     this.setState({ isEdit: false });
   };
 
